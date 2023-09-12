@@ -26,49 +26,6 @@ struct LoginView: View {
             ScrollView {
      
                 VStack(spacing: 16) {
-                    Picker(selection: $isLoginMode, label: Text("Picker here")) {
-                        Text("Login")
-                            .tag(true)
-                        Text("Create Account")
-                            .tag(false)
-                    }.pickerStyle(SegmentedPickerStyle())
-                     
-                    if !isLoginMode {
-                        VStack {
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 64))
-                                .padding()
-                                .foregroundColor(Color(.label))
-                        }
-                        .overlay(RoundedRectangle(cornerRadius: 64)
-                                    .stroke(Color.black, lineWidth: 3)
-                        )
-                        Group {
-                            TextField("First Name", text: $fname)
-                            TextField("Last Name", text: $lname)
-                            TextField("Email", text: $email)
-                                .keyboardType(.emailAddress)
-                                .autocapitalization(.none)
-                            SecureField("Password", text: $password)
-                        }
-                        .padding()
-                        .background(Color.gray)
-                        .cornerRadius(10)
-                         
-                        Button {
-                            handleAction()
-                        } label: {
-                            HStack {
-                                Spacer()
-                                Text("Create Account")
-                                    .foregroundColor(.white)
-                                    .padding(.vertical, 10)
-                                    .font(.system(size: 18, weight: .semibold))
-                                Spacer()
-                            }.background(Color.green)
-       
-                        }.cornerRadius(10)
-                    }else{
                         Image("Login")
                             .resizable()
                             .scaledToFill()
@@ -101,12 +58,15 @@ struct LoginView: View {
                         .alert(isPresented: $shouldShowLoginAlert) {
                             Alert(title: Text("Email/Password incorrect"))
                         }
+                    NavigationLink(destination: RegisterView(isUserCurrentlyLoggedOut: .constant(true))){
+                        Text("Create Account")
+                    }
                     }
                      
                     Text(self.StatusMessage)
                         .foregroundColor(Color.white)
                      
-                }.padding()
+                //}.padding()
             } //End ScrollView
             .navigationViewStyle(StackNavigationViewStyle())
 //            .background(
@@ -131,41 +91,41 @@ struct LoginView: View {
             }
         }
          
-        private func handleAction() {
-            createNewAccount()
-        }
-          
-        private func createNewAccount() {
-            Auth.auth().createUser(withEmail: email, password: password) { result, err in
-                if err != nil {
-                    print("Failed to create user")
-                    self.StatusMessage = "Failed to create user"
-                    return
-                }
-                 
-                print("Successfully created user")
-       
-                self.StatusMessage = "Successfully created user"
-                 
-                self.storeUserInformation()
-                loginUser()
-            }
-        }
-         
-    private func storeUserInformation() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let userData = ["fname": self.fname, "lname": self.lname, "email": self.email, "profileImageUrl": "profileurl", "uid": uid]
-        Firestore.firestore().collection("users")
-            .document(uid).setData(userData) { err in
-                if let err = err {
-                    print(err)
-                    self.StatusMessage = "\(err)"
-                    return
-                }
-                
-                print("Success")
-            }
-    }
+//        private func handleAction() {
+//            createNewAccount()
+//        }
+//          
+//        private func createNewAccount() {
+//            Auth.auth().createUser(withEmail: email, password: password) { result, err in
+//                if err != nil {
+//                    print("Failed to create user")
+//                    self.StatusMessage = "Failed to create user"
+//                    return
+//                }
+//                 
+//                print("Successfully created user")
+//       
+//                self.StatusMessage = "Successfully created user"
+//                 
+//                self.storeUserInformation()
+//                loginUser()
+//            }
+//        }
+//         
+//    private func storeUserInformation() {
+//        guard let uid = Auth.auth().currentUser?.uid else { return }
+//        let userData = ["fname": self.fname, "lname": self.lname, "email": self.email, "profileImageUrl": "profileurl", "uid": uid]
+//        Firestore.firestore().collection("users")
+//            .document(uid).setData(userData) { err in
+//                if let err = err {
+//                    print(err)
+//                    self.StatusMessage = "\(err)"
+//                    return
+//                }
+//                
+//                print("Success")
+//            }
+//    }
 }
  
 struct LoginView_Previews: PreviewProvider {
