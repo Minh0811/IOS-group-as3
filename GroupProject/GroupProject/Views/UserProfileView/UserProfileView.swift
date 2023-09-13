@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 import SDWebImageSwiftUI
-struct ProfileUserView: View {
+struct UserProfileView: View {
     var body: some View {
         VStack {
             Text("User profile")
@@ -16,8 +16,8 @@ struct ProfileUserView: View {
     }
 }
 
-struct ProfileUserView_Previews: PreviewProvider {
+struct UserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileUserView()
+        UserProfileView()
     }
 }
