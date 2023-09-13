@@ -12,9 +12,9 @@ import FirebaseStorage
 import PhotosUI
 struct EditProfileView: View {
     @Environment (\.dismiss) var dismiss
-    @State private var selectedImage: UIImage?
-    @ObservedObject private var imageUploadModel = ImageUploadModel()
-    //@State private var selectedImage: Photos
+    @StateObject var viewModel = EditProfileViewModel()
+    
+   
     var body: some View {
         VStack{
             VStack{
@@ -40,48 +40,55 @@ struct EditProfileView: View {
                 Divider()
             }
             //EDIT PROFILE PIC
-            VStack{
-                if let selectedImage = selectedImage{
-                    Image(uiImage: selectedImage)
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Circle())
-                        .frame(width: 80, height: 80)
-                } else {
-                    Text("No image selected")
+            PhotosPicker(selection: $viewModel.selectedImage){
+                VStack{
+                    if let image = viewModel.profileImage {
+                        image
+                            .resizable()
+                            .foregroundColor(.white)
+                            .background(.gray)
+                            .frame(width: 80, height: 80)
+                            .clipShape(Circle())
+                    } else{
+                        Image("Login")
+                            .resizable()
+                            .foregroundColor(.white)
+                            .background(.gray)
+                            .frame(width: 80, height: 80)
+                            .clipShape(Circle())
+                    }
+                    Text("Edit profile picture")
+                        .font(.footnote)
+                        .fontWeight(.semibold)
+                    Divider()
                 }
-
-                            Button("Upload Image") {
-                                if let selectedImage = selectedImage {
-                                    imageUploadModel.uploadImage(image: selectedImage)
-                                }
-                            }
-                            .padding()
-
-                            if let uploadedImageUrl = imageUploadModel.uploadedImageUrl {
-                                Text("Uploaded Image URL: \(uploadedImageUrl)")
-                                    .font(.caption)
-                                    .foregroundColor(.green)
-                            }
-
-                            if let uploadError = imageUploadModel.uploadError {
-                                Text("Upload Error: \(uploadError)")
-                                    .font(.caption)
-                                    .foregroundColor(.red)
-                            }
-                Divider()
+                
             }
+            
             .padding(.vertical, 8)
             //EDIT INFO
             VStack{
                 Text("Name:")
-                Text("Caption")
+                Text("Bio:")
             }
            Spacer()
         }
     }
 }
-
+//struct EditProfileRowView: View{
+//    let title: String
+//    let placeholder: String
+//    var body: some View{
+//        HStack{
+//            Text(title)
+//                .padding(.leading, 8)
+//                .frame(width: 100, alignment: .leading)
+//            VStack{
+//                TextField(placeholder, text: )
+//            }
+//        }
+//    }
+//}
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
         EditProfileView()

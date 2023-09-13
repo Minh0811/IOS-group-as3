@@ -24,6 +24,7 @@ struct MainView: View {
                     .padding()
                HomeView()
             }
+            Spacer()
         }
         .navigationBarHidden(true)
         .animation(.spring())
