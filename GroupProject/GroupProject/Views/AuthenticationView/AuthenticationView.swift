@@ -14,7 +14,7 @@ struct AuthenticationView: View {
             if self.isUserCurrentlyLoggedOut{
                 MainView(isUserCurrentlyLoggedOut: $isUserCurrentlyLoggedOut)
             } else{
-                LoginView()
+                LoginView(isUserCurrentlyLoggedOut: $isUserCurrentlyLoggedOut)
             }
         }
         

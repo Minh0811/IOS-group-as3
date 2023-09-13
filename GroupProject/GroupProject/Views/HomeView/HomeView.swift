@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject var viewModel = MainViewModel()
+    
     var body: some View {
-        Text("Hello, Home!")
+        VStack{
+            Text("Hello, Home!")
+        }
     }
 }
 

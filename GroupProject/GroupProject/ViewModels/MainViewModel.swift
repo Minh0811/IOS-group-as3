@@ -25,25 +25,18 @@ class MainViewModel: ObservableObject {
             return
         }
 
-        userService.fetchCurrentUser(uid: uid) { [weak self] result in
-            switch result {
-            case .success(let user):
-                self?.chatUser = user
-            case .failure(let error):
-                self?.errorMessage = "Failed to fetch current user: \(error.localizedDescription)"
-            }
-        }
+        userService.fetchCurrentUser()
     }
 
-    func logOut() {
-        userService.logOut { [weak self] result in
-            switch result {
-            case .success: break
-                // Handle successful logout, e.g., navigate to login screen
-            case .failure(let error):
-                self?.errorMessage = "Failed to log out: \(error.localizedDescription)"
-            }
-        }
-    }
+//    func logOut() {
+//        userService.logOut { [weak self] result in
+//            switch result {
+//            case .success: break
+//                // Handle successful logout, e.g., navigate to login screen
+//            case .failure(let error):
+//                self?.errorMessage = "Failed to log out: \(error.localizedDescription)"
+//            }
+//        }
+//    }
 }
 
