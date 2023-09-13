@@ -33,7 +33,7 @@ struct MainView: View {
     private var customNavBar: some View {
         HStack(spacing: 16) {
             NavigationLink(destination: ProfileUserView(profileUser: vm)) {
-                                WebImage(url: URL(string: vm.chatUser?.profileImageUrl ?? ""))
+                               Image("Login")
                                     .resizable()
                                     .scaledToFill()
                                     .frame(width: 50, height: 50)

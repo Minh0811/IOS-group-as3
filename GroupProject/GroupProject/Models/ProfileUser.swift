@@ -4,7 +4,7 @@ import Firebase
 import Combine // Import Combine framework
 
 struct User {
-    let uid, email, profileImageUrl, fname, lname: String
+    let uid, email, fname, lname: String
 }
 
 class ProfileUser: ObservableObject {
@@ -39,11 +39,11 @@ class ProfileUser: ObservableObject {
             self.errorMessage = "Data: \(data.description)"
             let uid = data["uid"] as? String ?? ""
             let email = data["email"] as? String ?? ""
-            let profileImageUrl = data["profileImageUrl"] as? String ?? ""
+            //let profileImageUrl = data["profileImageUrl"] as? String ?? ""
             let fname = data["fname"] as? String ?? ""
             let lname = data["lname"] as? String ?? ""
              
-            self.chatUser = User(uid: uid, email: email, profileImageUrl: profileImageUrl, fname: fname, lname: lname)
+            self.chatUser = User(uid: uid, email: email, fname: fname, lname: lname)
         }
     }
 }
