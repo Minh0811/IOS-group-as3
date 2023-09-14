@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  AuthenticationView.swift
 //  GroupProject
 //
 //  Created by Khanh, Tran Huy on 10/09/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct AuthenticationView: View {
     @State private var isUserCurrentlyLoggedOut: Bool = false
     var body: some View {
         NavigationView {
@@ -21,8 +21,8 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct AuthenticationView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        AuthenticationView()
     }
 }
