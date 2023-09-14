@@ -12,8 +12,11 @@ import PhotosUI
 struct EditProfileView: View {
     @Environment (\.dismiss) var dismiss
     @StateObject var viewModel = EditProfileViewModel()
-    
-   
+    @State private var fullname = ""
+    @State private var bio = ""
+    init(user: User) {
+        self._viewModel = StateObject(wrappedValue: EditProfileViewModel())
+    }
     var body: some View {
         VStack{
             VStack{
@@ -68,29 +71,30 @@ struct EditProfileView: View {
             .padding(.vertical, 8)
             //EDIT INFO
             VStack{
-                Text("Name:")
-                Text("Bio:")
+                EditProfileRowView(title: "Name", placeholder: "Enter your name...", text: $viewModel.fullname)
+                EditProfileRowView(title: "Bio", placeholder: "Enter your bio...", text: $viewModel.bio)
             }
            Spacer()
         }
     }
 }
-//struct EditProfileRowView: View{
-//    let title: String
-//    let placeholder: String
-//    var body: some View{
-//        HStack{
-//            Text(title)
-//                .padding(.leading, 8)
-//                .frame(width: 100, alignment: .leading)
-//            VStack{
-//                TextField(placeholder, text: )
-//            }
-//        }
-//    }
-//}
+struct EditProfileRowView: View{
+    let title: String
+    let placeholder: String
+    @Binding var text: String
+    var body: some View{
+        HStack{
+            Text(title)
+                .padding(.leading, 8)
+                .frame(width: 100, alignment: .leading)
+            VStack{
+                TextField(placeholder, text: $text )
+            }
+        }
+    }
+}
 struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        EditProfileView()
+        EditProfileView(user: User)
     }
 }

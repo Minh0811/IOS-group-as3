@@ -11,15 +11,21 @@ import PhotosUI
 import FirebaseStorage
 @MainActor
 class EditProfileViewModel: ObservableObject {
-    private var userService: UserService
-    
-    init(userService: UserService = UserService()) {
-        self.userService = userService
-    }
+    @Published var userService: UserService
+    @Published var user: User
+//    init(userService: UserService = UserService()) {
+//        self.userService = userService
+//        self.user = User()
+//    }
+    init() {
+            self.userService = UserService()
+            self.user = User(id: "", uid: "", username: "", email: "", profileImageUrl: "", fullname: "", bio: "")
+        }
     @Published var selectedImage: PhotosPickerItem? {
         didSet { Task { await loadImage(fromItem: selectedImage) } }
     }
     
+
     @Published var profileImage: Image?
     @Published var fullname = ""
     @Published var bio = ""
