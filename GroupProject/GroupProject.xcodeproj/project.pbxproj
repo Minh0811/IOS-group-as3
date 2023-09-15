@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		469B7C532AB40AC000F060E7 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469B7C522AB40AC000F060E7 /* Post.swift */; };
+		469B7C572AB40C3A00F060E7 /* PostEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469B7C562AB40C3A00F060E7 /* PostEditView.swift */; };
 		C83D1B012AAD497F0097643C /* GroupProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83D1B002AAD497F0097643C /* GroupProjectApp.swift */; };
 		C83D1B032AAD497F0097643C /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83D1B022AAD497F0097643C /* AuthenticationView.swift */; };
 		C83D1B052AAD49800097643C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C83D1B042AAD49800097643C /* Assets.xcassets */; };
@@ -54,6 +56,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		469B7C522AB40AC000F060E7 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		469B7C562AB40C3A00F060E7 /* PostEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditView.swift; sourceTree = "<group>"; };
 		C83D1AFD2AAD497E0097643C /* GroupProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroupProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C83D1B002AAD497F0097643C /* GroupProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupProjectApp.swift; sourceTree = "<group>"; };
 		C83D1B022AAD497F0097643C /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
@@ -176,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				C8FE1FE22AAEAC010027E156 /* User.swift */,
+				469B7C522AB40AC000F060E7 /* Post.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -230,6 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				F790F1C72AB13EE800D85149 /* NewPostView.swift */,
+				469B7C562AB40C3A00F060E7 /* PostEditView.swift */,
 			);
 			path = NewPostView;
 			sourceTree = "<group>";
@@ -400,11 +406,13 @@
 				C83D1B032AAD497F0097643C /* AuthenticationView.swift in Sources */,
 				F790F1CB2AB1437200D85149 /* UserService.swift in Sources */,
 				C83D1B2D2AAD49B50097643C /* LoginView.swift in Sources */,
+				469B7C532AB40AC000F060E7 /* Post.swift in Sources */,
 				C8FE1FE52AAEAED90027E156 /* UserProfileView.swift in Sources */,
 				C8FE1FE72AAEB09F0027E156 /* HomeView.swift in Sources */,
 				C8FE1FE32AAEAC010027E156 /* User.swift in Sources */,
 				C83D1B012AAD497F0097643C /* GroupProjectApp.swift in Sources */,
 				F790F1CD2AB1449A00D85149 /* LoginViewModel.swift in Sources */,
+				469B7C572AB40C3A00F060E7 /* PostEditView.swift in Sources */,
 				C89048332AB184CF00C065E9 /* RegisterView.swift in Sources */,
 				F790F1C82AB13EE800D85149 /* NewPostView.swift in Sources */,
 				F790F1CF2AB1485100D85149 /* MainViewModel.swift in Sources */,
