@@ -37,8 +37,12 @@ struct UserProfileView: View {
                     //                    }
                     
                     
-                    NavigationLink(destination: EditProfileView(user: user ?? User(id: "", username: "", email: ""))
-                    ){
+//                    NavigationLink(destination: EditProfileView(user: user ?? User(id: "", username: "", email: ""))
+//                    ){
+                Button{
+                    showEditProfile.toggle()
+                } label: {
+                
                         Text("Edit Profile")
                             .font(.subheadline)
                             .fontWeight(.semibold)
@@ -49,13 +53,13 @@ struct UserProfileView: View {
                                     .stroke(Color.gray, lineWidth: 1)
                             )
                     }
-                    //                    .fullScreenCover(isPresented: $showEditProfile) {
-                    //                        if let user = userService.currentUser {
-                    //                                                    EditProfileView(user: user)
-                    //                            } else {
-                    //                            Text("User data not available for editing.")
-                    //                            }
-                    //                    }
+                                        .fullScreenCover(isPresented: $showEditProfile) {
+                                            if let user = userService.currentUser {
+                                                                        EditProfileView(user: user)
+                                                } else {
+                                                Text("User data not available for editing.")
+                                                }
+                                        }
                     Button(action: {
                         userService.fetchCurrentUser()
                         refreshFlag.toggle()
