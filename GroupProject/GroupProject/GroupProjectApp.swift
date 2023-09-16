@@ -16,7 +16,6 @@ struct GroupProjectApp: App {
         WindowGroup {
             NavigationView{
                 AuthenticationView()
-                    
             }
         }
     }
