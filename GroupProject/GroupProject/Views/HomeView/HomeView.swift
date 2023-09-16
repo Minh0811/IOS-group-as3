@@ -23,17 +23,6 @@ struct HomeView: View {
     var body: some View {
         
         VStack{
-            Text("Hello, Home!")
-            NavigationLink(destination: UserProfileView()){
-                Text("User Profile")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .frame(width: 360, height: 44)
-                    .background(Color(.systemBlue))
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                
-                
                 NavigationView {
                     ZStack {
                         Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
@@ -83,7 +72,7 @@ struct HomeView: View {
                 //        .navigationBarHidden(true)
                 //        .navigationBarBackButtonHidden(true)
                 
-            }
+            
         }
     }
 }
