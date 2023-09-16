@@ -21,6 +21,7 @@ struct HomeView: View {
     
     private let categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
     var body: some View {
+
         NavigationView {
             ZStack {
                 Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
@@ -62,6 +63,7 @@ struct HomeView: View {
                     
                     // BottomNavBarView()
                 }
+
             }
         }
         //        .navigationBarTitle("") //this must be empty

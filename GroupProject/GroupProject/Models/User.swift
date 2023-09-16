@@ -4,13 +4,23 @@
 //
 //  Created by Khanh, Tran Huy on 11/09/2023.
 //
-
 import Foundation
 import SDWebImageSwiftUI
 import Firebase
 
-struct User {
-    let uid, email, profileImageUrl: String
+struct User: Identifiable, Codable {
+    let id: String
+    var username: String
+    let email: String
+    var profileImageUrl: String?
+    var fullname: String?
+    var bio: String?
+}
+extension User{
+    static var MOCK_USERS: [User] = [
+        .init(id: NSUUID().uuidString, username: "kiet", email: "", profileImageUrl: nil, fullname: nil, bio: nil),
+        .init(id: NSUUID().uuidString, username: "khanh", email: "", profileImageUrl: nil, fullname: nil, bio: nil),
+    ]
 }
 
 //Check for usability since the main view now use MainViewModel
