@@ -12,7 +12,7 @@ struct AuthenticationView: View {
     var body: some View {
         NavigationView {
             if self.isUserCurrentlyLoggedOut{
-                MainView(isUserCurrentlyLoggedOut: $isUserCurrentlyLoggedOut)
+               HomeView()
             } else{
                 LoginView(isUserCurrentlyLoggedOut: $isUserCurrentlyLoggedOut)
             }
