@@ -6,37 +6,81 @@
 //
 
 import SwiftUI
-
+@available(iOS 15.0, *)
 struct RegisterView: View {
     @StateObject var viewModel = LoginViewModel()
-    @State private var isLoginSuccessful = false
+    @State private var isRegistrationSuccessful: Bool = false
+    @State private var errorMessage: String?
     var body: some View {
-        VStack{
+        VStack(spacing: 20) {
+            Text("Create an Account")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding(.bottom, 20)
+           
             TextField("Email", text: $viewModel.email)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(8)
+                .autocapitalization(.none)
+                .font(.subheadline)
+                .padding(12)
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.horizontal, 24)
             
             SecureField("Password", text: $viewModel.password)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(8)
-            Button{
-                viewModel.createNewAccount{ success in
-                    if success{
-                        isLoginSuccessful = true
+                .autocapitalization(.none)
+                .font(.subheadline)
+                .padding(12)
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.horizontal, 24)
+            
+            Button {
+                viewModel.createNewAccount { success in
+                        if success {
+                            // Registration succeeded
+                            isRegistrationSuccessful = true
+                            errorMessage = nil
+                        } else {
+                            // Registration failed, display the error message
+                            isRegistrationSuccessful = false
+                            errorMessage = viewModel.errorMessage
+                        }
                     }
-                    
-                }
             } label: {
-                Text("Create Account")
-                    .padding()
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+                
+                    Spacer()
+                    Text("Create Account")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 44)
+                        .background(Color(.systemGreen))
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color(.systemGreen), lineWidth: 1)
+                        )
+                
+            }
+            if let error = errorMessage {
+                Text(error)
+                    .font(.caption)
+                    .foregroundColor(.red)
+                    .padding(.top, 8)
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.5))
+            } else if isRegistrationSuccessful {
+                Text("Registration Successful")
+                    .font(.caption)
+                    .foregroundColor(.green)
+                    .padding(.top, 8)
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.5))
             }
         }
-        //.navigationBarBackButtonHidden(true)
+        .padding()
+        .navigationBarTitle("Register", displayMode: .inline)
     }
 }
 
