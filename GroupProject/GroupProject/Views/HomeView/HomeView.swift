@@ -15,13 +15,13 @@
 import SwiftUI
 
 struct HomeView: View {
-
+    
     @State private var search: String = ""
     @State private var selectedIndex: Int = 1
     
     private let categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
     var body: some View {
-
+        
         VStack{
             Text("Hello, Home!")
             NavigationLink(destination: UserProfileView()){
@@ -32,60 +32,61 @@ struct HomeView: View {
                     .background(Color(.systemBlue))
                     .foregroundColor(.white)
                     .cornerRadius(10)
-
-
-        NavigationView {
-            ZStack {
-                Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
-                    .ignoresSafeArea()
                 
-                ScrollView (showsIndicators: false) {
-                    VStack (alignment: .leading) {
+                
+                NavigationView {
+                    ZStack {
+                        Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
+                            .ignoresSafeArea()
                         
-                        // Menu and profile picture
-                        AppBarView()
-                        // Title
-                        TagLineView()
-                            .padding()
-                        //Sreach Bar
-                        SearchAndScanView(search: $search)
-                        
-                        //Post tags
-                        ScrollView (.horizontal, showsIndicators: false) {
-                            HStack {
-                                ForEach(0 ..< categories.count) { i in
-                                    Button(action: {selectedIndex = i}) {
-                                        CategoryView(isActive: selectedIndex == i, text: categories[i])
+                        ScrollView (showsIndicators: false) {
+                            VStack (alignment: .leading) {
+                                
+                                // Menu and profile picture
+                                AppBarView()
+                                // Title
+                                TagLineView()
+                                    .padding()
+                                //Sreach Bar
+                                SearchAndScanView(search: $search)
+                                
+                                //Post tags
+                                ScrollView (.horizontal, showsIndicators: false) {
+                                    HStack {
+                                        ForEach(0 ..< categories.count) { i in
+                                            Button(action: {selectedIndex = i}) {
+                                                CategoryView(isActive: selectedIndex == i, text: categories[i])
+                                            }
+                                        }
                                     }
+                                    .padding()
                                 }
+                                
+                                
+                                PostView()
+                                
+                                
+                                
                             }
-                            .padding()
                         }
                         
-                        
-                        PostView()
-                        
+                        VStack {
+                            Spacer()
+                            
+                            // BottomNavBarView()
+                        }
                         
                         
                     }
                 }
+                //        .navigationBarTitle("") //this must be empty
+                //        .navigationBarHidden(true)
+                //        .navigationBarBackButtonHidden(true)
                 
-                VStack {
-                    Spacer()
-                    
-                    // BottomNavBarView()
-                }
-
-
             }
         }
-        //        .navigationBarTitle("") //this must be empty
-        //        .navigationBarHidden(true)
-        //        .navigationBarBackButtonHidden(true)
-        
     }
 }
-
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
