@@ -13,6 +13,9 @@ struct HomeView: View {
     var body: some View {
         VStack{
             Text("Hello, Home!")
+            NavigationLink(destination: UserProfileView()){
+                Text("Profile")
+            }
         }
     }
 }
