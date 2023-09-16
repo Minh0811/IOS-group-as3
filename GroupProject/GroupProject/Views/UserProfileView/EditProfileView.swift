@@ -37,9 +37,10 @@ struct EditProfileView: View {
                         Spacer()
                         Button{
                             Task { try await viewModel.updateUserData()
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                    dismiss()
-                                }
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                                    dismiss()
+//                                }
+                                dismiss()
                             }
                             
                         } label: {
@@ -64,7 +65,7 @@ struct EditProfileView: View {
                                 .clipShape(Circle())
                         } else{
                             if let user = userService.currentUser {
-                                CircularProfileImageView(profileImageUrl: user)
+                                CircularProfileImageView(user: user)
                             }
                         }
                         Text("Edit profile picture")

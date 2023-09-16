@@ -216,6 +216,7 @@
 			children = (
 				F790F1CC2AB1449A00D85149 /* LoginViewModel.swift */,
 				F790F1CE2AB1485100D85149 /* MainViewModel.swift */,
+				C833CC452AB5520E00691124 /* ImageUploadModelView.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -258,7 +259,6 @@
 			children = (
 				C8FE1FE42AAEAED90027E156 /* UserProfileView.swift */,
 				C833CC432AB551D300691124 /* EditProfileView.swift */,
-				C833CC452AB5520E00691124 /* ImageUploadModelView.swift */,
 			);
 			path = UserProfileView;
 			sourceTree = "<group>";

@@ -14,7 +14,13 @@ struct HomeView: View {
         VStack{
             Text("Hello, Home!")
             NavigationLink(destination: UserProfileView()){
-                Text("Profile")
+                Text("User Profile")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .frame(width: 360, height: 44)
+                    .background(Color(.systemBlue))
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
             }
         }
     }

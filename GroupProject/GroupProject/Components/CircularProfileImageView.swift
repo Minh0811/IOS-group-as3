@@ -8,9 +8,9 @@
 import SwiftUI
 import Kingfisher
 struct CircularProfileImageView: View {
-    let profileImageUrl: User
+    let user: User
     var body: some View {
-        if let imageUrl = profileImageUrl.profileImageUrl {
+        if let imageUrl = user.profileImageUrl {
             KFImage(URL(string: imageUrl))
                 .resizable()
                 .scaledToFill()
@@ -29,6 +29,6 @@ struct CircularProfileImageView: View {
 
 struct CircularProfileImageView_Previews: PreviewProvider {
     static var previews: some View {
-        CircularProfileImageView(profileImageUrl: User.MOCK_USERS[0])
+        CircularProfileImageView(user: User.MOCK_USERS[0])
     }
 }

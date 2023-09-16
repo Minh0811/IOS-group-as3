@@ -18,18 +18,21 @@ struct UserProfileView: View {
     @State var user: User?
     var body: some View {
         ScrollView {
-                VStack {
-                    //                    if let user = userService.currentUser { // Check if currentUser is available
-                    CircularProfileImageView(profileImageUrl: user ?? User(id: "", username: "", email: ""))
+            VStack {
+                    if let user = userService.currentUser { // Check if currentUser is available
+                    
+                        CircularProfileImageView(user: user )
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Full Name: \(user?.fullname ?? "N/A")")
-                        Text("Bio: \(user?.bio ?? "N/A")")
+                       
+                        Text("Full Name: \(user.fullname ?? "N/A")")
+                        Text("Bio: \(user.bio ?? "N/A")")
                         // Add more user properties here as needed
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
-                    //                    } else {
+                    }
+                        //else {
                     //                        Text("Loading user data...")
                     //                    }
                     
@@ -54,7 +57,7 @@ struct UserProfileView: View {
                     //                            }
                     //                    }
                     Button(action: {
-                        
+                        userService.fetchCurrentUser()
                         refreshFlag.toggle()
                     }) {
                         Text("Refresh View")
@@ -62,12 +65,12 @@ struct UserProfileView: View {
                 }
                 .onAppear{
                     print("Appear")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        print("Loading")
-                        user = nil
-                        userService.fetchCurrentUser()
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//                        print("Loading")
+//                        user = nil
+//                        userService.fetchCurrentUser()
                         user = userService.currentUser!
-                    }
+                    //}
                 }
                 .onDisappear {
                     print("Disappear")

@@ -11,59 +11,79 @@ struct LoginView: View {
     @StateObject var viewModel = LoginViewModel()
     @Binding var isUserCurrentlyLoggedOut : Bool
     @State private var isLoginSuccessful = false
-    
+    @State private var shouldShowLoginAlert: Bool = false
     var body: some View {
-        NavigationView{
             VStack(spacing: 20) {
+                Spacer()
+                Image("Login")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 100)
                 TextField("Email", text: $viewModel.email)
-                    .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(8)
+                    .autocapitalization(.none)
+                    .font(.subheadline)
+                    .padding(12)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .padding(.horizontal, 24)
                 
                 SecureField("Password", text: $viewModel.password)
-                    .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(8)
+                    .autocapitalization(.none)
+                    .font(.subheadline)
+                    .padding(12)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .padding(.horizontal, 24)
                 
                 Button(action: {
                     viewModel.loginUser { success in
                         if success{
                             isLoginSuccessful = true
+                            
                         }
-                        
+                        else {shouldShowLoginAlert = true}
                     }
                 }) {
                     Text("Login")
-                        .padding()
-                        .background(Color.blue)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .frame(width: 360, height: 44)
+                        .background(Color(.systemBlue))
                         .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
+                        .cornerRadius(10)
+                        
+                }.padding(.vertical)
                 .background(
                     NavigationLink("", destination: HomeView(), isActive: $isLoginSuccessful)
-                )
+                ).alert(isPresented: $shouldShowLoginAlert) {
+                    Alert(title: Text("Email/Password incorrect"))
+                }
+                HStack{
+                    Rectangle()
+                        .frame(width: (UIScreen.main.bounds.width / 2) - 40, height: 0.5)
+                        .foregroundColor(.gray)
+                    Text("OR")
+                        .font(.footnote)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.gray)
+                    Rectangle()
+                        .frame(width: (UIScreen.main.bounds.width / 2) - 40, height: 0.5)
+                        .foregroundColor(.gray)
+                    
+                }
                 NavigationLink(destination: RegisterView()){
                     Text("Create Account")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .frame(width: 360, height: 44)
+                        .background(Color(.systemGreen))
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
-//                Button(action: {
-//                    viewModel.createNewAccount()
-//                }) {
-//                    Text("Create New Account")
-//                        .padding()
-//                        .background(Color.green)
-//                        .foregroundColor(.white)
-//                        .cornerRadius(8)
-//                }
-//
-//                if !viewModel.errorMessage.isEmpty {
-//                    Text(viewModel.errorMessage)
-//                        .foregroundColor(.red)
-//                        .padding()
-//                }
                 
                 Spacer()
             }
-        }
+        
         .padding()
     }
 }
