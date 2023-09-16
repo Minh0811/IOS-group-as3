@@ -50,27 +50,7 @@ struct HomeView: View {
                         }
                         
                         
-                        //Posts
-                        ScrollView ( showsIndicators: false) {
-                            HStack{
-                                Spacer()
-                                VStack (spacing: 20) {
-                                    ForEach(0 ..< 4) { i in
-                                        NavigationLink(
-                                            destination: DetailView(),
-                                            label: {
-                                                ProductCardView(image: Image("chair_\(i+1)"), size: 320)
-                                            })
-                                        .navigationBarHidden(true)
-                                        .foregroundColor(.black)
-                                    }
-                                    //.padding(.leading)
-                                }
-                                Spacer()
-                            }
-                            
-                        }
-                        .padding(.bottom)
+                        PostView()
                         
                         
                         
@@ -79,7 +59,8 @@ struct HomeView: View {
                 
                 VStack {
                     Spacer()
-                    BottomNavBarView()
+                    
+                    // BottomNavBarView()
                 }
             }
         }
@@ -173,50 +154,21 @@ struct CategoryView: View {
     }
 }
 
-struct ProductCardView: View {
-    let image: Image
-    let size: CGFloat
-    
-    var body: some View {
-        VStack {
-            image
-                .resizable()
-                .frame(width: size, height: 200 * (size/210))
-                .cornerRadius(20.0)
-            Text("Captions").font(.title3).fontWeight(.light)
-            
-            HStack (spacing: 2) {
-
-                Text("User Name")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                Spacer()
-            }
-        }
-        .frame(width: size)
-        .padding()
-        .background(Color.white)
-        .cornerRadius(20.0)
-        
-    }
-}
-
-
-struct BottomNavBarView: View {
-    var body: some View {
-        HStack {
-            BottomNavBarItem(image: Image("Home"), action: {})
-            BottomNavBarItem(image: Image("Home"), action: {})
-            BottomNavBarItem(image: Image("Home"), action: {})
-            BottomNavBarItem(image: Image("User"), action: {})
-        }
-        .padding()
-        .background(Color.white)
-        .clipShape(Capsule())
-        .padding(.horizontal)
-        .shadow(color: Color.blue.opacity(0.15), radius: 8, x: 2, y: 6)
-    }
-}
+//struct BottomNavBarView: View {
+//    var body: some View {
+//        HStack {
+//            BottomNavBarItem(image: Image("Home"), action: {})
+//            BottomNavBarItem(image: Image("Home"), action: {})
+//            BottomNavBarItem(image: Image("Home"), action: {})
+//            BottomNavBarItem(image: Image("User"), action: {})
+//        }
+//        .padding()
+//        .background(Color.white)
+//        .clipShape(Capsule())
+//        .padding(.horizontal)
+//        .shadow(color: Color.blue.opacity(0.15), radius: 8, x: 2, y: 6)
+//    }
+//}
 
 struct BottomNavBarItem: View {
     let image: Image
