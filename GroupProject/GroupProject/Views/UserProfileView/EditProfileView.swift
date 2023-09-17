@@ -38,7 +38,7 @@ struct EditProfileView: View {
                 isImagePickerPresented.toggle()
             }
             .fullScreenCover(isPresented: $isImagePickerPresented) {
-                ImagePicker(selectedImage: Binding<UIImage?>(get: {
+                UserImagePicker(selectedImage: Binding<UIImage?>(get: {
                     self.viewModel.uiImage
                 }, set: { selectedImage in
                     if let unwrappedImage = selectedImage {

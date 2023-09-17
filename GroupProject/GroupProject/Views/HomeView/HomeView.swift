@@ -25,25 +25,7 @@ struct HomeView: View {
                             .ignoresSafeArea()
                         
                         ScrollView (showsIndicators: false) {
-                            VStack (alignment: .leading) {
-                                NavigationLink(destination: CurrentUserProfileView()) {
-                                    Text("User Profile")
-                                        .font(.subheadline)
-                                        .fontWeight(.semibold)
-                                        .frame(width: 360, height: 44)
-                                        .background(Color(.systemBlue))
-                                        .foregroundColor(.white)
-                                        .cornerRadius(10)
-                                }
-                                NavigationLink(destination: SearchUserView()) {
-                                    Text("Search User")
-                                        .font(.subheadline)
-                                        .fontWeight(.semibold)
-                                        .frame(width: 360, height: 44)
-                                        .background(Color(.systemBlue))
-                                        .foregroundColor(.white)
-                                        .cornerRadius(10)
-                                }
+                            VStack (alignment: .leading) {                     
                                 // Menu and profile picture
                                 AppBarView()
                                 // Title

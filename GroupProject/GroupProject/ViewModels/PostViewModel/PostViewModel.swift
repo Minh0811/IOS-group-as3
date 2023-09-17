@@ -7,14 +7,20 @@
 
 import SwiftUI
 
-struct PostViewModel: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+class PostViewModel: ObservableObject {
+    @Published var posts: [Post] = []
+       
+    func fetchPosts() {
+        Task {
+            do {
+                self.posts = try await PostService().fetchPosts()
+            } catch {
+                // Handle error
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 
-struct PostViewModel_Previews: PreviewProvider {
-    static var previews: some View {
-        PostViewModel()
-    }
-}
+
+
