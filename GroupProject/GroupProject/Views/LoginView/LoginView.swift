@@ -63,7 +63,7 @@ struct LoginView: View {
             .padding(.vertical)
             .alert(isPresented: $viewModel.showingError) {
                 Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("OK")))
-            
+            }
             // OR Separator
             HStack {
                 Rectangle()
