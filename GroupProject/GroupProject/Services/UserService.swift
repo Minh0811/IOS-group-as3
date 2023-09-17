@@ -12,6 +12,7 @@ import FirebaseStorage
 
 class UserService: ObservableObject {
     let db = Firestore.firestore()
+    
     @Published var errorMessage = ""
     @Published var currentUser: User?
     init() {
@@ -87,7 +88,7 @@ class UserService: ObservableObject {
 
     func storeUserInformation(email: String, username: String) {
         guard let id = Auth.auth().currentUser?.uid else { return }
-        let data = ["email": email, "id": id, "username":  username]
+        let data = ["email": email, "id": id,"username": username]
         Firestore.firestore().collection("users")
             .document(id).setData(data) { err in
                 if let err = err {
@@ -112,12 +113,43 @@ class UserService: ObservableObject {
     }
 
     func logoutUser() {
-           do {
-               try Auth.auth().signOut()
-           } catch let signOutError as NSError {
-               print("Error signing out: %@", signOutError)
-           }
-       }
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+    }
+
+    
+    static func fetchAllUsers(completion: @escaping (Result<[User], Error>) -> Void) {
+            Firestore.firestore().collection("users").getDocuments { snapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+
+                var users: [User] = []
+
+                for document in snapshot!.documents {
+                    let data = document.data()
+
+                    let id = document.documentID
+                    let username = data["username"] as? String ?? ""
+                    let email = data["email"] as? String ?? ""
+                    let profileImageUrl = data["profileImageUrl"] as? String
+                    let fullname = data["fullname"] as? String
+                    let bio = data["bio"] as? String
+
+                    let user = User(id: id, username: username, email: email, profileImageUrl: profileImageUrl, fullname: fullname, bio: bio)
+                    users.append(user)
+                }
+
+                completion(.success(users))
+            }
+        }
+
+
+
     
 }
 

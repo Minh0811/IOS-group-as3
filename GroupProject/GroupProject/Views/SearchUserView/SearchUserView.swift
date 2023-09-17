@@ -9,33 +9,30 @@ import SwiftUI
 
 struct SearchUserView: View {
     @State private var searchText = ""
+    @StateObject var viewModel = SearchViewModel()
     // Filtered users based on search text
-    private var filteredUsers: [User] {
-           if searchText.isEmpty {
-               return User.MOCK_USERS
-           } else {
-               return User.MOCK_USERS.filter { user in
-                   return user.username.lowercased().contains(searchText.lowercased())
-               }
-           }
-       }
+//    private var filteredUsers: [User] {
+//           if searchText.isEmpty {
+//               return User.viewModel.users
+//           } else {
+//               return User.MOCK_USERS.filter { user in
+//                   return user.username.lowercased().contains(searchText.lowercased())
+//               }
+//           }
+//       }
     var body: some View {
         NavigationStack{
             ScrollView{
                 LazyVStack(spacing: 12){
-                    ForEach(filteredUsers){ user in
+                    ForEach(viewModel.users){ user in
                         NavigationLink(value: user){
                             HStack {
-                                Image(user.profileImageUrl ?? "")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 40, height: 40)
-                                    .clipShape(Circle())
+                                CircularProfileImageView(user: user )
                                 VStack(alignment: .leading){
                                     Text(user.username)
                                         .fontWeight(.semibold)
-                                    if let fullname = user.fullname {
-                                        Text(fullname)
+                                    if let bio = user.bio {
+                                        Text(bio)
                                     }
                                 }.font(.footnote)
                                 

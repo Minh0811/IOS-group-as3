@@ -15,12 +15,21 @@ struct User: Identifiable, Hashable, Codable {
     var profileImageUrl: String?
     var fullname: String?
     var bio: String?
+    
+//    init(id: String, username: String, email: String, profileImageUrl: String?, fullname: String?, bio: String?) {
+//          self.id = id
+//          self.username = username
+//          self.email = email
+//          self.profileImageUrl = profileImageUrl
+//          self.fullname = fullname
+//          self.bio = bio
+//      }
 }
 extension User{
     static var MOCK_USERS: [User] = [
-        .init(id: NSUUID().uuidString, username: "kiet", email: "", profileImageUrl: "Login", fullname: "Tran Tuan Kiet", bio: "rmit student"),
-        .init(id: NSUUID().uuidString, username: "khanh", email: "", profileImageUrl: "profile", fullname: "Tran Huy Khanh", bio: "rmit student"),
-        .init(id: NSUUID().uuidString, username: "minh", email: "", profileImageUrl: "home", fullname: "Vo Khai Minh", bio: "rmit student"),
+        .init(id: NSUUID().uuidString, username: "empty.chul", email: "check@gmail.com", profileImageUrl: "Login", fullname: "Khanh", bio: "rmit student"),
+        .init(id: NSUUID().uuidString, username: "khanh1", email: "check1@gmail.com", profileImageUrl: "profile", fullname: "Tran Huy Khanh", bio: "rmit student"),
+        .init(id: NSUUID().uuidString, username: "khanh2", email: "check2@gmail.com", profileImageUrl: "home", fullname: "Vo Khai Minh", bio: "rmit student"),
 
     ]
 }

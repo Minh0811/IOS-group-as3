@@ -21,11 +21,7 @@ struct UserProfileView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Image(user.profileImageUrl ?? "")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 80, height: 80)
-                    .clipShape(Circle())
+                CircularProfileImageView(user: user )
                 
                 VStack(alignment: .leading, spacing: 4) {
                     if let fullname = user.fullname {
