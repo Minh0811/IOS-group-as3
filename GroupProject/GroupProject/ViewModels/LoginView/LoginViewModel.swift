@@ -9,30 +9,31 @@ import SwiftUI
 
 class LoginViewModel: ObservableObject {
     private var userService: UserService
+    var appState: AppState
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var errorMessage: String = ""
-    @Published var isUserLoggedIn: Bool = false
+    @Published var showingError: Bool = false
 
-    init(userService: UserService = UserService()) {
+    init(userService: UserService = UserService(), appState: AppState) {
         self.userService = userService
+        self.appState = appState
     }
+    
 
-    // Use userService to login user
     func loginUser(completion: @escaping (Bool) -> Void) {
         userService.loginUser(email: email, password: password) { [weak self] result in
             switch result {
             case .success:
-                self?.isUserLoggedIn = true
+                self?.appState.isUserLoggedIn = true
                 completion(true)
-                print("login success")
             case .failure(let error):
-                self?.errorMessage = "Failed to login user: \(error.localizedDescription)"
+                self?.errorMessage = error.localizedDescription
+                self?.showingError = true
                 completion(false)
             }
         }
     }
-
     // Use userService to create a new account
     func createNewAccount(completion: @escaping (Bool) -> Void) {
         userService.createNewAccount(email: email, password: password) { [weak self] result in
@@ -48,6 +49,5 @@ class LoginViewModel: ObservableObject {
             }
         }
     }
-  
-    
 }
+

@@ -5,12 +5,7 @@
 //  Created by Khanh, Tran Huy on 11/09/2023.
 //
 
-//
-//  HomeScreen.swift
-//  Furniture_app
-//
-//  Created by Abu Anwar MD Abdullah on 14/2/21.
-//
+
 
 import SwiftUI
 
