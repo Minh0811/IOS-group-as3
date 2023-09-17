@@ -8,18 +8,27 @@
 import SwiftUI
 
 struct AuthenticationView: View {
-    @State private var isUserCurrentlyLoggedOut: Bool = false
+    @EnvironmentObject var appState: AppState
+    
     var body: some View {
         NavigationView {
-            if self.isUserCurrentlyLoggedOut{
-               HomeView()
-            } else{
-                LoginView(isUserCurrentlyLoggedOut: $isUserCurrentlyLoggedOut)
+            VStack {
+                if appState.isUserLoggedIn {
+                    UserProfileView()
+                } else {
+                    LoginView(appState: appState)
+                }
             }
+            .background(
+                NavigationLink("", destination: UserProfileView(), tag: 1,
+                               selection: $appState.navigationCoordinator.selection)
+                    .hidden()
+            )
         }
-        
     }
 }
+
+
 
 struct AuthenticationView_Previews: PreviewProvider {
     static var previews: some View {

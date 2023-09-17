@@ -8,9 +8,16 @@
 import SwiftUI
 @available(iOS 15.0, *)
 struct RegisterView: View {
-    @StateObject var viewModel = LoginViewModel()
+  
     @State private var isRegistrationSuccessful: Bool = false
     @State private var errorMessage: String?
+    @EnvironmentObject var appState: AppState
+    @StateObject var viewModel: LoginViewModel
+
+        init(appState: AppState) {
+            _viewModel = StateObject(wrappedValue: LoginViewModel(appState: appState))
+        }
+
     var body: some View {
         VStack(spacing: 20) {
             Text("Create an Account")
@@ -85,7 +92,10 @@ struct RegisterView: View {
 }
 
 struct RegisterView_Previews: PreviewProvider {
+    static var mockAppState = AppState()  // Create a mock instance of AppState
+
     static var previews: some View {
-        RegisterView()
+        RegisterView(appState: mockAppState)
     }
 }
+

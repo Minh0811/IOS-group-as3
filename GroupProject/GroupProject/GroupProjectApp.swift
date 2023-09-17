@@ -12,10 +12,12 @@ import Firebase
 @main
 struct GroupProjectApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject private var appState = AppState()
     var body: some Scene {
         WindowGroup {
             NavigationView{
                 AuthenticationView()
+                    .environmentObject(appState)
             }
         }
     }

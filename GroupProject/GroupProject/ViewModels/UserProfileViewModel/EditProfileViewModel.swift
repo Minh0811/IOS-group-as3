@@ -5,93 +5,77 @@
 //  Created by Khanh, Tran Huy on 16/09/2023.
 //
 
-import Foundation
-import Firebase
 import SwiftUI
-import PhotosUI
+import Firebase
 import FirebaseStorage
+
 @MainActor
 class EditProfileViewModel: ObservableObject {
     @Published var userService: UserService
     @Published var user: User
-    
+    @Published var errorMessage: String?
+    @Published var profileImage: Image?
+    @Published var fullname: String
+    @Published var bio: String
+   var uiImage: UIImage?
+
     init(user: User, userService: UserService = UserService()) {
         self.user = user
         self.userService = userService
-        self.user = User(id: "", username: "", email: "", profileImageUrl: "", fullname: "", bio: "")
-        
-        if let fullname = user.fullname{
-            self.fullname = fullname
-        }
-        if let bio = user.bio {
-            self.bio = bio
-        }
+        self.fullname = user.fullname ?? ""
+        self.bio = user.bio ?? ""
+        loadImageFromURL(user.profileImageUrl)
     }
-    init() {
-            self.userService = UserService()
-            self.user = User(id: "", username: "", email: "", profileImageUrl: "", fullname: "", bio: "")
-        }
-    @Published var selectedImage: PhotosPickerItem? {
-        didSet { Task { await loadImage(fromItem: selectedImage) } }
-    }
-    
 
-    @Published var profileImage: Image?
-    @Published var fullname = ""
-    @Published var bio = ""
-    private var uiImage: UIImage?
-   
-    func loadImage(fromItem item: PhotosPickerItem?) async {
-        guard let item = item else { return }
-        
-        do {
-            guard let data = try await item.loadTransferable(type: Data.self) else { return  }
-            guard let uiImage = UIImage(data: data) else { return }
-            self.uiImage = uiImage
-            self.profileImage = Image(uiImage: uiImage)
-        } catch {
-            print("Error loading image: \(error.localizedDescription)")
-        }
+    
+    func setImage(_ image: UIImage?) {
+        self.uiImage = image
     }
     
+    func loadImage(from uiImage: UIImage) {
+        self.uiImage = uiImage
+        self.profileImage = Image(uiImage: uiImage)
+    }
+
+    func loadImageFromURL(_ urlString: String?) {
+        guard let urlString = urlString, let url = URL(string: urlString) else { return }
+        DispatchQueue.global().async {
+            if let data = try? Data(contentsOf: url), let uiImage = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    self.uiImage = uiImage
+                    self.profileImage = Image(uiImage: uiImage)
+                }
+            }
+        }
+    }
+
+
     func updateUserData() async throws {
         var data = [String: Any]()
+        
         if let uiImage = uiImage {
             do {
                 let imageUrl = try await ImageUploader.uploadImage(image: uiImage)
                 data["profileImageUrl"] = imageUrl
             } catch {
-                // Handle any errors that may occur during image upload
-                print("Error uploading image: \(error.localizedDescription)")
+                errorMessage = "Failed to upload image. Please try again."
                 throw error
             }
         }
-        
-        if !fullname.isEmpty && user.fullname != fullname {
+
+        if fullname != user.fullname {
             data["fullname"] = fullname
-           
-            print("Update fullname: \(fullname)")
         }
-        
-        if !bio.isEmpty && user.bio != bio {
+
+        if bio != user.bio {
             data["bio"] = bio
-           
-            print("Update bio: \(bio)")
         }
-//        if !data.isEmpty {
-//            try await Firestore.firestore().collection("users").document(user.id).updateData(data)
-//        }
-        // Now, you can update the user's profile data using the `data` dictionary.
+
         do {
             try await userService.updateUserProfileData(data: data)
         } catch {
-            // Handle any errors that may occur during the data update
-            print("Error updating user data: \(error.localizedDescription)")
+            errorMessage = "Error updating user data. Please try again."
             throw error
         }
-        
-        
     }
-
-
 }
