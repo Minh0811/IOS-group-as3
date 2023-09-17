@@ -11,6 +11,7 @@ class LoginViewModel: ObservableObject {
     private var userService: UserService
     var appState: AppState
     @Published var email: String = ""
+    @Published var username: String = ""
     @Published var password: String = ""
     @Published var errorMessage: String = ""
     @Published var showingError: Bool = false
@@ -36,7 +37,7 @@ class LoginViewModel: ObservableObject {
     }
     // Use userService to create a new account
     func createNewAccount(completion: @escaping (Bool) -> Void) {
-        userService.createNewAccount(email: email, password: password) { [weak self] result in
+        userService.createNewAccount(email: email, password: password, username: username) { [weak self] result in
             switch result {
             case .success:
                 self?.loginUser{ success in

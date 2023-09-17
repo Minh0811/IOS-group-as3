@@ -71,7 +71,7 @@ class UserService: ObservableObject {
         }
     }
 
-    func createNewAccount(email: String, password: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+    func createNewAccount(email: String, password: String,username: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { result, err in
             if let err = err {
                 print("Failed to create user")
@@ -80,14 +80,14 @@ class UserService: ObservableObject {
             }
 
             print("Successfully created user")
-            self.storeUserInformation(email: email)
+            self.storeUserInformation(email: email, username: username)
             completion(.success(true))
         }
     }
 
-    func storeUserInformation(email: String) {
+    func storeUserInformation(email: String, username: String) {
         guard let id = Auth.auth().currentUser?.uid else { return }
-        let data = ["email": email, "id": id]
+        let data = ["email": email, "id": id, "username":  username]
         Firestore.firestore().collection("users")
             .document(id).setData(data) { err in
                 if let err = err {

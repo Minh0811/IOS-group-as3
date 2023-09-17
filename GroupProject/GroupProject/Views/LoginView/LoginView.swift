@@ -10,9 +10,11 @@ import SwiftUI
 struct LoginView: View {
     @EnvironmentObject var appState: AppState
     @StateObject var viewModel: LoginViewModel
-
+    @State private var isLoginSuccessful = false
+    @State private var shouldShowLoginAlert: Bool = false
        init(appState: AppState) {
            _viewModel = StateObject(wrappedValue: LoginViewModel(appState: appState))
+           
        }
     
     var body: some View {
@@ -48,6 +50,9 @@ struct LoginView: View {
                 viewModel.loginUser { success in
                     if success {
                         appState.isUserLoggedIn = true
+                        isLoginSuccessful = true
+                    } else {
+                        shouldShowLoginAlert = true
                     }
                 }
             }) {
@@ -60,8 +65,10 @@ struct LoginView: View {
                     .cornerRadius(10)
             }
             .padding(.vertical)
-            .alert(isPresented: $viewModel.showingError) {
-                Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("OK")))
+            .background(
+                NavigationLink("", destination: HomeView(), isActive: $isLoginSuccessful)
+            ).alert(isPresented: $shouldShowLoginAlert) {
+                Alert(title: Text("Email/Password incorrect"))
             }
             
             // OR Separator
