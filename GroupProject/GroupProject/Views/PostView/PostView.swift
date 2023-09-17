@@ -12,61 +12,62 @@ struct PostView: View {
     @State private var search: String = ""
     @State private var selectedIndex: Int = 1
     private var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
-    var body: some View {
+    
+    @ObservedObject var viewModel = PostViewModel()
 
-       
-        //Posts
-        ScrollView ( showsIndicators: false) {
-            HStack{
+    var body: some View {
+        ScrollView(showsIndicators: false) {
+            HStack {
                 Spacer()
-                VStack (spacing: 20) {
-                    ForEach(0 ..< 4) { i in
+                VStack(spacing: 20) {
+                    ForEach(viewModel.posts) { post in
                         NavigationLink(
                             destination: DetailView(),
                             label: {
-                                CardView(image: Image("chair_\(i+1)"), size: 320)
+                                CardView(post: post)
                             })
                         .navigationBarHidden(true)
                         .foregroundColor(.black)
                     }
-                    //.padding(.leading)
                 }
                 Spacer()
             }
-            
         }
         .padding(.bottom)
-        
+        .onAppear {
+            viewModel.fetchPosts()
+        }
     }
 }
 
 struct CardView: View {
-    let image: Image
-    let size: CGFloat
+    let post: Post
     
     var body: some View {
         VStack {
-            image
-                .resizable()
-                .frame(width: size, height: 200 * (size/210))
+            AsyncImage(url: post.imageUrl)
+                .frame(width: 320, height: 200)
                 .cornerRadius(20.0)
-            Text("Captions").font(.title3).fontWeight(.light)
             
-            HStack (spacing: 2) {
-
-                Text("User Name")
+           
+            
+            HStack(spacing: 2) {
+                Text(post.username)
                     .font(.title3)
                     .fontWeight(.bold)
-                Spacer()
+                Text(post.caption)
+                    .font(.title3)
+                    .fontWeight(.light)
+               
             }
         }
-        .frame(width: size)
         .padding()
         .background(Color.white)
         .cornerRadius(20.0)
-        
     }
 }
+
+
 
 struct PostView_Previews: PreviewProvider {
   

@@ -1,38 +1,41 @@
 //
-//  ImagePicker.swift
+//  PostImagePicker.swift
 //  GroupProject
 //
-//  Created by Minh Vo on 17/09/2023.
+//  Created by Minh Vo on 18/09/2023.
 //
 
 import SwiftUI
- 
-struct ImagePicker: UIViewControllerRepresentable {
+import UIKit
+
+struct NewPostImagePicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
     @Environment(\.presentationMode) private var presentationMode
 
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
+    func makeUIViewController(context: UIViewControllerRepresentableContext<NewPostImagePicker>) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.delegate = context.coordinator
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {}
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<NewPostImagePicker>) {
+        // No update needed
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-        let parent: ImagePicker
+        let parent: NewPostImagePicker
 
-        init(_ parent: ImagePicker) {
+        init(_ parent: NewPostImagePicker) {
             self.parent = parent
         }
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            if let uiImage = info[.originalImage] as? UIImage {
-                parent.selectedImage = uiImage
+            if let image = info[.originalImage] as? UIImage {
+                parent.selectedImage = image
             }
             parent.presentationMode.wrappedValue.dismiss()
         }

@@ -14,16 +14,12 @@ struct AuthenticationView: View {
         NavigationView {
             VStack {
                 if appState.isUserLoggedIn {
-                    HomeView()
+                    TabBarView()
                 } else {
                     LoginView(appState: appState)
                 }
             }
-            .background(
-                NavigationLink("", destination: CurrentUserProfileView(), tag: 1,
-                               selection: $appState.navigationCoordinator.selection)
-                    .hidden()
-            )
+           
         }
     }
 }
