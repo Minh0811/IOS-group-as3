@@ -20,12 +20,30 @@ struct HomeView: View {
         VStack{
                 NavigationView {
                     ZStack {
+                       
                         Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
                             .ignoresSafeArea()
                         
                         ScrollView (showsIndicators: false) {
                             VStack (alignment: .leading) {
-                                
+                                NavigationLink(destination: CurrentUserProfileView()) {
+                                    Text("User Profile")
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                        .frame(width: 360, height: 44)
+                                        .background(Color(.systemBlue))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                }
+                                NavigationLink(destination: SearchUserView()) {
+                                    Text("Search User")
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                        .frame(width: 360, height: 44)
+                                        .background(Color(.systemBlue))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                }
                                 // Menu and profile picture
                                 AppBarView()
                                 // Title
@@ -33,6 +51,7 @@ struct HomeView: View {
                                     .padding()
                                 //Sreach Bar
                                 SearchAndScanView(search: $search)
+                                
                                 
                                 //Post tags
                                 ScrollView (.horizontal, showsIndicators: false) {

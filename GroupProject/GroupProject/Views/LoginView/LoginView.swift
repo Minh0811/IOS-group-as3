@@ -13,6 +13,7 @@ struct LoginView: View {
 
        init(appState: AppState) {
            _viewModel = StateObject(wrappedValue: LoginViewModel(appState: appState))
+           
        }
     
     var body: some View {
@@ -63,7 +64,6 @@ struct LoginView: View {
             .alert(isPresented: $viewModel.showingError) {
                 Alert(title: Text("Error"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("OK")))
             }
-            
             // OR Separator
             HStack {
                 Rectangle()
