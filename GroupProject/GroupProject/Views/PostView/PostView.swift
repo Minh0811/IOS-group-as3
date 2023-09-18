@@ -49,8 +49,6 @@ struct CardView: View {
                 .frame(width: 320, height: 200)
                 .cornerRadius(20.0)
             
-           
-            
             HStack(spacing: 2) {
                 Text(post.username)
                     .font(.title3)
@@ -58,7 +56,9 @@ struct CardView: View {
                 Text(post.caption)
                     .font(.title3)
                     .fontWeight(.light)
-               
+                NavigationLink(destination: PostEditView(viewModel: PostViewModel(), post: post)) {
+                    Text("Edit")
+                }
             }
         }
         .padding()
