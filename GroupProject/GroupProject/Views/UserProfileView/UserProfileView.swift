@@ -68,8 +68,8 @@ struct UserProfileView: View {
                 ForEach(0 ... 5, id: \.self) { index in
                     Image("Login")
                         .resizable()
-                        .scaledToFit()
-                        
+                        .scaledToFill()
+
                 }
             }
             }

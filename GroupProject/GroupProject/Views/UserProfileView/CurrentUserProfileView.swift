@@ -53,10 +53,7 @@ struct CurrentUserProfileView: View {
                         Text("\(user.bio ?? "N/A")")
                             .font(.footnote)
                         // Add more user properties here as needed
-//                        VStack { // Display followers and following counts
-//                            Text("Followers: \(userService.currentUser?.followers.count ?? 0)")
-//                            Text("Following: \(userService.currentUser?.following.count ?? 0)")
-//                                               }
+                      
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
@@ -81,7 +78,7 @@ struct CurrentUserProfileView: View {
                     ForEach(0 ... 5, id: \.self) { index in
                         Image("Login")
                             .resizable()
-                            .scaledToFit()
+                            .scaledToFill()
                     }
                 }
                 Button(action: {
