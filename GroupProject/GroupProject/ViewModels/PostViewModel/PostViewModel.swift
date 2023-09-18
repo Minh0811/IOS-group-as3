@@ -20,6 +20,14 @@ class PostViewModel: ObservableObject {
             }
         }
     }
+    
+    func editPost(postId: String, newCaption: String) async {
+        do {
+            try await PostService().editPost(id: postId, newCaption: newCaption)
+        } catch {
+            
+        }
+    }
 }
 
 
