@@ -40,7 +40,7 @@ class UserService: ObservableObject {
             if let data = snapshot?.data() {
                             // Populate the User struct
                 DispatchQueue.main.async {
-                    var user = User(
+                    let user = User(
                         id: id,
                         username: data["username"] as? String ?? "",
                         email: data["email"] as? String ?? "",
@@ -107,6 +107,9 @@ class UserService: ObservableObject {
         let userRef = Firestore.firestore().collection("users").document(id)
         do {
             try await userRef.updateData(data)
+            print("update success")
+            self.fetchCurrentUser()
+            print("fetch success")
         } catch {
             print("Error updating user data: \(error.localizedDescription)")
             throw error
