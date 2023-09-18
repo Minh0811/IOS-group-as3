@@ -8,26 +8,32 @@
 import SwiftUI
 import Firebase
 import SDWebImageSwiftUI
+import Kingfisher
 
 struct CurrentUserProfileView: View {
     @ObservedObject var userService = UserService()
     @EnvironmentObject var appState: AppState
     @State private var isLoggedOut: Bool = false
     @State private var showEditProfile = false
-    @State private var refreshFlag = false
-    @State var user: User?
+    //@State private var refreshFlag = false
+    @State var currentuser: User?
     @Environment (\.dismiss) var dismiss
     var body: some View {
         ScrollView {
             VStack {
-                if let user = userService.currentUser { // Check if currentUser is available
+                if let user = currentuser { // Check if currentUser is available
                     
                     CircularProfileImageView(user: user )
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        
+                        Text("\(user.username)")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
                         Text("Full Name: \(user.fullname ?? "N/A")")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
                         Text("Bio: \(user.bio ?? "N/A")")
+                            .font(.footnote)
                         // Add more user properties here as needed
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -38,7 +44,7 @@ struct CurrentUserProfileView: View {
                 //                    }
                 
                 
-                NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: user ?? User(id: "", username: "", email: "")))) {
+                NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentuser ?? User(id: "", username: "", email: "")))) {
                     Text("Edit Profile")
                         .font(.subheadline)
                         .fontWeight(.semibold)
@@ -59,7 +65,6 @@ struct CurrentUserProfileView: View {
                 //                    }
                 Button(action: {
                     userService.fetchCurrentUser()
-                    refreshFlag.toggle()
                 }) {
                     Text("Refresh View")
                 }
@@ -80,37 +85,23 @@ struct CurrentUserProfileView: View {
             }
             .onAppear {
                 print("Appear")
-                if let currentUser = userService.currentUser {
-                    user = currentUser
-                }
+//                if let currentUser = userService.currentUser {
+               
+                    userService.fetchCurrentUser()
+                    currentuser = userService.currentUser
+                
+//                currentuser = userService.currentUser
+//                }
             }
             .onDisappear {
+                
                 print("Disappear")
-                user = nil
+                currentuser = nil
             }
         }
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
-        .id(refreshFlag)
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    HStack {
-                        Image(systemName: "arrow.backward")
-                            .foregroundColor(.white)
-                        if let username = user?.username {
-                            Text("\(username)")
-                                .foregroundColor(.white)
-                                .font(.footnote)
-                                .fontWeight(.semibold)
-                        }
-                    }
-                }
-            }
-        }
         
     }
 }
