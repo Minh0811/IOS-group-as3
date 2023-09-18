@@ -29,7 +29,7 @@ struct SearchUserView: View {
                     ForEach(filteredUsers){ user in
                         NavigationLink(value: user){
                             HStack {
-                                CircularProfileImageView(user: user )
+                                CircularProfileImageView(user: user, size: .small )
                                 VStack(alignment: .leading){
                                     Text(user.username)
                                         .fontWeight(.semibold)
@@ -42,6 +42,7 @@ struct SearchUserView: View {
                             }
                             .foregroundColor(.gray)
                             .padding(.horizontal)
+                        
                         }
                         
                     }
