@@ -11,20 +11,22 @@ struct SearchUserView: View {
     @State private var searchText = ""
     @StateObject var viewModel = SearchViewModel()
     // Filtered users based on search text
-//    private var filteredUsers: [User] {
-//           if searchText.isEmpty {
-//               return User.viewModel.users
-//           } else {
-//               return User.MOCK_USERS.filter { user in
-//                   return user.username.lowercased().contains(searchText.lowercased())
-//               }
-//           }
-//       }
+    var filteredUsers: [User] {
+           if searchText.isEmpty {
+               return viewModel.users
+           } else {
+               return viewModel.users.filter { user in
+                   let usernameMatch = user.username.lowercased().contains(searchText.lowercased())
+                    let bioMatch = user.bio?.lowercased().contains(searchText.lowercased()) ?? false
+                                 return usernameMatch || bioMatch
+               }
+           }
+       }
     var body: some View {
         NavigationStack{
             ScrollView{
                 LazyVStack(spacing: 12){
-                    ForEach(viewModel.users){ user in
+                    ForEach(filteredUsers){ user in
                         NavigationLink(value: user){
                             HStack {
                                 CircularProfileImageView(user: user )

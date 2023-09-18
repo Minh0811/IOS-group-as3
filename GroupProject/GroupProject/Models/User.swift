@@ -15,15 +15,9 @@ struct User: Identifiable, Hashable, Codable {
     var profileImageUrl: String?
     var fullname: String?
     var bio: String?
-    
-//    init(id: String, username: String, email: String, profileImageUrl: String?, fullname: String?, bio: String?) {
-//          self.id = id
-//          self.username = username
-//          self.email = email
-//          self.profileImageUrl = profileImageUrl
-//          self.fullname = fullname
-//          self.bio = bio
-//      }
+//    var isCurrentUser: Bool {
+//        
+//    }
 }
 extension User{
     static var MOCK_USERS: [User] = [
@@ -34,30 +28,4 @@ extension User{
     ]
 }
 
-//Check for usability since the main view now use MainViewModel
-//class ProfileUser: ObservableObject {
-//    private var userService: UserService
-//    @Published var errorMessage = ""
-//    @Published var chatUser: User?
-//
-//    init(userService: UserService = UserService()) {
-//        self.userService = userService
-//        fetchCurrentUser()
-//    }
-//
-//    private func fetchCurrentUser() {
-//        guard let uid = Auth.auth().currentUser?.uid else {
-//            self.errorMessage = "Could not find firebase uid"
-//            return
-//        }
-//
-//        userService.fetchCurrentUser(uid: uid) { [weak self] result in
-//            switch result {
-//            case .success(let user):
-//                self?.chatUser = user
-//            case .failure(let error):
-//                self?.errorMessage = "Failed to fetch current user: \(error)"
-//            }
-//        }
-//    }
-//}
+

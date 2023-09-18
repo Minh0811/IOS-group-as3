@@ -13,10 +13,11 @@ import PhotosUI
 
 
 struct EditProfileView: View {
+    
     @ObservedObject var viewModel: EditProfileViewModel
     @State private var isImagePickerPresented: Bool = false
+    @Environment (\.dismiss) var dismiss
     
-
     var body: some View {
         VStack(spacing: 16) {
             // Profile Image
@@ -66,6 +67,9 @@ struct EditProfileView: View {
                 Task {
                     do {
                         try await viewModel.updateUserData()
+                        
+                            dismiss()
+                        
                     } catch {
                         // Handle error
                         print("Failed to update user data: \(error.localizedDescription)")
