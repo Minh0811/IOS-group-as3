@@ -40,15 +40,16 @@ class UserService: ObservableObject {
             if let data = snapshot?.data() {
                             // Populate the User struct
                 DispatchQueue.main.async {
-                    let user = User(
+                    var user = User(
                         id: id,
                         username: data["username"] as? String ?? "",
                         email: data["email"] as? String ?? "",
                         profileImageUrl: data["profileImageUrl"] as? String,
                         fullname: data["fullname"] as? String,
                         bio: data["bio"] as? String
+                        
                     )
-
+                    
                     // Assign the user object to currentUser
                     self.currentUser = user
                 }
@@ -147,6 +148,30 @@ class UserService: ObservableObject {
                 completion(.success(users))
             }
         }
+    
+    func followUser(userIdToFollow: String) {
+        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+
+        // Update the following list of the current user
+        let followingRef = Firestore.firestore().collection("users").document(currentUserId)
+        followingRef.updateData(["following": FieldValue.arrayUnion([userIdToFollow])])
+
+        // Update the followers list of the user being followed
+        let followerRef = Firestore.firestore().collection("users").document(userIdToFollow)
+        followerRef.updateData(["followers": FieldValue.arrayUnion([currentUserId])])
+    }
+
+    func unfollowUser(userIdToUnfollow: String) {
+        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+
+        // Update the following list of the current user
+        let followingRef = Firestore.firestore().collection("users").document(currentUserId)
+        followingRef.updateData(["following": FieldValue.arrayRemove([userIdToUnfollow])])
+
+        // Update the followers list of the user being unfollowed
+        let followerRef = Firestore.firestore().collection("users").document(userIdToUnfollow)
+        followerRef.updateData(["followers": FieldValue.arrayRemove([currentUserId])])
+    }
 
 
 
