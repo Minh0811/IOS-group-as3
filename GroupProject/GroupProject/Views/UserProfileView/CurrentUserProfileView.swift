@@ -12,18 +12,35 @@ import Kingfisher
 
 struct CurrentUserProfileView: View {
     @ObservedObject var userService = UserService()
+    @ObservedObject var viewModel = PostViewModel()
     @EnvironmentObject var appState: AppState
     @State private var isLoggedOut: Bool = false
     @State private var showEditProfile = false
     //@State private var refreshFlag = false
     @State var currentuser: User?
     @Environment (\.dismiss) var dismiss
+    
+    private let gridItems: [GridItem] = [
+        .init(.flexible(), spacing: 1),
+        .init(.flexible(), spacing: 1),
+        .init(.flexible(), spacing: 1)
+    ]
+    
     var body: some View {
         ScrollView {
             VStack {
                 if let user = currentuser { // Check if currentUser is available
-                    
-                    CircularProfileImageView(user: user )
+                    HStack (spacing: 8){
+                        CircularProfileImageView(user: user )
+                        Spacer()
+                        Button(action: {
+                            userService.fetchCurrentUser()
+                        }) {
+                            Image(systemName: "gobackward")
+                            
+                        }
+
+                    }
                     
                     VStack(alignment: .leading, spacing: 4) {
                         Text("\(user.username)")
@@ -55,18 +72,12 @@ struct CurrentUserProfileView: View {
                                 .stroke(Color.gray, lineWidth: 1)
                         )
                 }
-                
-                //                    .fullScreenCover(isPresented: $showEditProfile) {
-                //                        if let user = userService.currentUser {
-                //                                                    EditProfileView(user: user)
-                //                            } else {
-                //                            Text("User data not available for editing.")
-                //                            }
-                //                    }
-                Button(action: {
-                    userService.fetchCurrentUser()
-                }) {
-                    Text("Refresh View")
+                LazyVGrid(columns: gridItems, spacing: 1) {
+                    ForEach(0 ... 6, id: \.self) { index in
+                        Image("Login")
+                            .resizable()
+                            .scaledToFill()
+                    }
                 }
                 Button(action: {
                            userService.logoutUser()
@@ -109,7 +120,7 @@ struct CurrentUserProfileView: View {
 
 struct CurrentUserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        UserProfileView(user: User.MOCK_USERS[0])
+        CurrentUserProfileView()
     }
 }
 
