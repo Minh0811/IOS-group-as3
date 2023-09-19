@@ -43,6 +43,7 @@
 		F7823C042AB382EE0012699D /* PlayfairDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F7823C022AB382EE0012699D /* PlayfairDisplay-Regular.ttf */; };
 		F7823C052AB382EE0012699D /* PlayfairDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F7823C032AB382EE0012699D /* PlayfairDisplay-Bold.ttf */; };
 		F784B1682AB94C6400DCBC4B /* CurrentUserPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F784B1672AB94C6400DCBC4B /* CurrentUserPostView.swift */; };
+		F784B16A2ABA459500DCBC4B /* CustomTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F784B1692ABA459500DCBC4B /* CustomTabBarView.swift */; };
 		F788EDBB2AB695B3002D1383 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F788EDBA2AB695B3002D1383 /* AppState.swift */; };
 		F788EDBF2AB69C6C002D1383 /* NavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F788EDBE2AB69C6C002D1383 /* NavigationCoordinator.swift */; };
 		F788EDC22AB78C12002D1383 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F788EDC12AB78C12002D1383 /* PostService.swift */; };
@@ -107,6 +108,7 @@
 		F7823C022AB382EE0012699D /* PlayfairDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Regular.ttf"; sourceTree = "<group>"; };
 		F7823C032AB382EE0012699D /* PlayfairDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlayfairDisplay-Bold.ttf"; sourceTree = "<group>"; };
 		F784B1672AB94C6400DCBC4B /* CurrentUserPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserPostView.swift; sourceTree = "<group>"; };
+		F784B1692ABA459500DCBC4B /* CustomTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarView.swift; sourceTree = "<group>"; };
 		F788EDBA2AB695B3002D1383 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		F788EDBE2AB69C6C002D1383 /* NavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCoordinator.swift; sourceTree = "<group>"; };
 		F788EDC12AB78C12002D1383 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				F788EDC42AB792DD002D1383 /* TabBarView.swift */,
+				F784B1692ABA459500DCBC4B /* CustomTabBarView.swift */,
 			);
 			path = TabView;
 			sourceTree = "<group>";
@@ -604,6 +607,7 @@
 				C83D1B012AAD497F0097643C /* GroupProjectApp.swift in Sources */,
 				F79AC6362AB662B900BC0ED7 /* UserImagePicker.swift in Sources */,
 				F790F1CD2AB1449A00D85149 /* LoginViewModel.swift in Sources */,
+				F784B16A2ABA459500DCBC4B /* CustomTabBarView.swift in Sources */,
 				469B7C572AB40C3A00F060E7 /* PostEditView.swift in Sources */,
 				F79AC6312AB58D5000BC0ED7 /* RegisterViewModel.swift in Sources */,
 				C8C591412AB6AFDA00D52E53 /* CurrentUserProfileView.swift in Sources */,
