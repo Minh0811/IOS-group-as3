@@ -65,9 +65,10 @@ class PostService: ObservableObject {
                     let userId = data["userId"] as? String ?? ""
                     let imageUrl = data["imageUrl"] as? String ?? ""
                     let caption = data["caption"] as? String ?? ""
+                    let like = data["like"] as? [String] ?? []
                     let username = data["username"] as? String ?? ""  // Extracting the username
                     
-                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption)
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like)
                 }
                 
                 continuation.resume(returning: posts)
@@ -77,7 +78,7 @@ class PostService: ObservableObject {
     
     func editPost(id: String, newCaption: String) async throws {
         do {
-            guard let userId = Auth.auth().currentUser?.uid else {
+            guard ((Auth.auth().currentUser?.uid) != nil) else {
                 throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
             }
             try await db.collection("posts").document(id).setData(["caption": "\(newCaption)"], merge: true) 

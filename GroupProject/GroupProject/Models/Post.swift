@@ -13,4 +13,5 @@ struct Post: Identifiable, Codable {
     var username: String  // Username of the post creator
     var imageUrl: String  // URL of the image associated with the post
     var caption: String  // Caption or status of the post
+    var like: [String]
 }
