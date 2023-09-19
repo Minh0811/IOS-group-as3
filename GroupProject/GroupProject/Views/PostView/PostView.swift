@@ -14,7 +14,7 @@ struct PostView: View {
     private var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
     
     @ObservedObject var viewModel = PostViewModel()
-
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             HStack {
@@ -44,6 +44,7 @@ struct CardView: View {
     let post: Post
     
     var body: some View {
+        
         VStack {
             AsyncImage(url: post.imageUrl)
                 .frame(width: 320, height: 200)
@@ -60,17 +61,38 @@ struct CardView: View {
                     Text("Edit")
                 }
             }
+            
+            Divider()
+            
+            HStack(spacing: 0) {
+                Button() {
+                    
+                } label: {
+                    Image(systemName: "heart")
+                    Text("Like")
+                }
+                
+                Spacer()
+                //                        .frame(width: geometry.size.width * 0.3)
+                Button() {
+                    
+                } label: {
+                    Image(systemName: "bubble.left")
+                    Text("Comment")
+                }
+            }
         }
         .padding()
         .background(Color.white)
         .cornerRadius(20.0)
+        
     }
 }
 
 
 
 struct PostView_Previews: PreviewProvider {
-  
+    
     static var previews: some View {
         ZStack{
             Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
