@@ -12,32 +12,26 @@ struct CurrentUserPostView: View {
     @ObservedObject var viewModel: PostViewModel
     var currentUser: User
   //  @State private var isDataLoaded: Bool = false
-    
+    private let gridLayout = [
+        GridItem(.flexible(), spacing: 2),
+        GridItem(.flexible(), spacing: 2),
+        GridItem(.flexible(), spacing: 2)
+    ]
+
     var body: some View {
         if viewModel.dataLoaded {
-            VStack {
-                Text("\(currentUser.id)")
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-                Text("\(currentUser.username)")
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-                Text("\(currentUser.fullname ?? "N/A")")
-                    .font(.footnote)
-                    .fontWeight(.semibold)
-                VStack(spacing: 20) {
-                    ForEach(viewModel.userPosts) { post in
-                        NavigationLink(
-                            destination: DetailView(),
-                            label: {
-                                UserPostView(post: post)
-                            })
-                        .navigationBarHidden(true)
-                        .foregroundColor(.black)
-                    }
+            LazyVGrid(columns: gridLayout, spacing: 2) {
+                ForEach(viewModel.userPosts) { post in
+                    NavigationLink(
+                        destination: DetailView(post: post),
+                        label: {
+                            UserPostThumbnailView(post: post)
+                        })
+                    .navigationBarHidden(true)
+                    .foregroundColor(.black)
                 }
-                Spacer()
             }
+
             .onAppear {
                 if !viewModel.dataLoaded {
                            viewModel.fetchUserPosts(userId: currentUser.id)
@@ -50,6 +44,16 @@ struct CurrentUserPostView: View {
     }
 }
 
+struct UserPostThumbnailView: View {
+    let post: Post
+    
+    var body: some View {
+        AsyncImage(url: post.imageUrl)
+            .scaledToFill()
+            .frame(width: UIScreen.main.bounds.width/3 - 4, height: UIScreen.main.bounds.width/3 - 4) // Assuming 2 points spacing
+            .clipped()
+    }
+}
 
 struct UserPostView: View {
     let post: Post

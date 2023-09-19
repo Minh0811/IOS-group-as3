@@ -14,35 +14,25 @@ struct TabBarView: View {
          TabView(selection: $selectedTab) {
              // HomeView
              HomeView()
-                 .tabItem {
-                     Image(systemName: "house.fill")
-                     Text("Home")
-                 }
                  .tag(0)
 
              // UserSearchView
              SearchUserView()
-                 .tabItem {
-                     Image(systemName: "magnifyingglass")
-                     Text("Search")
-                 }
                  .tag(1)
 
              // CreatePostView
              NewPostView()
-                 .tabItem {
-                     Image(systemName: "plus.square.fill")
-                     Text("Create Post")
-                 }
                  .tag(2)
 
              // UserProfileView
              CurrentUserProfileView()
-                 .tabItem {
-                     Image(systemName: "person.fill")
-                     Text("Profile")
-                 }
                  .tag(3)
+         }
+   
+         .edgesIgnoringSafeArea(.bottom)
+         .overlay(alignment: .bottom){
+             CustomTabBarView(tabSelection: $selectedTab)
+                 .padding(.horizontal)
          }
      }
 }
