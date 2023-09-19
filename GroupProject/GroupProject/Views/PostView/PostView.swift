@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct PostView: View {
-    
+
     @State private var search: String = ""
     @State private var selectedIndex: Int = 1
-    private var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
+    var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
     
     @ObservedObject var viewModel = PostViewModel()
     
@@ -23,8 +24,11 @@ struct PostView: View {
                     ForEach(viewModel.posts) { post in
                         NavigationLink(
                             destination: DetailView(),
-                            label: {
-                                CardView(post: post)
+                            label: { ForEach(viewModel.allUsers) { user in
+                                if user.id == post.userId {
+                                CardView(post: post, postOwner: user)
+                            }
+                            }
                             })
                         .navigationBarHidden(true)
                         .foregroundColor(.black)
@@ -42,18 +46,29 @@ struct PostView: View {
 
 struct CardView: View {
     let post: Post
+    var postOwner: User
     
     var body: some View {
         
         VStack {
             HStack(spacing: 0) {
-                Image("user")
+                
+                
+                KFImage(URL(string: postOwner.profileImageUrl ?? ""))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 70, height: 50)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color(.gray),lineWidth: 3))
-                Text("Username")
+                
+                
+                //                Image("user")
+                //                    .resizable()
+                //                    .aspectRatio(contentMode: .fit)
+                //                    .frame(width: 70, height: 50)
+                //                    .clipShape(Circle())
+                //                    .overlay(Circle().stroke(Color(.gray),lineWidth: 3))
+                Text("\(postOwner.username)")
                 
                 Spacer()
                 Button() {
@@ -92,7 +107,7 @@ struct CardView: View {
                     
                     Spacer()
                         .frame(width: 5)
-                    Text("1000")
+                    Text("\(post.like.count)")
                 }
                 
                 Spacer()
@@ -107,7 +122,7 @@ struct CardView: View {
             
             Divider()
             HStack(spacing: 0) {
-
+                
                 Spacer()
                     .frame(width: 10)
                 Button() {

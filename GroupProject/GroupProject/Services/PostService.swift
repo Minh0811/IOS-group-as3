@@ -65,9 +65,10 @@ class PostService: ObservableObject {
                     let userId = data["userId"] as? String ?? ""
                     let imageUrl = data["imageUrl"] as? String ?? ""
                     let caption = data["caption"] as? String ?? ""
+                    let like = data["like"] as? [String] ?? []
                     let username = data["username"] as? String ?? ""  // Extracting the username
                     
-                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption)
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like)
                 }
                 
                 continuation.resume(returning: posts)
