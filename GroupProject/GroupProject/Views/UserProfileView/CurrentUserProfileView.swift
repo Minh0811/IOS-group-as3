@@ -74,13 +74,9 @@ struct CurrentUserProfileView: View {
                                 .stroke(Color.gray, lineWidth: 1)
                         )
                 }
-                LazyVGrid(columns: gridItems, spacing: 1) {
-                    ForEach(0 ... 5, id: \.self) { index in
-                        Image("Login")
-                            .resizable()
-                            .scaledToFill()
-                    }
-                }
+                
+                CurrentUserPostView()
+                
                 Button(action: {
                            userService.logoutUser()
                            appState.isUserLoggedIn = false
