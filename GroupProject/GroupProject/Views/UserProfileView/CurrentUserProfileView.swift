@@ -15,21 +15,13 @@ struct CurrentUserProfileView: View {
     @ObservedObject var viewModel = PostViewModel()
     @EnvironmentObject var appState: AppState
     @State private var isLoggedOut: Bool = false
-    //@State private var showEditProfile = false
-    //@State private var refreshFlag = false
-    @State var currentuser: User?
+    @State var currentUser: User?
     @Environment (\.dismiss) var dismiss
-    
-    private let gridItems: [GridItem] = [
-        .init(.flexible(), spacing: 1),
-        .init(.flexible(), spacing: 1),
-        .init(.flexible(), spacing: 1)
-    ]
     
     var body: some View {
         ScrollView {
             VStack {
-                if let user = currentuser { // Check if currentUser is available
+                if let user = currentUser {
                     HStack{
                         CircularProfileImageView(user: user, size: .large )
                         Spacer()
@@ -37,13 +29,14 @@ struct CurrentUserProfileView: View {
                             userService.fetchCurrentUser()
                         }) {
                             Image(systemName: "gobackward")
-                            
                         }
-
                     }
                     .padding(.horizontal)
                     
                     VStack(alignment: .leading, spacing: 4) {
+                        Text("\(user.id)")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
                         Text("\(user.username)")
                             .font(.footnote)
                             .fontWeight(.semibold)
@@ -52,18 +45,13 @@ struct CurrentUserProfileView: View {
                             .fontWeight(.semibold)
                         Text("\(user.bio ?? "N/A")")
                             .font(.footnote)
-                        // Add more user properties here as needed
-                      
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
+                
                 }
-                //else {
-                //                        Text("Loading user data...")
-                //                    }
                 
-                
-                NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentuser ?? User(id: "", username: "", email: "")))) {
+                NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentUser ?? User(id: "", username: "", email: "")))) {
                     Text("Edit Profile")
                         .font(.subheadline)
                         .fontWeight(.semibold)
@@ -74,56 +62,84 @@ struct CurrentUserProfileView: View {
                                 .stroke(Color.gray, lineWidth: 1)
                         )
                 }
-                LazyVGrid(columns: gridItems, spacing: 1) {
-                    ForEach(0 ... 5, id: \.self) { index in
-                        Image("Login")
-                            .resizable()
-                            .scaledToFill()
-                    }
-                }
+               
+//                VStack(spacing: 20) {
+//                    ForEach(viewModel.userPosts) { post in
+//
+//                        NavigationLink(
+//                            destination: DetailView(),
+//                            label: {
+//                                UserPostView(post: post)
+//                            })
+//                        .navigationBarHidden(true)
+//                        .foregroundColor(.black)
+//                    }
+//                }
+                //currentUser: currentuser ?? User(id: "", username: "", email: "")
+                CurrentUserPostView(viewModel: viewModel, currentUser: currentUser ?? User(id: "", username: "", email: ""))
+
                 Button(action: {
-                           userService.logoutUser()
-                           appState.isUserLoggedIn = false
-                           appState.resetNavigation() // Reset the navigation
-                       }) {
-                           Text("Logout")
-                               .font(.subheadline)
-                               .fontWeight(.semibold)
-                               .frame(width: 360, height: 44)
-                               .background(Color.red)
-                               .foregroundColor(.white)
-                               .cornerRadius(10)
-                       }
-                       .padding(.top)
+                    userService.logoutUser()
+                    appState.isUserLoggedIn = false
+                    appState.resetNavigation() // Reset the navigation
+                }) {
+                    Text("Logout")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .frame(width: 360, height: 44)
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .padding(.top)
             }
             .onAppear {
-                print("Appear")
-//                if let currentUser = userService.currentUser {
-               
-                    userService.fetchCurrentUser()
-                    currentuser = userService.currentUser
-                
-//                currentuser = userService.currentUser
-//                }
+                userService.fetchCurrentUser()
+                currentUser = userService.currentUser
+                if let userId = currentUser?.id {
+                    viewModel.fetchUserPosts(userId: userId)
+                }
             }
             .onDisappear {
-                
-                print("Disappear")
-                currentuser = nil
+                currentUser = nil
             }
         }
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
-        
     }
 }
-
-
+//struct UserPostsView: View {
+//    let post: Post
+//    
+//    var body: some View {
+//        VStack {
+//            AsyncImage(url: post.imageUrl)
+//                .frame(width: 320, height: 200)
+//                .cornerRadius(20.0)
+//            
+//            HStack(spacing: 2) {
+//                Text(post.userId)
+//                    .font(.title3)
+//                    .fontWeight(.bold)
+//                Text(post.username)
+//                    .font(.title3)
+//                    .fontWeight(.bold)
+//                Text(post.caption)
+//                    .font(.title3)
+//                    .fontWeight(.light)
+//                NavigationLink(destination: PostEditView(viewModel: PostViewModel(), post: post)) {
+//                    Text("Edit")
+//                }
+//            }
+//        }
+//        .padding()
+//        .background(Color.white)
+//        .cornerRadius(20.0)
+//    }
+//}
 struct CurrentUserProfileView_Previews: PreviewProvider {
     static var previews: some View {
         CurrentUserProfileView()
     }
 }
-
-
