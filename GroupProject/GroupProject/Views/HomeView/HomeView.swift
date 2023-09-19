@@ -15,6 +15,7 @@ struct HomeView: View {
     @State private var selectedIndex: Int = 1
     
     private let categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
+    
     var body: some View {
         
         VStack{

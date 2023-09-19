@@ -9,6 +9,7 @@ import SwiftUI
 
 class PostViewModel: ObservableObject {
     @Published var posts: [Post] = []
+
     @Published var userPosts: [Post] = [] {
             didSet {
                 if !userPosts.isEmpty {
@@ -17,6 +18,13 @@ class PostViewModel: ObservableObject {
             }
         }
         @Published var dataLoaded: Bool = false
+
+    @Published var allUsers: [User] = [] // Store the list of users
+    
+    init() {
+        fetchAllUsers()
+    }
+
     
     func fetchPosts() {
         Task {
@@ -54,6 +62,20 @@ class PostViewModel: ObservableObject {
             try await PostService().editPost(id: postId, newCaption: newCaption)
         } catch {
             
+        }
+    }
+    
+    func fetchAllUsers() {
+        UserService.fetchAllUsers { [weak self] result in
+            switch result {
+            case .success(let users):
+                DispatchQueue.main.async {
+                    self?.allUsers = users
+                }
+            case .failure(let error):
+                // Handle the error appropriately
+                print("Error fetching users:", error)
+            }
         }
     }
 }
