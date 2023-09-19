@@ -9,7 +9,7 @@ import SwiftUI
 import Kingfisher
 
 struct PostView: View {
-
+    
     @State private var search: String = ""
     @State private var selectedIndex: Int = 1
     var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
@@ -26,8 +26,8 @@ struct PostView: View {
                             destination: DetailView(),
                             label: { ForEach(viewModel.allUsers) { user in
                                 if user.id == post.userId {
-                                CardView(post: post, postOwner: user)
-                            }
+                                    CardView(post: post, postOwner: user)
+                                }
                             }
                             })
                         .navigationBarHidden(true)
@@ -47,6 +47,13 @@ struct PostView: View {
 struct CardView: View {
     let post: Post
     var postOwner: User
+    @State private var isLike = false
+    
+    func checkIsLike() {
+        if post.like.contains(postOwner.id) {
+            isLike = true
+        }
+    }
     
     var body: some View {
         
@@ -61,21 +68,14 @@ struct CardView: View {
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color(.gray),lineWidth: 3))
                 
-                
-                //                Image("user")
-                //                    .resizable()
-                //                    .aspectRatio(contentMode: .fit)
-                //                    .frame(width: 70, height: 50)
-                //                    .clipShape(Circle())
-                //                    .overlay(Circle().stroke(Color(.gray),lineWidth: 3))
                 Text("\(postOwner.username)")
                 
                 Spacer()
                 Button() {
                     
                 } label: {
-                    Image(systemName: "ellipsis")
-                        .rotationEffect(.degrees(-90))
+                        Image(systemName: "ellipsis")
+                            .rotationEffect(.degrees(-90))
                 }
             }
             
@@ -92,8 +92,10 @@ struct CardView: View {
                 Text(post.caption)
                     .font(.title3)
                     .fontWeight(.light)
-                NavigationLink(destination: PostEditView(viewModel: PostViewModel(), post: post)) {
-                    Text("Edit")
+                if postOwner.id == post.userId {
+                    NavigationLink(destination: PostEditView(viewModel: PostViewModel(), post: post)) {
+                        Text("Edit")
+                    }
                 }
             }
             
@@ -128,7 +130,8 @@ struct CardView: View {
                 Button() {
                     
                 } label: {
-                    Image(systemName: "heart")
+                    Image(systemName: isLike == true ? "heart.fill" : "heart")
+                        .foregroundColor(isLike == true ? .pink : .black)
                     Text("Like")
                 }
                 
@@ -143,6 +146,9 @@ struct CardView: View {
                 Spacer()
                     .frame(width: 10)
             }
+        }
+        .onAppear {
+            checkIsLike()
         }
         .padding()
         .background(Color.white)
