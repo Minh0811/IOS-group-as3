@@ -16,19 +16,22 @@
 import SwiftUI
 
 struct DetailView: View {
+    var post: Post
+    
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
     var body: some View {
         ZStack {
             Color("Bg")
             ScrollView  {
                 //            Product Image
                 
-                    Image("chair_1")
-                        .resizable()
+                AsyncImage(url: post.imageUrl)
+                        //.resizable()
                         .aspectRatio(1,contentMode: .fit)
                         .edgesIgnoringSafeArea(.top)
                 
-                DescriptionView()
+                DescriptionView(post: post)
                 
             }
             .edgesIgnoringSafeArea(.top)
@@ -80,8 +83,17 @@ extension View {
 }
 
 struct DetailView_Previews: PreviewProvider {
+    static let mockPost = Post(
+        id: "1234567890",
+        userId: "userID_12345",
+        username: "mockUsername",
+        imageUrl: "https://example.com/mock-image.jpg",
+        caption: "This is a mock caption for the mock post.",
+        like: ["user1", "user2", "user3"]
+    )
+
     static var previews: some View {
-        DetailView()
+        DetailView(post: mockPost)
     }
 }
 
@@ -96,15 +108,17 @@ struct ColorDotView: View {
 }
 
 struct DescriptionView: View {
+    var post: Post
+    
     var body: some View {
         VStack (alignment: .leading) {
             //                Title
-            Text("User Name")
+            Text(post.username)
                 .font(.title)
                 .fontWeight(.bold)
             //                Rating
             HStack (spacing: 4) {
-                Text("Captions")
+                Text(post.caption)
                     .font(.title3)
                     .fontWeight(.light)
                     .padding(.vertical, 3)

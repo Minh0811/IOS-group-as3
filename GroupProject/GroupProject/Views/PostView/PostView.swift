@@ -23,7 +23,7 @@ struct PostView: View {
                 VStack(spacing: 20) {
                     ForEach(viewModel.posts) { post in
                         NavigationLink(
-                            destination: DetailView(),
+                            destination: DetailView(post: post),
                             label: { ForEach(viewModel.allUsers) { user in
                                 if user.id == post.userId {
                                     CardView(post: post, postOwner: user)
@@ -82,7 +82,7 @@ struct CardView: View {
             Divider()
             
             AsyncImage(url: post.imageUrl)
-                .frame(width: 320, height: 200)
+                .frame(width: 320, height: 320)
                 .cornerRadius(20.0)
             
             HStack(spacing: 2) {
@@ -102,7 +102,7 @@ struct CardView: View {
             Divider()
             HStack(spacing: 0) {
                 
-                Spacer()
+              
                 HStack(spacing: 0) {
                     Image(systemName: "heart.fill")
                         .foregroundColor(.pink)
@@ -113,13 +113,14 @@ struct CardView: View {
                 }
                 
                 Spacer()
-                    .frame(width: 30)
+                    
                 HStack(spacing: 0) {
                     Image(systemName: "text.bubble")
                     Spacer()
                         .frame(width: 5)
                     Text("21")
                 }
+                .padding(.horizontal, 10)
             }
             
             Divider()
