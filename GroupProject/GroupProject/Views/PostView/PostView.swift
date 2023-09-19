@@ -46,6 +46,26 @@ struct CardView: View {
     var body: some View {
         
         VStack {
+            HStack(spacing: 0) {
+                Image("user")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 70, height: 50)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color(.gray),lineWidth: 3))
+                Text("Username")
+                
+                Spacer()
+                Button() {
+                    
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .rotationEffect(.degrees(-90))
+                }
+            }
+            
+            Divider()
+            
             AsyncImage(url: post.imageUrl)
                 .frame(width: 320, height: 200)
                 .cornerRadius(20.0)
