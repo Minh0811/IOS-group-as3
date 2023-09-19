@@ -63,8 +63,33 @@ struct CardView: View {
             }
             
             Divider()
-            
             HStack(spacing: 0) {
+                
+                Spacer()
+                HStack(spacing: 0) {
+                    Image(systemName: "heart.fill")
+                        .foregroundColor(.pink)
+                    
+                    Spacer()
+                        .frame(width: 5)
+                    Text("1000")
+                }
+                
+                Spacer()
+                    .frame(width: 30)
+                HStack(spacing: 0) {
+                    Image(systemName: "text.bubble")
+                    Spacer()
+                        .frame(width: 5)
+                    Text("21")
+                }
+            }
+            
+            Divider()
+            HStack(spacing: 0) {
+
+                Spacer()
+                    .frame(width: 10)
                 Button() {
                     
                 } label: {
@@ -73,13 +98,15 @@ struct CardView: View {
                 }
                 
                 Spacer()
-                //                        .frame(width: geometry.size.width * 0.3)
                 Button() {
                     
                 } label: {
                     Image(systemName: "bubble.left")
                     Text("Comment")
                 }
+                
+                Spacer()
+                    .frame(width: 10)
             }
         }
         .padding()
