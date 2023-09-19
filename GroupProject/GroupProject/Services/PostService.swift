@@ -77,7 +77,7 @@ class PostService: ObservableObject {
     
     func editPost(id: String, newCaption: String) async throws {
         do {
-            guard let userId = Auth.auth().currentUser?.uid else {
+            guard ((Auth.auth().currentUser?.uid) != nil) else {
                 throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
             }
             try await db.collection("posts").document(id).setData(["caption": "\(newCaption)"], merge: true) 
