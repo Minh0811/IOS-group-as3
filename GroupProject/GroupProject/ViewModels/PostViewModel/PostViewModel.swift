@@ -9,6 +9,7 @@ import SwiftUI
 
 class PostViewModel: ObservableObject {
     @Published var posts: [Post] = []
+    @Published var userPosts: [Post] = []
        
     func fetchPosts() {
         Task {
@@ -21,6 +22,17 @@ class PostViewModel: ObservableObject {
         }
     }
     
+    func fetchUserPosts(userId: String) {
+        Task {
+            do {
+                self.userPosts = try await PostService().fetchUserPosts(userId: userId)
+            } catch {
+                // Handle error
+                print(error.localizedDescription)
+            }
+        }
+    }
+
     func editPost(postId: String, newCaption: String) async {
         do {
             try await PostService().editPost(id: postId, newCaption: newCaption)

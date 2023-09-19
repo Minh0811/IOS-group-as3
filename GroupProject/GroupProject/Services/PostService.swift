@@ -89,6 +89,39 @@ class PostService: ObservableObject {
         }
     }
     
+    func fetchUserPosts(userId: String) async throws -> [Post] {
+        return try await withCheckedThrowingContinuation { continuation in
+            db.collection("posts")
+              .whereField("userId", isEqualTo: userId)
+              .order(by: "timestamp", descending: true)
+              .getDocuments { snapshot, error in
+                  
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    continuation.resume(throwing: NSError(domain: "Firestore", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch user posts"]))
+                    return
+                }
+                
+                let posts = documents.compactMap { document -> Post? in
+                    let data = document.data()
+                    let id = document.documentID
+                    let userId = data["userId"] as? String ?? ""
+                    let imageUrl = data["imageUrl"] as? String ?? ""
+                    let caption = data["caption"] as? String ?? ""
+                    let username = data["username"] as? String ?? ""
+                    
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption)
+                }
+                
+                continuation.resume(returning: posts)
+            }
+        }
+    }
+
     func editPost(id: String, newCaption: String) async throws {
         do {
             guard let userId = Auth.auth().currentUser?.uid else {
