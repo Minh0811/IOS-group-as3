@@ -12,82 +12,79 @@ import SDWebImageSwiftUI
 import SwiftUI
 
 struct UserProfileView: View {
-    @ObservedObject var userService = UserService()
+    //@ObservedObject var userService = UserService()
+    let user: User
     @State private var showEditProfile = false
-    @State private var refreshFlag = false
-    @State var user: User?
+    @State private var isFollowing = false
+    //@State private var refreshFlag = false
+    //@State var user: User?
+    @Environment (\.dismiss) var dismiss
+    private let gridItems: [GridItem] = [
+        .init(.flexible(), spacing: 1),
+        .init(.flexible(), spacing: 1),
+        .init(.flexible(), spacing: 1)
+    ]
     var body: some View {
         ScrollView {
             VStack {
-                    if let user = userService.currentUser { // Check if currentUser is available
-                    
-                        CircularProfileImageView(user: user )
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                       
-                        Text("Full Name: \(user.fullname ?? "N/A")")
-                        Text("Bio: \(user.bio ?? "N/A")")
-                        // Add more user properties here as needed
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
-                    }
-                        //else {
-                    //                        Text("Loading user data...")
-                    //                    }
-                    
-                    
-                    NavigationLink(destination: EditProfileView(user: user ?? User(id: "", username: "", email: ""))
-                    ){
-                        Text("Edit Profile")
-                            .font(.subheadline)
+                CircularProfileImageView(user: user, size: .large )
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    if let fullname = user.fullname {
+                        Text(fullname)
+                            .font(.footnote)
                             .fontWeight(.semibold)
-                            .frame(width: 360, height: 32)
-                            .foregroundColor(.gray)
-                            .background(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .stroke(Color.gray, lineWidth: 1)
-                            )
                     }
-                    //                    .fullScreenCover(isPresented: $showEditProfile) {
-                    //                        if let user = userService.currentUser {
-                    //                                                    EditProfileView(user: user)
-                    //                            } else {
-                    //                            Text("User data not available for editing.")
-                    //                            }
-                    //                    }
-                    Button(action: {
-                        userService.fetchCurrentUser()
-                        refreshFlag.toggle()
-                    }) {
-                        Text("Refresh View")
+                    if let bio = user.bio {
+                        Text(bio)
+                            .font(.footnote)
                     }
+                    // Add more user properties here as needed
+                    }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
                 }
-                .onAppear{
-                    print("Appear")
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//                        print("Loading")
-//                        user = nil
-//                        userService.fetchCurrentUser()
-                        user = userService.currentUser!
-                    //}
+            Button {
+                if user.isCurrentUser {
+                    showEditProfile.toggle()
+                    print("Show edit profile")
+                } else {
+                    print("Follow user...")
                 }
-                .onDisappear {
-                    print("Disappear")
-                    user = nil
+            } label: {
+                Text(user.isCurrentUser ? "Edit Profile" : "Follow")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .frame(width: 360, height: 32)
+                    .background(user.isCurrentUser ? .white : Color(.systemBlue))
+                    .foregroundColor(user.isCurrentUser ? .black : .white)
+                    .cornerRadius(6)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(user.isCurrentUser ? .gray : .clear, lineWidth: 1)
+                    )
+            }
+            LazyVGrid(columns: gridItems, spacing: 1) {
+                ForEach(0 ... 5, id: \.self) { index in
+                    Image("Login")
+                        .resizable()
+                        .scaledToFill()
+
                 }
+            }
             }
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
-            .id(refreshFlag)
+
+
     
     }
+    
 }
 
 
 struct UserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        UserProfileView()
+        UserProfileView(user: User.MOCK_USERS[0])
     }
 }
-

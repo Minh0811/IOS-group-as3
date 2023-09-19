@@ -8,18 +8,34 @@
 import SwiftUI
 @available(iOS 15.0, *)
 struct RegisterView: View {
-    @StateObject var viewModel = LoginViewModel()
+  
     @State private var isRegistrationSuccessful: Bool = false
     @State private var errorMessage: String?
+    @EnvironmentObject var appState: AppState
+    @StateObject var viewModel: LoginViewModel
+
+        init(appState: AppState) {
+            _viewModel = StateObject(wrappedValue: LoginViewModel(appState: appState))
+        }
+
     var body: some View {
         VStack(spacing: 20) {
             Text("Create an Account")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .padding(.bottom, 20)
+            TextField("User Name:", text: $viewModel.username)
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+                .font(.subheadline)
+                .padding(12)
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.horizontal, 24)
            
             TextField("Email", text: $viewModel.email)
                 .autocapitalization(.none)
+                .disableAutocorrection(true)
                 .font(.subheadline)
                 .padding(12)
                 .background(Color(.systemGray6))
@@ -28,6 +44,7 @@ struct RegisterView: View {
             
             SecureField("Password", text: $viewModel.password)
                 .autocapitalization(.none)
+                .disableAutocorrection(true)
                 .font(.subheadline)
                 .padding(12)
                 .background(Color(.systemGray6))
@@ -85,7 +102,10 @@ struct RegisterView: View {
 }
 
 struct RegisterView_Previews: PreviewProvider {
+    static var mockAppState = AppState()  // Create a mock instance of AppState
+
     static var previews: some View {
-        RegisterView()
+        RegisterView(appState: mockAppState)
     }
 }
+

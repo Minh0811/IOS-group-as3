@@ -10,6 +10,10 @@ import SwiftUI
 struct PostEditView: View {
     
     @State var status: String = ""
+    @ObservedObject var viewModel: PostViewModel
+    @Environment(\.dismiss) var dimiss
+    var post: Post
+    
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
@@ -26,7 +30,7 @@ struct PostEditView: View {
                 
                         VStack(spacing: 0) {
                             //username
-                            Text("Username")
+                            Text(post.username)
                                 .font(.system(size: 16))
                                 .multilineTextAlignment(.leading)
                             //uploaded date of status
@@ -52,10 +56,22 @@ struct PostEditView: View {
                     Spacer()
                         .frame(height: geometry.size.width * 0.08)
                     //status's image
-                    Image("testing-image")
-                        .resizable()
+                    AsyncImage(url: post.imageUrl)
+                        
+                        .frame(width: UIScreen.main.bounds.width, height: geometry.size.height * 0.45)
+                        .cornerRadius(20.0)
                     
-                        .aspectRatio(contentMode: .fit)
+                    Button("Save") {
+                        Task {
+                            do {
+                                await viewModel.editPost(postId: post.id, newCaption: status)
+                                dimiss()
+                            }
+                        }
+                    }
+                }
+                .onAppear {
+                    status = post.caption
                 }
             }
         }
@@ -64,6 +80,6 @@ struct PostEditView: View {
 
 struct PostEditView_Previews: PreviewProvider {
     static var previews: some View {
-        PostEditView()
+        PostEditView(viewModel: PostViewModel(), post: Post(id: "1", userId: "2", username: "Kiet", imageUrl: "None", caption: "Caption"))
     }
 }

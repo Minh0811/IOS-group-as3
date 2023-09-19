@@ -8,45 +8,28 @@ import Foundation
 import SDWebImageSwiftUI
 import Firebase
 
-struct User: Identifiable, Codable {
+struct User: Identifiable, Hashable, Codable {
     let id: String
     var username: String
     let email: String
     var profileImageUrl: String?
     var fullname: String?
     var bio: String?
+    var followersCount: Int?
+    var followingCount: Int?
+    
+    var isCurrentUser: Bool {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return false}
+        return currentUid == id
+    }
 }
 extension User{
     static var MOCK_USERS: [User] = [
-        .init(id: NSUUID().uuidString, username: "kiet", email: "", profileImageUrl: nil, fullname: nil, bio: nil),
-        .init(id: NSUUID().uuidString, username: "khanh", email: "", profileImageUrl: nil, fullname: nil, bio: nil),
+        .init(id: NSUUID().uuidString, username: "empty.chul", email: "check@gmail.com", profileImageUrl: "Login", fullname: "Khanh", bio: "rmit student", followersCount: 0, followingCount: 0),
+        .init(id: NSUUID().uuidString, username: "khanh1", email: "check1@gmail.com", profileImageUrl: "profile", fullname: "Tran Huy Khanh", bio: "rmit student", followersCount: 0, followingCount: 0),
+        .init(id: NSUUID().uuidString, username: "khanh2", email: "check2@gmail.com", profileImageUrl: "home", fullname: "Vo Khai Minh", bio: "rmit student", followersCount: 0, followingCount: 0),
+
     ]
 }
 
-//Check for usability since the main view now use MainViewModel
-//class ProfileUser: ObservableObject {
-//    private var userService: UserService
-//    @Published var errorMessage = ""
-//    @Published var chatUser: User?
-//
-//    init(userService: UserService = UserService()) {
-//        self.userService = userService
-//        fetchCurrentUser()
-//    }
-//
-//    private func fetchCurrentUser() {
-//        guard let uid = Auth.auth().currentUser?.uid else {
-//            self.errorMessage = "Could not find firebase uid"
-//            return
-//        }
-//
-//        userService.fetchCurrentUser(uid: uid) { [weak self] result in
-//            switch result {
-//            case .success(let user):
-//                self?.chatUser = user
-//            case .failure(let error):
-//                self?.errorMessage = "Failed to fetch current user: \(error)"
-//            }
-//        }
-//    }
-//}
+
