@@ -96,17 +96,17 @@ class PostService: ObservableObject {
               .whereField("userId", isEqualTo: userId)
               .order(by: "timestamp", descending: true)
               .getDocuments { snapshot, error in
-                  
+
                 if let error = error {
                     continuation.resume(throwing: error)
                     return
                 }
-                
+
                 guard let documents = snapshot?.documents else {
                     continuation.resume(throwing: NSError(domain: "Firestore", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch user posts"]))
                     return
                 }
-                
+
                 let posts = documents.compactMap { document -> Post? in
                     let data = document.data()
                     let id = document.documentID
@@ -114,14 +114,16 @@ class PostService: ObservableObject {
                     let imageUrl = data["imageUrl"] as? String ?? ""
                     let caption = data["caption"] as? String ?? ""
                     let username = data["username"] as? String ?? ""
-                    
-                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption)
+                    let like = data["like"] as? [String] ?? []
+
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like)
                 }
-                
+
                 continuation.resume(returning: posts)
             }
         }
     }
+
 
     func editPost(id: String, newCaption: String) async throws {
         do {

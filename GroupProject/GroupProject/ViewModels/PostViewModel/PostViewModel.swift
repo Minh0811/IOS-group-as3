@@ -18,7 +18,6 @@ class PostViewModel: ObservableObject {
             }
         }
         @Published var dataLoaded: Bool = false
-
     @Published var allUsers: [User] = [] // Store the list of users
     
     init() {
