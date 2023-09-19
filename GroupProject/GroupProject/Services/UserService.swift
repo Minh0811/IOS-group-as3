@@ -7,14 +7,16 @@
 
 import Firebase
 import FirebaseFirestore
-import UIKit
 import FirebaseStorage
+import UIKit
+
 
 class UserService: ObservableObject {
     let db = Firestore.firestore()
     
     @Published var errorMessage = ""
     @Published var currentUser: User?
+    
     init() {
         fetchCurrentUser()
     }
