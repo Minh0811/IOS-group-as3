@@ -24,9 +24,9 @@ struct PostView: View {
                             destination: DetailView(post: post),
                             label: { ForEach(viewModel.allUsers) { user in
                                 if user.id == post.userId && post.like.contains("\(currentUser.id)"){
-                                    CardView(post: post, postOwner: user, currentUser: currentUser, isLike: true, likeArray: post.like)
+                                    CardView(post: post, postOwner: user, currentUser: currentUser, numOfLike: post.like.count, isLike: true, likeArray: post.like)
                                 } else if user.id == post.userId {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser, isLike: false, likeArray: post.like)
+                                    CardView(post: post, postOwner: user, currentUser: currentUser, numOfLike: post.like.count, isLike: false, likeArray: post.like)
                                 }
                             }
                             })
@@ -38,9 +38,6 @@ struct PostView: View {
             }
         }
         .padding(.bottom)
-        .onAppear {
-            viewModel.fetchPosts()
-        }
     }
 }
 
@@ -48,6 +45,7 @@ struct CardView: View {
     var post: Post
     var postOwner: User
     var currentUser: User
+    @State var numOfLike: Int
     @State var isLike: Bool
     @State var likeArray: [String]
     
@@ -55,10 +53,12 @@ struct CardView: View {
     
     func addToLikeArray() {
         likeArray.append("\(currentUser.id)")
+        numOfLike += 1
     }
     
     func removeFromLikeArray() {
         likeArray = likeArray.filter() {$0 != "\(currentUser.id)"}
+        numOfLike -= 1
     }
     
     var body: some View {
@@ -106,7 +106,7 @@ struct CardView: View {
                     
                     Spacer()
                         .frame(width: 5)
-                    Text("\(post.like.count)")
+                    Text("\(numOfLike)")
                 }
                 
                 Spacer()
@@ -127,7 +127,10 @@ struct CardView: View {
                     .frame(width: 10)
                 Button() {
                     isLike == true ? removeFromLikeArray() : addToLikeArray()
+                    isLike.toggle()
                     viewModel.likePost(postId: post.id, userIdArray: likeArray)
+                    viewModel.fetchPosts()
+                    print(post.like.count)
                 } label: {
                     Image(systemName: isLike == true ? "heart.fill" : "heart")
                         .foregroundColor(isLike == true ? .pink : .black)
