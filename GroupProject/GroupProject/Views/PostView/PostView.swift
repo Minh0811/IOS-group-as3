@@ -49,6 +49,7 @@ struct CardView: View {
     var postOwner: User
     let currentUser: User
     @State private var isLike = false
+    @ObservedObject var viewModel = PostViewModel()
     
     func checkIsLike() {
         if post.like.contains(postOwner.id) {
@@ -120,7 +121,7 @@ struct CardView: View {
                 Spacer()
                     .frame(width: 10)
                 Button() {
-                    
+                    viewModel.
                 } label: {
                     Image(systemName: isLike == true ? "heart.fill" : "heart")
                         .foregroundColor(isLike == true ? .pink : .black)
