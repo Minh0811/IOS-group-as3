@@ -9,10 +9,13 @@ import SwiftUI
 import Kingfisher
 
 struct PostView: View {
-    @ObservedObject var userService = UserService()
+    
     @ObservedObject var viewModel = PostViewModel()
-    @State var currentUser: User?
+
+   
     @State private var searchText = ""
+   
+    var currentUser: User
     var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
     var filteredPosts: [Post] {
         if searchText.isEmpty {
@@ -26,6 +29,8 @@ struct PostView: View {
         }
     }
 
+    
+
     var body: some View {
         ScrollView(showsIndicators: false) {
             HStack {
@@ -38,8 +43,12 @@ struct PostView: View {
                         NavigationLink(
                             destination: DetailView(post: post),
                             label: { ForEach(viewModel.allUsers) { user in
-                                if user.id == post.userId {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))
+
+                                if user.id == post.userId && post.like.contains("\(currentUser.id)"){
+                                    CardView(post: post, postOwner: user, currentUser: currentUser, isLike: true, likeArray: post.like)
+                                } else if user.id == post.userId {
+                                    CardView(post: post, postOwner: user, currentUser: currentUser, isLike: false, likeArray: post.like)
+
                                 }
                             }
                             })
@@ -53,22 +62,27 @@ struct PostView: View {
         .padding(.bottom)
         .onAppear {
             viewModel.fetchPosts()
-            currentUser = userService.currentUser
         }
     }
 }
 
 struct CardView: View {
-    let post: Post
+    var post: Post
     var postOwner: User
-    let currentUser: User
-    @State private var isLike = false
+    var currentUser: User
+    @State var isLike: Bool
+    @State var likeArray: [String]
     
-    func checkIsLike() {
-        if post.like.contains(postOwner.id) {
-            isLike = true
-        }
+    @ObservedObject var viewModel = PostViewModel()
+    
+    func addToLikeArray() {
+        likeArray.append("\(currentUser.id)")
     }
+    
+    func removeFromLikeArray() {
+        likeArray = likeArray.filter() {$0 != "\(currentUser.id)"}
+    }
+    
     var body: some View {
         VStack {
             HStack(spacing: 0) {
@@ -97,17 +111,17 @@ struct CardView: View {
                 .frame(width: 320, height: 320)
                 .cornerRadius(20.0)
             HStack(spacing: 2) {
-
+                
                 Text(post.caption)
                     .font(.title3)
                     .fontWeight(.light)
-
+                
             }
             
             Divider()
             HStack(spacing: 0) {
                 
-              
+                
                 HStack(spacing: 0) {
                     Image(systemName: "heart.fill")
                         .foregroundColor(.pink)
@@ -118,7 +132,7 @@ struct CardView: View {
                 }
                 
                 Spacer()
-                    
+                
                 HStack(spacing: 0) {
                     Image(systemName: "text.bubble")
                     Spacer()
@@ -134,7 +148,8 @@ struct CardView: View {
                 Spacer()
                     .frame(width: 10)
                 Button() {
-                    
+                    isLike == true ? removeFromLikeArray() : addToLikeArray()
+                    viewModel.likePost(postId: post.id, userIdArray: likeArray)
                 } label: {
                     Image(systemName: isLike == true ? "heart.fill" : "heart")
                         .foregroundColor(isLike == true ? .pink : .black)
@@ -153,13 +168,9 @@ struct CardView: View {
                     .frame(width: 10)
             }
         }
-        .onAppear {
-            checkIsLike()
-        }
         .padding()
         .background(Color.white)
         .cornerRadius(20.0)
-        
     }
 }
 
@@ -171,7 +182,7 @@ struct PostView_Previews: PreviewProvider {
         ZStack{
             Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
                 .ignoresSafeArea()
-            PostView()
+            PostView(currentUser: User(id: "1", username: "Test", email: "check@gmail.com"))
         }
     }
 }
