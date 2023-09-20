@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SearchUserView: View {
     @State private var searchText = ""
+    //@ObservedObject var userService = UserService()
     @StateObject var viewModel = SearchViewModel()
     // Filtered users based on search text
     var filteredUsers: [User] {
@@ -47,6 +48,7 @@ struct SearchUserView: View {
                         
                     }
                 }
+                
                 .padding(.top, 8)
                 .searchable(text: $searchText)
             }

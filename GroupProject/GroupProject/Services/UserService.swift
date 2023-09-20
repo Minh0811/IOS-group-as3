@@ -48,7 +48,9 @@ class UserService: ObservableObject {
                         email: data["email"] as? String ?? "",
                         profileImageUrl: data["profileImageUrl"] as? String,
                         fullname: data["fullname"] as? String,
-                        bio: data["bio"] as? String
+                        bio: data["bio"] as? String,
+                        followers: data["followers"] as? [String] ?? [],
+                        following: data["following"] as? [String] ?? []
                         
                     )
                     
@@ -145,38 +147,46 @@ class UserService: ObservableObject {
                     let profileImageUrl = data["profileImageUrl"] as? String
                     let fullname = data["fullname"] as? String
                     let bio = data["bio"] as? String
+                    let followers = data["followers"] as? [String] ?? []
+                    let following = data["following"] as? [String] ?? []
 
-                    let user = User(id: id, username: username, email: email, profileImageUrl: profileImageUrl, fullname: fullname, bio: bio)
+
+                    let user = User(id: id, username: username, email: email, profileImageUrl: profileImageUrl, fullname: fullname, bio: bio, followers: followers, following: following)
                     users.append(user)
                 }
 
                 completion(.success(users))
             }
         }
+
+
     
-    func followUser(userIdToFollow: String) {
-        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+    func followUser(userIDToFollow: String) {
+        guard let currentUserID = Auth.auth().currentUser?.uid else {
+            // Handle the case where the current user is not authenticated
+            return
+        }
 
-        // Update the following list of the current user
-        let followingRef = Firestore.firestore().collection("users").document(currentUserId)
-        followingRef.updateData(["following": FieldValue.arrayUnion([userIdToFollow])])
+        // Add the user ID to the following list of the current user
+        db.collection("users").document(currentUserID).updateData(["following": FieldValue.arrayUnion([userIDToFollow])])
 
-        // Update the followers list of the user being followed
-        let followerRef = Firestore.firestore().collection("users").document(userIdToFollow)
-        followerRef.updateData(["followers": FieldValue.arrayUnion([currentUserId])])
+        // Add the current user's ID to the followers list of the user being followed
+        db.collection("users").document(userIDToFollow).updateData(["followers": FieldValue.arrayUnion([currentUserID])])
     }
 
-    func unfollowUser(userIdToUnfollow: String) {
-        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+    func unfollowUser(userIDToUnfollow: String) {
+        guard let currentUserID = Auth.auth().currentUser?.uid else {
+            // Handle the case where the current user is not authenticated
+            return
+        }
 
-        // Update the following list of the current user
-        let followingRef = Firestore.firestore().collection("users").document(currentUserId)
-        followingRef.updateData(["following": FieldValue.arrayRemove([userIdToUnfollow])])
+        // Remove the user ID from the following list of the current user
+        db.collection("users").document(currentUserID).updateData(["following": FieldValue.arrayRemove([userIDToUnfollow])])
 
-        // Update the followers list of the user being unfollowed
-        let followerRef = Firestore.firestore().collection("users").document(userIdToUnfollow)
-        followerRef.updateData(["followers": FieldValue.arrayRemove([currentUserId])])
+        // Remove the current user's ID from the followers list of the user being unfollowed
+        db.collection("users").document(userIDToUnfollow).updateData(["followers": FieldValue.arrayRemove([currentUserID])])
     }
+
 
 
 

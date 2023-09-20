@@ -12,20 +12,34 @@ struct PostView: View {
     @ObservedObject var userService = UserService()
     @ObservedObject var viewModel = PostViewModel()
     @State var currentUser: User?
+    @State private var searchText = ""
     var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
-    
-    
+    var filteredPosts: [Post] {
+        if searchText.isEmpty {
+            return viewModel.posts
+        } else {
+            return viewModel.posts.filter { post in
+                
+                let postcaption = post.caption.lowercased().contains(searchText.lowercased())
+                return  postcaption
+            }
+        }
+    }
+
     var body: some View {
         ScrollView(showsIndicators: false) {
             HStack {
                 Spacer()
                 VStack(spacing: 20) {
-                    ForEach(viewModel.posts) { post in
+                    TextField("Search", text: $searchText)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding(.horizontal)
+                    ForEach(filteredPosts) { post in
                         NavigationLink(
                             destination: DetailView(post: post),
                             label: { ForEach(viewModel.allUsers) { user in
                                 if user.id == post.userId {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id: "", username: "", email: ""))
+                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))
                                 }
                             }
                             })
