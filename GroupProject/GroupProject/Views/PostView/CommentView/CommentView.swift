@@ -43,7 +43,7 @@ struct CommentView: View {
                     Text(comment.text)
                 }
             }
-
+ 
         }
         .onAppear {
             viewModel.fetchComments(for: postId)

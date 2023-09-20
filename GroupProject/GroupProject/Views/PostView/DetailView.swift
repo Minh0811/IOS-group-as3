@@ -55,22 +55,7 @@ struct DetailView: View {
 }
 
 
-struct RoundedCorner: Shape {
 
-    var radius: CGFloat = .infinity
-    var corners: UIRectCorner = .allCorners
-
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        return Path(path.cgPath)
-    }
-}
-
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape( RoundedCorner(radius: radius, corners: corners) )
-    }
-}
 
 struct DetailView_Previews: PreviewProvider {
     static let mockPost = Post(
@@ -112,8 +97,8 @@ struct DescriptionView: View {
         .padding()
         .padding(.top)
         .background(Color("Bg"))
-        .cornerRadius(30, corners: [.topLeft, .topRight])
-        .offset(x: 0, y: -30.0)
+        //.cornerRadius(30, corners: [.topLeft, .topRight])
+        //.offset(x: 0, y: -30.0)
     }
 }
 
