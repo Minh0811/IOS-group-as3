@@ -21,7 +21,7 @@ class PostViewModel: ObservableObject {
     
     init() {
         fetchAllUsers()
-//        fetchPosts()
+        fetchPosts()
     }
 
     
