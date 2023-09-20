@@ -25,7 +25,7 @@ struct PostView: View {
                             destination: DetailView(post: post, viewModel: viewModel),
                             label: { ForEach(viewModel.allUsers) { user in
                                 if user.id == post.userId {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id: "", username: "", email: ""))
+                                        CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id: "", username: "", email: ""))
                                 }
                             }
                             })
@@ -109,7 +109,7 @@ struct CardView: View {
                     Image(systemName: "text.bubble")
                     Spacer()
                         .frame(width: 5)
-                    Text("21")
+                    Text("\(post.commentsCount)")
                 }
                 .padding(.horizontal, 10)
             }

@@ -104,6 +104,15 @@ class PostViewModel: ObservableObject {
                 print("Attempting to post comment...")
                 try await CommentService().addComment(newComment, to: postId)
                 print("Comment posted successfully!")
+                
+                // After successfully adding the comment
+                if let index = posts.firstIndex(where: { $0.id == postId }) {
+                    posts[index].commentsCount += 1
+                    // TODO: Update the post's commentsCount in the Firestore database as well
+                }
+                // Update the post's commentsCount in the Firestore database
+                           try await PostService().incrementCommentsCount(for: postId)
+                
                 fetchComments(for: postId)  // Refresh comments after posting
             } catch {
                 // Handle error
@@ -113,6 +122,10 @@ class PostViewModel: ObservableObject {
         fetchComments(for: postId)
     }
 
+    
+    func commentCount(for postId: String) -> Int {
+        return comments.filter { $0.postId == postId }.count
+    }
 }
 
 
