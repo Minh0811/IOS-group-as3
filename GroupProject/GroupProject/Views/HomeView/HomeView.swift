@@ -50,7 +50,7 @@ struct HomeView: View {
                                 }
                                 
                                 
-                                PostView(currentUser: userService.currentUser ?? User(id: "", username: "", email: ""))
+                                PostView(currentUser: userService.currentUser ?? User(id: "", username: "", email: "",followers: [], following: []))
                                 
                                 
                                 
