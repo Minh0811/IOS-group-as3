@@ -12,7 +12,7 @@ import SDWebImageSwiftUI
 import SwiftUI
 
 struct UserProfileView: View {
-    //@ObservedObject var userService = UserService()
+    @ObservedObject var userService = UserService()
     let user: User
     @State private var showEditProfile = false
     @State private var isFollowing = false
@@ -39,6 +39,10 @@ struct UserProfileView: View {
                         Text(bio)
                             .font(.footnote)
                     }
+                    Text("Follower: \(user.followers.count)")
+                        .font(.footnote)
+                    Text("Following: \(user.following.count)")
+                        .font(.footnote)
                     // Add more user properties here as needed
                     }
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -48,22 +52,45 @@ struct UserProfileView: View {
                 if user.isCurrentUser {
                     showEditProfile.toggle()
                     print("Show edit profile")
+                } else if userService.currentUser != nil {
+                    if userService.currentUser!.following.contains(user.id) {
+                        // Show the unfollow button
+                        userService.unfollowUser(userIDToUnfollow: user.id)
+                    } else {
+                        // Show the follow button
+                        userService.followUser(userIDToFollow: user.id)
+                    }
                 } else {
                     print("Follow user...")
                 }
             } label: {
-                Text(user.isCurrentUser ? "Edit Profile" : "Follow")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .frame(width: 360, height: 32)
-                    .background(user.isCurrentUser ? .white : Color(.systemBlue))
-                    .foregroundColor(user.isCurrentUser ? .black : .white)
-                    .cornerRadius(6)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(user.isCurrentUser ? .gray : .clear, lineWidth: 1)
-                    )
+                if user.isCurrentUser {
+                    Text("Edit Profile")
+                } else if userService.currentUser != nil {
+                    if userService.currentUser!.following.contains(user.id) {
+                        Text("Unfollow")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.red)
+                            .cornerRadius(6)
+                    } else {
+                        Text("Follow")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .cornerRadius(6)
+                    }
+                }
             }
+            .font(.subheadline)
+            .fontWeight(.semibold)
+            .frame(width: 360, height: 32)
+            .background(user.isCurrentUser ? .white : .white)
+            .foregroundColor(user.isCurrentUser ? .black : .white)
+            .cornerRadius(6)
+            .overlay(
+                RoundedRectangle(cornerRadius: 6)
+                    .stroke(user.isCurrentUser ? .gray : .clear, lineWidth: 1))
             LazyVGrid(columns: gridItems, spacing: 1) {
                 ForEach(0 ... 5, id: \.self) { index in
                     Image("Login")
