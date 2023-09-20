@@ -21,11 +21,13 @@ class CommentService {
               .getDocuments { snapshot, error in
 
                 if let error = error {
+                    print("Error fetching comments from Firestore for postId: \(postId). Error: \(error.localizedDescription)")
                     continuation.resume(throwing: error)
                     return
                 }
 
                 guard let documents = snapshot?.documents else {
+                    print("No documents found for comments in Firestore for postId: \(postId)")
                     continuation.resume(throwing: NSError(domain: "Firestore", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch comments"]))
                     return
                 }
@@ -41,7 +43,8 @@ class CommentService {
 
                     return Comment(id: id, postId: postId, userId: userId, username: username, text: text, timestamp: timestamp)
                 }
-
+                  
+                  print("Fetched \(comments.count) comments from Firestore for postId: \(postId)")
                 continuation.resume(returning: comments)
             }
         }

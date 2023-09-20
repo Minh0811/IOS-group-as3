@@ -18,10 +18,11 @@ import SwiftUI
 struct DetailView: View {
     var post: Post
     @ObservedObject var viewModel: PostViewModel
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
     var body: some View {
         ZStack {
+            
             Color("Bg")
             ScrollView  {
                 //            Product Image
@@ -32,36 +33,24 @@ struct DetailView: View {
                         .edgesIgnoringSafeArea(.top)
                 
                 DescriptionView(post: post)
-                
-                CommentView(viewModel: viewModel, postId: post.id) 
+               
+                NavigationLink(
+                    destination:  CommentView(viewModel: viewModel, postId: post.id),
+                    label: { Text("CommentView")
+                    })
+               
             }
             .edgesIgnoringSafeArea(.top)
             
-            HStack {
-                Text("$1299")
-                    .font(.title)
-                    .foregroundColor(.white)
-                Spacer()
-                
-                Text("Add to Cart")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color("Primary"))
-                    .padding()
-                    .padding(.horizontal, 8)
-                    .background(Color.white)
-                    .cornerRadius(10.0)
-                
-            }
-            .padding()
-            .padding(.horizontal)
-            .background(Color("Primary"))
-            .cornerRadius(60.0, corners: .topLeft)
-            .frame(maxHeight: .infinity, alignment: .bottom)
-            .edgesIgnoringSafeArea(.bottom)
+           
+        }
+        .onAppear{
+            viewModel.fetchComments(for: post.id)
         }
         .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: BackButton(action: {presentationMode.wrappedValue.dismiss()}), trailing: Image("threeDot"))
+        .customBackButton(presentationMode: presentationMode)
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .tabBar)
     }
 }
 
@@ -129,15 +118,3 @@ struct DescriptionView: View {
 }
 
 
-struct BackButton: View {
-    let action: () -> Void
-    var body: some View {
-        Button(action: action) {
-            Image(systemName: "chevron.backward")
-                .foregroundColor(.black)
-                .padding(.all, 12)
-                .background(Color.white)
-                .cornerRadius(8.0)
-        }
-    }
-}
