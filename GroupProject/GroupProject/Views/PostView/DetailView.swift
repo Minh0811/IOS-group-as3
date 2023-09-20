@@ -17,7 +17,7 @@ import SwiftUI
 
 struct DetailView: View {
     var post: Post
-    
+    @ObservedObject var viewModel: PostViewModel
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
     var body: some View {
@@ -33,7 +33,7 @@ struct DetailView: View {
                 
                 DescriptionView(post: post)
                 
-                CommentView()
+                CommentView(viewModel: viewModel, postId: post.id) 
             }
             .edgesIgnoringSafeArea(.top)
             
@@ -92,9 +92,9 @@ struct DetailView_Previews: PreviewProvider {
         caption: "This is a mock caption for the mock post.",
         like: ["user1", "user2", "user3"]
     )
-
+    static var mockViewModel = PostViewModel()
     static var previews: some View {
-        DetailView(post: mockPost)
+        DetailView(post: mockPost, viewModel: mockViewModel)
     }
 }
 

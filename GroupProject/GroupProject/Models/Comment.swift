@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Comment: Identifiable, Codable {
+struct Comment: Identifiable, Codable, Hashable {
     var id: String
     var postId: String  // This associates the comment with a specific post
     var userId: String

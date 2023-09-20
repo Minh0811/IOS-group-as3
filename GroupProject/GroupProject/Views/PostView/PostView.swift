@@ -22,7 +22,7 @@ struct PostView: View {
                 VStack(spacing: 20) {
                     ForEach(viewModel.posts) { post in
                         NavigationLink(
-                            destination: DetailView(post: post),
+                            destination: DetailView(post: post, viewModel: viewModel),
                             label: { ForEach(viewModel.allUsers) { user in
                                 if user.id == post.userId {
                                     CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id: "", username: "", email: ""))
