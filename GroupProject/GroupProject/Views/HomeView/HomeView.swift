@@ -11,6 +11,7 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @ObservedObject var userService = UserService()
     @State private var search: String = ""
     @State private var selectedIndex: Int = 1
     
@@ -49,7 +50,7 @@ struct HomeView: View {
                                 }
                                 
                                 
-                                PostView()
+                                PostView(currentUser: userService.currentUser ?? User(id: "", username: "", email: ""))
                                 
                                 
                                 
