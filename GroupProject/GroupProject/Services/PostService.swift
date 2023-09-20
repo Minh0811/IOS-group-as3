@@ -37,10 +37,11 @@ class PostService: ObservableObject {
             
             let postData: [String: Any] = [
                 "userId": userId,
-                "username": username,  // Add this line
+                "username": username,
                 "imageUrl": unwrappedImageUrl,
                 "caption": caption,
-                "timestamp": Timestamp(date: Date())
+                "timestamp": Timestamp(date: Date()),
+                "commentsCount": 0  // Initialize commentsCount to 0 for new posts
             ]
             
             return try await withCheckedThrowingContinuation { continuation in
@@ -56,6 +57,7 @@ class PostService: ObservableObject {
             throw error
         }
     }
+
 
 
     
@@ -135,5 +137,8 @@ class PostService: ObservableObject {
             throw error
         }
     }
-
+    func incrementCommentsCount(for postId: String) async throws {
+        let postRef = db.collection("posts").document(postId)
+        try await postRef.updateData(["commentsCount": FieldValue.increment(Int64(1))])
+    }
 }
