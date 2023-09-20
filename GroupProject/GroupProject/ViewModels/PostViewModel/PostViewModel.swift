@@ -92,6 +92,7 @@ class PostViewModel: ObservableObject {
             } catch {
                 // Handle error
                 print(error.localizedDescription)
+                print("Error fetching comments for postId: \(postId). Error: \(error.localizedDescription)")
             }
         }
     }

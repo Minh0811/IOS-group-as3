@@ -107,7 +107,8 @@ struct CurrentUserProfileView: View {
                 currentUser = nil
             }
         }
-        .navigationTitle("Profile")
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .tabBar)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
     }

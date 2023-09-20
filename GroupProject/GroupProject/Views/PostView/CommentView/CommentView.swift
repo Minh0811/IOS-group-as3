@@ -35,22 +35,24 @@ struct CommentView: View {
             .padding()
 
             // List of comments
-            Text("head")
+
             List(viewModel.comments, id: \.self) { comment in
                 VStack(alignment: .leading) {
-                    Text("Comments")
+                    //Text("Comments")
                     Text(comment.username).bold()
                     Text(comment.text)
                 }
             }
-            Text("bottom")
+ 
         }
         .onAppear {
             viewModel.fetchComments(for: postId)
+            print("Fetching comments for postId: \(postId) in CommentView")
             UserService().fetchCurrentUser { user in
                 self.currentUser = user
             }
         }
+
 
     }
 }

@@ -67,6 +67,8 @@ struct HomeView: View {
                 
             
         }
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .tabBar)
         .environment(\.colorScheme, .light)
     }
 }
