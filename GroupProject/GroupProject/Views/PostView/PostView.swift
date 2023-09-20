@@ -184,7 +184,7 @@ struct PostView_Previews: PreviewProvider {
         ZStack{
             Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
                 .ignoresSafeArea()
-            PostView(currentUser: User(id: "1", username: "Test", email: "check@gmail.com"))
+            PostView(currentUser: User(id: "1", username: "Test", email: "check@gmail.com",followers: [], following: []))
         }
     }
 }
