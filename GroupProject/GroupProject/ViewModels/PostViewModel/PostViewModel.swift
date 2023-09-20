@@ -20,6 +20,8 @@ class PostViewModel: ObservableObject {
      
     @Published var allUsers: [User] = [] // Store the list of users
     
+    @Published var comments: [Comment] = []
+    
     init() {
         fetchAllUsers()
     }
@@ -77,6 +79,39 @@ class PostViewModel: ObservableObject {
             }
         }
     }
+    
+    
+    func fetchComments(for postId: String) {
+        Task {
+            do {
+                let fetchedComments = try await CommentService().fetchComments(for: postId)
+                DispatchQueue.main.async {
+                    self.comments = fetchedComments
+                    print("Fetched \(fetchedComments.count) comments.")
+                }
+            } catch {
+                // Handle error
+                print(error.localizedDescription)
+            }
+        }
+    }
+
+    func postComment(text: String, by user: User, for postId: String) {
+        let newComment = Comment(id: UUID().uuidString, postId: postId, userId: user.id, username: user.username, text: text, timestamp: Date())
+        Task {
+            do {
+                print("Attempting to post comment...")
+                try await CommentService().addComment(newComment, to: postId)
+                print("Comment posted successfully!")
+                fetchComments(for: postId)  // Refresh comments after posting
+            } catch {
+                // Handle error
+                print("Error posting comment: \(error.localizedDescription)")
+            }
+        }
+        fetchComments(for: postId)
+    }
+
 }
 
 

@@ -26,7 +26,9 @@ struct CurrentUserProfileView: View {
                         CircularProfileImageView(user: user, size: .large )
                         Spacer()
                         Button(action: {
-                            userService.fetchCurrentUser()
+                            userService.fetchCurrentUser { user in
+                                self.currentUser = user
+                            }
                         }) {
                             Image(systemName: "gobackward")
                         }
@@ -94,11 +96,12 @@ struct CurrentUserProfileView: View {
                 .padding(.top)
             }
             .onAppear {
-                userService.fetchCurrentUser()
-                currentUser = userService.currentUser
-                if let userId = currentUser?.id {
-                    viewModel.fetchUserPosts(userId: userId)
-                }
+                userService.fetchCurrentUser { user in
+                       self.currentUser = user
+                       if let userId = user?.id {
+                           viewModel.fetchUserPosts(userId: userId)
+                       }
+                   }
             }
             .onDisappear {
                 currentUser = nil
