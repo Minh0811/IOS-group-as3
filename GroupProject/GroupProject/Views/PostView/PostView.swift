@@ -9,12 +9,11 @@ import SwiftUI
 import Kingfisher
 
 struct PostView: View {
-    
-    @State private var search: String = ""
-    @State private var selectedIndex: Int = 1
+    @ObservedObject var userService = UserService()
+    @ObservedObject var viewModel = PostViewModel()
+    @State var currentUser: User?
     var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
     
-    @ObservedObject var viewModel = PostViewModel()
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -23,10 +22,10 @@ struct PostView: View {
                 VStack(spacing: 20) {
                     ForEach(viewModel.posts) { post in
                         NavigationLink(
-                            destination: DetailView(),
+                            destination: DetailView(post: post),
                             label: { ForEach(viewModel.allUsers) { user in
                                 if user.id == post.userId {
-                                    CardView(post: post, postOwner: user)
+                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id: "", username: "", email: ""))
                                 }
                             }
                             })
@@ -40,6 +39,7 @@ struct PostView: View {
         .padding(.bottom)
         .onAppear {
             viewModel.fetchPosts()
+            currentUser = userService.currentUser
         }
     }
 }
@@ -47,6 +47,7 @@ struct PostView: View {
 struct CardView: View {
     let post: Post
     var postOwner: User
+    let currentUser: User
     @State private var isLike = false
     
     func checkIsLike() {
@@ -54,13 +55,9 @@ struct CardView: View {
             isLike = true
         }
     }
-    
     var body: some View {
-        
         VStack {
             HStack(spacing: 0) {
-                
-                
                 KFImage(URL(string: postOwner.profileImageUrl ?? ""))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -71,38 +68,32 @@ struct CardView: View {
                 Text("\(postOwner.username)")
                 
                 Spacer()
-                Button() {
-                    
-                } label: {
+                
+                if postOwner.id == currentUser.id {
+                    NavigationLink(destination: PostEditView(viewModel: PostViewModel(), post: post)) {
                         Image(systemName: "ellipsis")
                             .rotationEffect(.degrees(-90))
+                    }
                 }
             }
             
             Divider()
             
             AsyncImage(url: post.imageUrl)
-                .frame(width: 320, height: 200)
+                .frame(width: 320, height: 320)
                 .cornerRadius(20.0)
-            
             HStack(spacing: 2) {
-                Text(post.username)
-                    .font(.title3)
-                    .fontWeight(.bold)
+
                 Text(post.caption)
                     .font(.title3)
                     .fontWeight(.light)
-                if postOwner.id == post.userId {
-                    NavigationLink(destination: PostEditView(viewModel: PostViewModel(), post: post)) {
-                        Text("Edit")
-                    }
-                }
+
             }
             
             Divider()
             HStack(spacing: 0) {
                 
-                Spacer()
+              
                 HStack(spacing: 0) {
                     Image(systemName: "heart.fill")
                         .foregroundColor(.pink)
@@ -113,13 +104,14 @@ struct CardView: View {
                 }
                 
                 Spacer()
-                    .frame(width: 30)
+                    
                 HStack(spacing: 0) {
                     Image(systemName: "text.bubble")
                     Spacer()
                         .frame(width: 5)
                     Text("21")
                 }
+                .padding(.horizontal, 10)
             }
             
             Divider()

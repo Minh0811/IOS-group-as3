@@ -22,7 +22,7 @@ struct HomeView: View {
                 NavigationView {
                     ZStack {
                        
-                        Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
+                        Color("Background")
                             .ignoresSafeArea()
                         
                         ScrollView (showsIndicators: false) {
@@ -56,11 +56,7 @@ struct HomeView: View {
                             }
                         }
                         
-                        VStack {
-                            Spacer()
-                            
-                            // BottomNavBarView()
-                        }
+
                         
                         
                     }
@@ -71,6 +67,7 @@ struct HomeView: View {
                 
             
         }
+        .environment(\.colorScheme, .light)
     }
 }
 struct HomeView_Previews: PreviewProvider {
@@ -90,7 +87,6 @@ struct AppBarView: View {
                     .background(Color.white)
                     .cornerRadius(10.0)
             }
-            
             Spacer()
             
             Button(action: {}) {
@@ -156,32 +152,7 @@ struct CategoryView: View {
     }
 }
 
-//struct BottomNavBarView: View {
-//    var body: some View {
-//        HStack {
-//            BottomNavBarItem(image: Image("Home"), action: {})
-//            BottomNavBarItem(image: Image("Home"), action: {})
-//            BottomNavBarItem(image: Image("Home"), action: {})
-//            BottomNavBarItem(image: Image("User"), action: {})
-//        }
-//        .padding()
-//        .background(Color.white)
-//        .clipShape(Capsule())
-//        .padding(.horizontal)
-//        .shadow(color: Color.blue.opacity(0.15), radius: 8, x: 2, y: 6)
-//    }
-//}
 
-struct BottomNavBarItem: View {
-    let image: Image
-    let action: () -> Void
-    var body: some View {
-        Button(action: action) {
-            image
-                .frame(maxWidth: .infinity)
-        }
-    }
-}
 
 
 
