@@ -14,4 +14,5 @@ struct Post: Identifiable, Codable {
     var imageUrl: String  // URL of the image associated with the post
     var caption: String  // Caption or status of the post
     var like: [String]
+    var commentsCount: Int = 0
 }

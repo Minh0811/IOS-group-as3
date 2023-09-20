@@ -8,8 +8,8 @@
 import SwiftUI
 
 class PostViewModel: ObservableObject {
+    @Published var dataLoaded: Bool = false
     @Published var posts: [Post] = []
-
     @Published var userPosts: [Post] = [] {
             didSet {
                 if !userPosts.isEmpty {
@@ -17,7 +17,7 @@ class PostViewModel: ObservableObject {
                 }
             }
         }
-        @Published var dataLoaded: Bool = false
+     
     @Published var allUsers: [User] = [] // Store the list of users
     
     init() {
