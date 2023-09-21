@@ -16,7 +16,7 @@ struct PostView: View {
     @State private var searchText = ""
    // var currentUserLike: User
     // var currentUser: User
-    var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
+   
     var filteredPosts: [Post] {
         if searchText.isEmpty {
             return viewModel.posts

@@ -15,7 +15,7 @@ struct HomeView: View {
     @State private var search: String = ""
     @State private var selectedIndex: Int = 1
     
-    private let categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
+        private let categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty"]
     
     var body: some View {
         
