@@ -18,10 +18,6 @@ struct User: Identifiable, Hashable, Codable {
     var followers:[String]
     var following: [String]
     
-    var isCurrentUser: Bool {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return false}
-        return currentUid == id
-    }
 }
 extension User{
     static var MOCK_USERS: [User] = [

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchUserView: View {
     @State private var searchText = ""
-    //@ObservedObject var userService = UserService()
+    @ObservedObject var userService = UserService()
     @StateObject var viewModel = SearchViewModel()
     @EnvironmentObject var globalSettings: GlobalSettings
     // Filtered users based on search text
@@ -57,7 +57,7 @@ struct SearchUserView: View {
             }
             .background(globalSettings.isDark ? Color.black : Color.white)
             .navigationDestination(for: User.self, destination: {user in
-                UserProfileView(user: user)
+                UserProfileView(user: user, currentUser: userService.currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", fullname: "N/A", bio: "N/A", followers: [], following: []))
             })
             .navigationTitle("Search User")
             .navigationBarTitleDisplayMode(.inline)
