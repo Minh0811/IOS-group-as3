@@ -13,7 +13,10 @@ struct NewPostView: View {
     @State private var isImagePickerPresented: Bool = false
     @State private var isLoading: Bool = false
     @State private var postCreatedSuccessfully: Bool = false
-
+    
+    @State private var selectedCategory: String = "All"
+    let categories = ["All", "Coffee", "Foods", "Schools", "Street Foods", "Beauty"]
+    
     var body: some View {
         VStack {
             if let image = selectedImage {
@@ -30,12 +33,20 @@ struct NewPostView: View {
                 .padding()
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(8)
-
+            
+            Picker("Select Category", selection: $selectedCategory) {
+                ForEach(categories, id: \.self) { category in
+                    Text(category).tag(category)
+                }
+            }
+            .pickerStyle(MenuPickerStyle())
+            
             Button("Create Post") {
                 Task {
                     isLoading = true
                     do {
-                        let success = try await PostService().createPost(image: selectedImage!, caption: caption)
+                        let success = try await PostService().createPost(image: selectedImage!, caption: caption, category: selectedCategory)
+
                         postCreatedSuccessfully = success
                     } catch {
                         // Handle error

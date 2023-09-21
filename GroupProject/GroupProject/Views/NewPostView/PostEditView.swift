@@ -80,6 +80,6 @@ struct PostEditView: View {
 
 struct PostEditView_Previews: PreviewProvider {
     static var previews: some View {
-        PostEditView(viewModel: PostViewModel(), post: Post(id: "1", userId: "2", username: "Test", imageUrl: "None", caption: "Caption", like: []))
+        PostEditView(viewModel: PostViewModel(), post: Post(id: "1", userId: "2", username: "Test", imageUrl: "None", caption: "Caption", like: [], category: "All"))
     }
 }

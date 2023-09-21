@@ -77,7 +77,8 @@ struct DetailView_Previews: PreviewProvider {
         username: "mockUsername",
         imageUrl: "https://example.com/mock-image.jpg",
         caption: "This is a mock caption for the mock post.",
-        like: ["user1", "user2", "user3"]
+        like: ["user1", "user2", "user3"],
+        category: "All"
     )
     static var mockViewModel = PostViewModel()
     static var previews: some View {

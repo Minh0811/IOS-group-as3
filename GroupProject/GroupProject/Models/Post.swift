@@ -15,6 +15,7 @@ struct Post: Identifiable, Codable, Equatable {
     var caption: String  // Caption or status of the post
     var like: [String]
     var commentsCount: Int = 0
+    var category: String
 }
 
 extension Post {
