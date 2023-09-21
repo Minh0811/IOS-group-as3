@@ -24,7 +24,6 @@
 		C83D1B2D2AAD49B50097643C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83D1B2C2AAD49B50097643C /* LoginView.swift */; };
 		C89048332AB184CF00C065E9 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89048322AB184CF00C065E9 /* RegisterView.swift */; };
 		C8962E5C2AB6CE4E002FF68E /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8962E5B2AB6CE4E002FF68E /* SearchViewModel.swift */; };
-		C8B33CF12AAD53AE0083C554 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B33CF02AAD53AE0083C554 /* GoogleService-Info.plist */; };
 		C8B33CF42AAD54930083C554 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C8B33CF32AAD54930083C554 /* FirebaseAuth */; };
 		C8B33CF62AAD54930083C554 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = C8B33CF52AAD54930083C554 /* FirebaseDatabase */; };
 		C8B33CF82AAD54930083C554 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C8B33CF72AAD54930083C554 /* FirebaseDatabaseSwift */; };
@@ -35,6 +34,7 @@
 		C8B33D022AAD54930083C554 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C8B33D012AAD54930083C554 /* FirebaseStorageCombine-Community */; };
 		C8C591412AB6AFDA00D52E53 /* CurrentUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C591402AB6AFDA00D52E53 /* CurrentUserProfileView.swift */; };
 		C8C591442AB6B32000D52E53 /* SearchUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C591432AB6B32000D52E53 /* SearchUserView.swift */; };
+		C8E7BD692ABBE9D1001C6F97 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8E7BD682ABBE9D1001C6F97 /* GoogleService-Info.plist */; };
 		C8FE1FE02AAEAB5D0027E156 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = C8FE1FDF2AAEAB5D0027E156 /* SDWebImageSwiftUI */; };
 		C8FE1FE32AAEAC010027E156 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FE1FE22AAEAC010027E156 /* User.swift */; };
 		C8FE1FE52AAEAED90027E156 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FE1FE42AAEAED90027E156 /* UserProfileView.swift */; };
@@ -98,9 +98,9 @@
 		C83D1B2C2AAD49B50097643C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C89048322AB184CF00C065E9 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		C8962E5B2AB6CE4E002FF68E /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		C8B33CF02AAD53AE0083C554 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C8C591402AB6AFDA00D52E53 /* CurrentUserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserProfileView.swift; sourceTree = "<group>"; };
 		C8C591432AB6B32000D52E53 /* SearchUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserView.swift; sourceTree = "<group>"; };
+		C8E7BD682ABBE9D1001C6F97 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C8FE1FE22AAEAC010027E156 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C8FE1FE42AAEAED90027E156 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		C8FE1FE62AAEB09F0027E156 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -192,8 +192,8 @@
 				F790F1C12AB138CA00D85149 /* ViewModels */,
 				C8FE1FE12AAEABE70027E156 /* Models */,
 				F790F1C92AB1432100D85149 /* Services */,
-				C8B33CF02AAD53AE0083C554 /* GoogleService-Info.plist */,
 				C83D1B042AAD49800097643C /* Assets.xcassets */,
+				C8E7BD682ABBE9D1001C6F97 /* GoogleService-Info.plist */,
 				C83D1B062AAD49800097643C /* Preview Content */,
 			);
 			path = GroupProject;
@@ -559,9 +559,9 @@
 			files = (
 				F7823C042AB382EE0012699D /* PlayfairDisplay-Regular.ttf in Resources */,
 				C83D1B082AAD49800097643C /* Preview Assets.xcassets in Resources */,
+				C8E7BD692ABBE9D1001C6F97 /* GoogleService-Info.plist in Resources */,
 				C83D1B052AAD49800097643C /* Assets.xcassets in Resources */,
 				F7823C052AB382EE0012699D /* PlayfairDisplay-Bold.ttf in Resources */,
-				C8B33CF12AAD53AE0083C554 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

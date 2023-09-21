@@ -7,6 +7,7 @@
 import Foundation
 import SDWebImageSwiftUI
 import Firebase
+import SwiftUI
 
 struct User: Identifiable, Hashable, Codable {
     let id: String
@@ -31,5 +32,6 @@ extension User{
 
     ]
 }
+
 
 

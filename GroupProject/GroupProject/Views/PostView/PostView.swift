@@ -32,6 +32,7 @@ struct PostView: View {
     
 
     var body: some View {
+        
         ScrollView(showsIndicators: false) {
             HStack {
                 Spacer()

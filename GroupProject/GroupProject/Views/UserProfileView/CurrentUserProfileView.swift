@@ -11,6 +11,9 @@ import SDWebImageSwiftUI
 import Kingfisher
 
 struct CurrentUserProfileView: View {
+    
+    @Environment(\.colorScheme) var colorScheme
+    @AppStorage("selectedAppearance") private var selectedAppearance: String = "system"
     @ObservedObject var userService = UserService()
     @ObservedObject var viewModel = PostViewModel()
     @EnvironmentObject var appState: AppState
@@ -26,9 +29,40 @@ struct CurrentUserProfileView: View {
                         CircularProfileImageView(user: user, size: .large )
                         Spacer()
                         Button(action: {
-                            userService.fetchCurrentUser()
+                            if colorScheme == .dark {
+                                selectedAppearance = "light"
+                            } else {
+                                selectedAppearance = "dark"
+                            }
                         }) {
-                            Image(systemName: "gobackward")
+                            HStack {
+                                if colorScheme == .dark {
+                                    Image(systemName: "sun.max.fill")
+                                        .font(.headline)
+                                               .padding(8)
+                                               
+                                               .background(colorScheme == .dark ? Color.black : Color.white)
+                                               .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
+                                               .cornerRadius(10)
+                                               .overlay(
+                                                   RoundedRectangle(cornerRadius: 10)
+                                                       .stroke(Color.gray, lineWidth: 1)
+                                               )
+                                } else {
+                                    Image(systemName: "moon.fill")
+                                        .font(.headline)
+                                               .padding(8)
+                                               
+                                               .background(colorScheme == .dark ? Color.black : Color.white)
+                                               .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
+                                               .cornerRadius(10)
+                                               .overlay(
+                                                   RoundedRectangle(cornerRadius: 10)
+                                                       .stroke(Color.gray, lineWidth: 1)
+                                               )
+                                }
+                    
+                            }
                         }
                     }
                     .padding(.horizontal)
@@ -81,6 +115,7 @@ struct CurrentUserProfileView: View {
 //                }
                 //currentUser: currentuser ?? User(id: "", username: "", email: "")
                 CurrentUserPostView(viewModel: viewModel, currentUser: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))
+          
 
                 Button(action: {
                     userService.logoutUser()
@@ -96,6 +131,7 @@ struct CurrentUserProfileView: View {
                         .cornerRadius(10)
                 }
                 .padding(.top)
+                
             }
             .onAppear {
                 userService.fetchCurrentUser()
@@ -108,6 +144,7 @@ struct CurrentUserProfileView: View {
                 currentUser = nil
             }
         }
+        .preferredColorScheme(selectedAppearance == "dark" ? .dark : .light)
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)

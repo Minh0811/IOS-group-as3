@@ -10,11 +10,11 @@
 import SwiftUI
 
 struct HomeView: View {
-    
+   
     @ObservedObject var userService = UserService()
     @State private var search: String = ""
     @State private var selectedIndex: Int = 1
-    
+    @AppStorage("selectedAppearance") var selectedAppearance: String = "system"
     private let categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
     
     var body: some View {
@@ -68,7 +68,8 @@ struct HomeView: View {
                 
             
         }
-        .environment(\.colorScheme, .light)
+        .preferredColorScheme(selectedAppearance == "dark" ? .dark : .light)
+       
     }
 }
 struct HomeView_Previews: PreviewProvider {

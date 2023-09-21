@@ -9,6 +9,7 @@ import SwiftUI
 import Kingfisher
 
 struct CurrentUserPostView: View {
+    @AppStorage("selectedAppearance") private var selectedAppearance: String = "system"
     @ObservedObject var viewModel: PostViewModel
     var currentUser: User
   //  @State private var isDataLoaded: Bool = false
@@ -19,28 +20,31 @@ struct CurrentUserPostView: View {
     ]
 
     var body: some View {
-        if viewModel.dataLoaded {
-            LazyVGrid(columns: gridLayout, spacing: 2) {
-                ForEach(viewModel.userPosts) { post in
-                    NavigationLink(
-                        destination: DetailView(post: post),
-                        label: {
-                            UserPostThumbnailView(post: post)
-                        })
-                    .navigationBarHidden(true)
-                    .foregroundColor(.black)
+        VStack{
+            if viewModel.dataLoaded {
+                LazyVGrid(columns: gridLayout, spacing: 2) {
+                    ForEach(viewModel.userPosts) { post in
+                        NavigationLink(
+                            destination: DetailView(post: post),
+                            label: {
+                                UserPostThumbnailView(post: post)
+                            })
+                        .navigationBarHidden(true)
+                        .foregroundColor(.black)
+                    }
                 }
+                
+                .onAppear {
+                    if !viewModel.dataLoaded {
+                        viewModel.fetchUserPosts(userId: currentUser.id)
+                    }
+                }
+            } else {
+                // Display a loading indicator or placeholder
+                Text("Loading...")
             }
-
-            .onAppear {
-                if !viewModel.dataLoaded {
-                           viewModel.fetchUserPosts(userId: currentUser.id)
-                       }
-            }
-        } else {
-            // Display a loading indicator or placeholder
-            Text("Loading...")
         }
+            .preferredColorScheme(selectedAppearance == "dark" ? .dark : .light)
     }
 }
 

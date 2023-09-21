@@ -11,24 +11,25 @@ struct TabBarView: View {
     @State private var selectedTab: Int = 0
 
      var body: some View {
-         TabView(selection: $selectedTab) {
-             // HomeView
-             HomeView()
-                 .tag(0)
-
-             // UserSearchView
-             SearchUserView()
-                 .tag(1)
-
-             // CreatePostView
-             NewPostView()
-                 .tag(2)
-
-             // UserProfileView
-             CurrentUserProfileView()
-                 .tag(3)
+         VStack{
+             TabView(selection: $selectedTab) {
+                 // HomeView
+                 HomeView()
+                     .tag(0)
+                 
+                 // UserSearchView
+                 SearchUserView()
+                     .tag(1)
+                 
+                 // CreatePostView
+                 NewPostView()
+                     .tag(2)
+                 
+                 // UserProfileView
+                 CurrentUserProfileView()
+                     .tag(3)
+             }
          }
-   
          .edgesIgnoringSafeArea(.bottom)
          .overlay(alignment: .bottom){
              CustomTabBarView(tabSelection: $selectedTab)

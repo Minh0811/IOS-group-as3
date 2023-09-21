@@ -9,7 +9,8 @@ import SwiftUI
 
 struct AuthenticationView: View {
     @EnvironmentObject var appState: AppState
-    
+    @AppStorage("selectedAppearance") private var selectedAppearance: String = "system"
+
     var body: some View {
         NavigationView {
             VStack {
@@ -19,8 +20,11 @@ struct AuthenticationView: View {
                     LoginView(appState: appState)
                 }
             }
+            
+            .preferredColorScheme(selectedAppearance == "dark" ? .dark : .light)
            
         }
+        .navigationViewStyle(.stack)
     }
 }
 

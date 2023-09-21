@@ -40,7 +40,8 @@ class PostService: ObservableObject {
                 "username": username,  // Add this line
                 "imageUrl": unwrappedImageUrl,
                 "caption": caption,
-                "timestamp": Timestamp(date: Date())
+                "timestamp": Timestamp(date: Date()),
+                "commentsCount": 0
             ]
             
             return try await withCheckedThrowingContinuation { continuation in
@@ -135,6 +136,7 @@ class PostService: ObservableObject {
             throw error
         }
     }
+    
     
     func likePost(id: String, likeArray: [String]) async throws {
         do {

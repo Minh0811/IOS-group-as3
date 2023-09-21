@@ -83,6 +83,7 @@ class PostViewModel: ObservableObject {
             try? await PostService().likePost(id: postId, likeArray: userIdArray)
         }
     }
+    
 }
 
 

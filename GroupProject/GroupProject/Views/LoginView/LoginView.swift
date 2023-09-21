@@ -15,17 +15,20 @@ struct LoginView: View {
            _viewModel = StateObject(wrappedValue: LoginViewModel(appState: appState))
            
        }
-    
+    let instagramPink = Color(red: 228/255, green: 64/255, blue: 95/255)
     var body: some View {
         VStack(spacing: 20) {
             Spacer()
             
             // Logo
-            Image("Login")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 200, height: 100)
-            
+//            Image("Login")
+//                .resizable()
+//                .scaledToFit()
+//                .frame(width: 200, height: 100)
+            Text("Welcome to Instagram")
+                           .font(.largeTitle)
+                           .foregroundColor(instagramPink)
+                           .padding(.top, 40)
             // Email Field
             TextField("Email", text: $viewModel.email)
                 .autocapitalization(.none)
@@ -91,6 +94,7 @@ struct LoginView: View {
             
             Spacer()
         }
+        .edgesIgnoringSafeArea(.all)
         .padding()
     }
 }
