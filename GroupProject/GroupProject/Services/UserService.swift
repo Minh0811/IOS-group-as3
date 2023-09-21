@@ -18,23 +18,24 @@ class UserService: ObservableObject {
     @Published var currentUser: User?
     
     init() {
-        fetchCurrentUser()
-    }
-    func fetchCurrentUser() {
-        guard let id = Auth.auth().currentUser?.uid else {
-            self.errorMessage = "Could not find firebase uid"
-            return
+        fetchCurrentUser { user in
+            self.currentUser = user
         }
+    }
 
-        Firestore.firestore().collection("users").document(id).getDocument { snapshot, error in
-            if let error = error {
-                self.errorMessage = "Failed to fetch current user: \(error)"
-                print("Failed to fetch current user:", error)
+    func fetchCurrentUser(completion: @escaping (User?) -> Void) {
+            guard let id = Auth.auth().currentUser?.uid else {
+                self.errorMessage = "Could not find firebase uid"
+                completion(nil)
                 return
             }
 
-            self.errorMessage = "123"
-
+            Firestore.firestore().collection("users").document(id).getDocument { snapshot, error in
+                if let error = error {
+                    print("Failed to fetch current user:", error)
+                    completion(nil)
+                    return
+                }
             guard let data = snapshot?.data() else {
                 self.errorMessage = "No data found"
                 return
@@ -56,14 +57,22 @@ class UserService: ObservableObject {
                     
                     // Assign the user object to currentUser
                     self.currentUser = user
-                }
-                        } else {
-                            self.errorMessage = "Incomplete or incorrect data found in Firestore"
-                        }
-            self.errorMessage = "Data: \(data.description)"
-        }
-    }
 
+                }
+
+                let user = User(
+                    id: id,
+                    username: data["username"] as? String ?? "",
+                    email: data["email"] as? String ?? "",
+                    profileImageUrl: data["profileImageUrl"] as? String,
+                    fullname: data["fullname"] as? String,
+                    bio: data["bio"] as? String
+                )
+                
+                completion(user)
+            }
+        }
+    
     func loginUser(email: String, password: String, completion: @escaping (Result<Bool, Error>) -> Void){
         Auth.auth().signIn(withEmail: email, password: password) { result, err in
             if let err = err {
@@ -71,12 +80,12 @@ class UserService: ObservableObject {
                 completion(.failure(err))
                 return
             }
-
+            
             print("Successfully logged in as user")
             completion(.success(true))
         }
     }
-
+    
     func createNewAccount(email: String, password: String,username: String, completion: @escaping (Result<Bool, Error>) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { result, err in
             if let err = err {
@@ -84,13 +93,13 @@ class UserService: ObservableObject {
                 completion(.failure(err))
                 return
             }
-
+            
             print("Successfully created user")
             self.storeUserInformation(email: email, username: username)
             completion(.success(true))
         }
     }
-
+    
     func storeUserInformation(email: String, username: String) {
         guard let id = Auth.auth().currentUser?.uid else { return }
         let data = ["email": email, "id": id,"username": username]
@@ -100,7 +109,7 @@ class UserService: ObservableObject {
                     print(err)
                     return
                 }
-
+                
                 print("Success store user info")
             }
     }
@@ -112,8 +121,10 @@ class UserService: ObservableObject {
         do {
             try await userRef.updateData(data)
             print("update success")
-            self.fetchCurrentUser()
-            print("fetch success")
+            fetchCurrentUser { user in
+                self.currentUser = user
+                print("fetch success")
+            }
         } catch {
             print("Error updating user data: \(error.localizedDescription)")
             throw error
@@ -127,9 +138,10 @@ class UserService: ObservableObject {
             print("Error signing out: %@", signOutError)
         }
     }
-
+    
     
     static func fetchAllUsers(completion: @escaping (Result<[User], Error>) -> Void) {
+
             Firestore.firestore().collection("users").getDocuments { snapshot, error in
                 if let error = error {
                     completion(.failure(error))
@@ -156,11 +168,12 @@ class UserService: ObservableObject {
                 }
 
                 completion(.success(users))
+
             }
+            
+            completion(.success(users))
         }
-
-
-    
+                                                                                
     func followUser(userIDToFollow: String) {
         guard let currentUserID = Auth.auth().currentUser?.uid else {
             // Handle the case where the current user is not authenticated
@@ -187,9 +200,5 @@ class UserService: ObservableObject {
         db.collection("users").document(userIDToUnfollow).updateData(["followers": FieldValue.arrayRemove([currentUserID])])
     }
 
-
-
-
-    
 }
 

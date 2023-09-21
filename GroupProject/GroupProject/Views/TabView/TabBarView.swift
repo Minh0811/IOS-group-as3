@@ -27,13 +27,16 @@ struct TabBarView: View {
              // UserProfileView
              CurrentUserProfileView()
                  .tag(3)
+             
          }
    
          .edgesIgnoringSafeArea(.bottom)
+         
          .overlay(alignment: .bottom){
              CustomTabBarView(tabSelection: $selectedTab)
                  .padding(.horizontal)
          }
+       
      }
 }
 

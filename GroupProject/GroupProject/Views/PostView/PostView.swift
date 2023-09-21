@@ -41,13 +41,15 @@ struct PostView: View {
                         .padding(.horizontal)
                     ForEach(filteredPosts) { post in
                         NavigationLink(
-                            destination: DetailView(post: post),
+                            destination: DetailView(post: post, viewModel: viewModel),
                             label: { ForEach(viewModel.allUsers) { user in
+
 
                                 if user.id == post.userId && post.like.contains("\(currentUser.id)"){
                                     CardView(post: post, postOwner: user, currentUser: currentUser, numOfLike: post.like.count, isLike: true, likeArray: post.like)
                                 } else if user.id == post.userId {
                                     CardView(post: post, postOwner: user, currentUser: currentUser, numOfLike: post.like.count, isLike: false, likeArray: post.like)
+
                                 }
                             }
                             })
@@ -136,7 +138,7 @@ struct CardView: View {
                     Image(systemName: "text.bubble")
                     Spacer()
                         .frame(width: 5)
-                    Text("21")
+                    Text("\(post.commentsCount)")
                 }
                 .padding(.horizontal, 10)
             }
