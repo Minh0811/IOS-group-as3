@@ -8,27 +8,27 @@
 import SwiftUI
 
 class PostViewModel: ObservableObject {
-    @Published var dataLoaded: Bool = false
-    @Published var posts: [Post] = []
-    @Published var userPosts: [Post] = [] {
-            didSet {
-                if !userPosts.isEmpty {
-                    dataLoaded = true
-                }
-            }
-        }
-
-    @Published var dataLoaded: Bool = false
-
-    @Published var allUsers: [User] = [] // Store the list of users
-    
-    @Published var comments: [Comment] = []
+    // @Published var userService = UserService()
+     @Published var dataLoaded: Bool = false
+     @Published var posts: [Post] = []
+     @Published var userPosts: [Post] = [] {
+         didSet {
+             if !userPosts.isEmpty {
+                 dataLoaded = true
+             }
+         }
+     }
+     
+     
+     @Published var allUsers: [User] = [] // Store the list of users
+     
+     @Published var comments: [Comment] = []
     
     init() {
         fetchAllUsers()
         fetchPosts()
     }
-
+    
     
     func fetchPosts() {
         Task {
@@ -43,7 +43,7 @@ class PostViewModel: ObservableObject {
             }
         }
     }
-
+    
     func fetchUserPosts(userId: String) {
         Task {
             do {
@@ -59,8 +59,8 @@ class PostViewModel: ObservableObject {
             }
         }
     }
-
-
+    
+    
     func editPost(postId: String, newCaption: String) async {
         do {
             try await PostService().editPost(id: postId, newCaption: newCaption)
@@ -83,58 +83,65 @@ class PostViewModel: ObservableObject {
         }
     }
     
-
+    
     func likePost(postId: String, userIdArray: [String]) {
         Task {
             try? await PostService().likePost(id: postId, likeArray: userIdArray)
         }
-
+    }
     
     func fetchComments(for postId: String) {
+      
+        
         Task {
             do {
                 let fetchedComments = try await CommentService().fetchComments(for: postId)
                 DispatchQueue.main.async {
                     self.comments = fetchedComments
-                    print("Fetched \(fetchedComments.count) comments.")
+                 
                 }
             } catch {
-                // Handle error
-                print(error.localizedDescription)
-                print("Error fetching comments for postId: \(postId). Error: \(error.localizedDescription)")
+               
             }
         }
     }
-
+    
+    
     func postComment(text: String, by user: User, for postId: String) {
-        let newComment = Comment(id: UUID().uuidString, postId: postId, userId: user.id, username: user.username, text: text, timestamp: Date())
-        Task {
-            do {
-                print("Attempting to post comment...")
-                try await CommentService().addComment(newComment, to: postId)
-                print("Comment posted successfully!")
-                
-                // After successfully adding the comment
-                if let index = posts.firstIndex(where: { $0.id == postId }) {
-                    posts[index].commentsCount += 1
-                    // TODO: Update the post's commentsCount in the Firestore database as well
+         
+            let newComment = Comment(id: UUID().uuidString, postId: postId, userId: user.id, username: user.username, text: text, timestamp: Date())
+            Task {
+                do {
+                    print("Attempting to post comment...")
+                    try await CommentService().addComment(newComment, to: postId)
+                    print("Comment posted successfully!")
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                        // After successfully adding the comment
+                        if let index = self?.posts.firstIndex(where: { $0.id == postId }) {
+                            self?.posts[index].commentsCount += 1
+                        }
+                    }
+                    
+                    // Update the post's commentsCount in the Firestore database
+                    try await PostService().incrementCommentsCount(for: postId)
+                    
+                } catch {
+                    // Handle error
+                    print("Error posting comment: \(error.localizedDescription)")
                 }
-                // Update the post's commentsCount in the Firestore database
-                           try await PostService().incrementCommentsCount(for: postId)
-                
-                fetchComments(for: postId)  // Refresh comments after posting
-            } catch {
-                // Handle error
-                print("Error posting comment: \(error.localizedDescription)")
             }
-        }
         fetchComments(for: postId)
-    }
-
+            print("Finished posting comment for postId: \(postId)")
+        }
+    
+    
+    
+    
     
     func commentCount(for postId: String) -> Int {
         return comments.filter { $0.postId == postId }.count
-
+        
     }
 }
 

@@ -9,13 +9,13 @@ import SwiftUI
 import Kingfisher
 
 struct PostView: View {
-    
+    @ObservedObject var userService = UserService()
     @ObservedObject var viewModel = PostViewModel()
-
-   
+    @EnvironmentObject var globalSettings: GlobalSettings
+    @State var currentUser: User?
     @State private var searchText = ""
-   
-    var currentUser: User
+   // var currentUserLike: User
+    // var currentUser: User
     var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
     var filteredPosts: [Post] {
         if searchText.isEmpty {
@@ -28,9 +28,9 @@ struct PostView: View {
             }
         }
     }
-
     
-
+    
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             HStack {
@@ -43,13 +43,15 @@ struct PostView: View {
                         NavigationLink(
                             destination: DetailView(post: post, viewModel: viewModel),
                             label: { ForEach(viewModel.allUsers) { user in
-
-
-                                if user.id == post.userId && post.like.contains("\(currentUser.id)"){
-                                    CardView(post: post, postOwner: user, currentUser: currentUser, numOfLike: post.like.count, isLike: true, likeArray: post.like)
+                                
+                                
+                                if let currentUserId = currentUser?.id, user.id == post.userId && post.like.contains(currentUserId) {
+                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id:"", username:"", email:"", followers: [],
+                                                                                                           following: []), numOfLike: post.like.count, isLike: true, likeArray: post.like)
                                 } else if user.id == post.userId {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser, numOfLike: post.like.count, isLike: false, likeArray: post.like)
-
+                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id:"", username:"", email:"", followers: [],
+                                                                                                          following: []), numOfLike: post.like.count, isLike: false, likeArray: post.like)
+                                    
                                 }
                             }
                             })
@@ -60,7 +62,12 @@ struct PostView: View {
                 Spacer()
             }
         }
+        .background(globalSettings.isDark ? Color.black : Color.white)
         .padding(.bottom)
+        .onAppear{
+            viewModel.fetchPosts()
+            currentUser = userService.currentUser
+        }
     }
 }
 
@@ -173,6 +180,7 @@ struct CardView: View {
         .padding()
         .background(Color.white)
         .cornerRadius(20.0)
+        
     }
 }
 
@@ -185,6 +193,7 @@ struct PostView_Previews: PreviewProvider {
             Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
                 .ignoresSafeArea()
             PostView(currentUser: User(id: "1", username: "Test", email: "check@gmail.com",followers: [],following: []))
+                .environmentObject(GlobalSettings.shared)
         }
     }
 }

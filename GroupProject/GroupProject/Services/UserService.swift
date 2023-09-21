@@ -22,26 +22,26 @@ class UserService: ObservableObject {
             self.currentUser = user
         }
     }
-
+    
     func fetchCurrentUser(completion: @escaping (User?) -> Void) {
-            guard let id = Auth.auth().currentUser?.uid else {
-                self.errorMessage = "Could not find firebase uid"
+        guard let id = Auth.auth().currentUser?.uid else {
+            self.errorMessage = "Could not find firebase uid"
+            completion(nil)
+            return
+        }
+        
+        Firestore.firestore().collection("users").document(id).getDocument { snapshot, error in
+            if let error = error {
+                print("Failed to fetch current user:", error)
                 completion(nil)
                 return
             }
-
-            Firestore.firestore().collection("users").document(id).getDocument { snapshot, error in
-                if let error = error {
-                    print("Failed to fetch current user:", error)
-                    completion(nil)
-                    return
-                }
             guard let data = snapshot?.data() else {
                 self.errorMessage = "No data found"
                 return
             }
             if let data = snapshot?.data() {
-                            // Populate the User struct
+                // Populate the User struct
                 DispatchQueue.main.async {
                     let user = User(
                         id: id,
@@ -57,22 +57,24 @@ class UserService: ObservableObject {
                     
                     // Assign the user object to currentUser
                     self.currentUser = user
-
+                    
                 }
-
+                
                 let user = User(
                     id: id,
                     username: data["username"] as? String ?? "",
                     email: data["email"] as? String ?? "",
                     profileImageUrl: data["profileImageUrl"] as? String,
                     fullname: data["fullname"] as? String,
-                    bio: data["bio"] as? String
+                    bio: data["bio"] as? String,
+                    followers: data["followers"] as? [String] ?? [],
+                    following: data["following"] as? [String] ?? []
                 )
                 
                 completion(user)
             }
         }
-    
+    }
     func loginUser(email: String, password: String, completion: @escaping (Result<Bool, Error>) -> Void){
         Auth.auth().signIn(withEmail: email, password: password) { result, err in
             if let err = err {
@@ -130,7 +132,7 @@ class UserService: ObservableObject {
             throw error
         }
     }
-
+    
     func logoutUser() {
         do {
             try Auth.auth().signOut()
@@ -141,64 +143,63 @@ class UserService: ObservableObject {
     
     
     static func fetchAllUsers(completion: @escaping (Result<[User], Error>) -> Void) {
-
-            Firestore.firestore().collection("users").getDocuments { snapshot, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-
-                var users: [User] = []
-
-                for document in snapshot!.documents {
-                    let data = document.data()
-
-                    let id = document.documentID
-                    let username = data["username"] as? String ?? ""
-                    let email = data["email"] as? String ?? ""
-                    let profileImageUrl = data["profileImageUrl"] as? String
-                    let fullname = data["fullname"] as? String
-                    let bio = data["bio"] as? String
-                    let followers = data["followers"] as? [String] ?? []
-                    let following = data["following"] as? [String] ?? []
-
-
-                    let user = User(id: id, username: username, email: email, profileImageUrl: profileImageUrl, fullname: fullname, bio: bio, followers: followers, following: following)
-                    users.append(user)
-                }
-
-                completion(.success(users))
-
+        
+        Firestore.firestore().collection("users").getDocuments { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            var users: [User] = []
+            
+            for document in snapshot!.documents {
+                let data = document.data()
+                
+                let id = document.documentID
+                let username = data["username"] as? String ?? ""
+                let email = data["email"] as? String ?? ""
+                let profileImageUrl = data["profileImageUrl"] as? String
+                let fullname = data["fullname"] as? String
+                let bio = data["bio"] as? String
+                let followers = data["followers"] as? [String] ?? []
+                let following = data["following"] as? [String] ?? []
+                
+                
+                let user = User(id: id, username: username, email: email, profileImageUrl: profileImageUrl, fullname: fullname, bio: bio, followers: followers, following: following)
+                users.append(user)
             }
             
             completion(.success(users))
+            
         }
-                                                                                
+    }
+    
     func followUser(userIDToFollow: String) {
         guard let currentUserID = Auth.auth().currentUser?.uid else {
             // Handle the case where the current user is not authenticated
             return
         }
-
+        
         // Add the user ID to the following list of the current user
         db.collection("users").document(currentUserID).updateData(["following": FieldValue.arrayUnion([userIDToFollow])])
-
+        
         // Add the current user's ID to the followers list of the user being followed
         db.collection("users").document(userIDToFollow).updateData(["followers": FieldValue.arrayUnion([currentUserID])])
     }
-
+    
     func unfollowUser(userIDToUnfollow: String) {
         guard let currentUserID = Auth.auth().currentUser?.uid else {
             // Handle the case where the current user is not authenticated
             return
         }
-
+        
         // Remove the user ID from the following list of the current user
         db.collection("users").document(currentUserID).updateData(["following": FieldValue.arrayRemove([userIDToUnfollow])])
-
+        
         // Remove the current user's ID from the followers list of the user being unfollowed
         db.collection("users").document(userIDToUnfollow).updateData(["followers": FieldValue.arrayRemove([currentUserID])])
     }
-
+    
+    
+    
 }
-

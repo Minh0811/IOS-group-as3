@@ -16,7 +16,11 @@ struct UserProfileView: View {
     var currentUser: User
     
     @ObservedObject var userService = UserService()
+
     
+    @EnvironmentObject var globalSettings: GlobalSettings
+
+
     @State private var showEditProfile = false
     @State private var isFollowing = false
     //@State private var refreshFlag = false
@@ -31,10 +35,48 @@ struct UserProfileView: View {
         ScrollView {
             VStack {
                 CircularProfileImageView(user: user, size: .large )
-                if user.followers.contains("\(currentUser.id)") {
+
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    if let fullname = user.fullname {
+                        Text(fullname)
+                            .font(.footnote)
+                            .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                            .fontWeight(.semibold)
+                    }
+                    if let bio = user.bio {
+                        Text(bio)
+                            .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                            .font(.footnote)
+                    }
+                    Text("Follower: \(user.followers.count)")
+                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                        .font(.footnote)
+                    Text("Following: \(user.following.count)")
+                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                        .font(.footnote)
+                    // Add more user properties here as needed
+                    }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+                }
+            Button {
+                if user.isCurrentUser {
+                    showEditProfile.toggle()
+                    print("Show edit profile")
+                } else if userService.currentUser != nil {
+                    if userService.currentUser!.following.contains(user.id) {
+                        // Show the unfollow button
+                        userService.unfollowUser(userIDToUnfollow: user.id)
+                    } else {
+                        // Show the follow button
+                        userService.followUser(userIDToFollow: user.id)
+                    }
+      if user.followers.contains("\(currentUser.id)") {
                     InfoView(userId: user.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: true, isCurrentUser: false)
                 } else if user.id == currentUser.id {
                     InfoView(userId: user.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: true)
+
                 } else {
                     InfoView(userId: user.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: false)
                 }
@@ -48,6 +90,7 @@ struct UserProfileView: View {
                 }
             }
             }
+            .background(globalSettings.isDark ? Color.black : Color.white)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
     

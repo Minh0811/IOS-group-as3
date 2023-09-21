@@ -14,7 +14,7 @@ struct HomeView: View {
     @ObservedObject var userService = UserService()
     @State private var search: String = ""
     @State private var selectedIndex: Int = 1
-    
+    @EnvironmentObject var globalSettings: GlobalSettings
     private let categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
     
     var body: some View {
@@ -50,7 +50,7 @@ struct HomeView: View {
                                 }
                                 
                                 
-                                PostView(currentUser: userService.currentUser ?? User(id: "", username: "", email: "",followers: [], following: []))
+                                PostView()
                                 
                                 
                                 
@@ -61,6 +61,7 @@ struct HomeView: View {
                         
                         
                     }
+                    
                 }
                 //        .navigationBarTitle("") //this must be empty
                 //        .navigationBarHidden(true)
@@ -70,12 +71,14 @@ struct HomeView: View {
         }
         .toolbarBackground(.hidden, for: .navigationBar)
         .toolbarBackground(.hidden, for: .tabBar)
-        .environment(\.colorScheme, .light)
+        .background(globalSettings.isDark ? Color.black : Color.white)
+        
     }
 }
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            
     }
 }
 

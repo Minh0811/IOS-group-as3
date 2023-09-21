@@ -22,6 +22,8 @@
 		C83D1B1C2AAD49800097643C /* GroupProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83D1B1B2AAD49800097643C /* GroupProjectUITests.swift */; };
 		C83D1B1E2AAD49800097643C /* GroupProjectUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83D1B1D2AAD49800097643C /* GroupProjectUITestsLaunchTests.swift */; };
 		C83D1B2D2AAD49B50097643C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C83D1B2C2AAD49B50097643C /* LoginView.swift */; };
+		C877CDC32ABC2CCC00657A3B /* GlobalSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C877CDC22ABC2CCC00657A3B /* GlobalSetting.swift */; };
+		C877CDC52ABC2CDC00657A3B /* GlobalSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C877CDC42ABC2CDC00657A3B /* GlobalSettingView.swift */; };
 		C89048332AB184CF00C065E9 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89048322AB184CF00C065E9 /* RegisterView.swift */; };
 		C8962E5C2AB6CE4E002FF68E /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8962E5B2AB6CE4E002FF68E /* SearchViewModel.swift */; };
 		C8B33CF12AAD53AE0083C554 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B33CF02AAD53AE0083C554 /* GoogleService-Info.plist */; };
@@ -100,6 +102,8 @@
 		C83D1B1B2AAD49800097643C /* GroupProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupProjectUITests.swift; sourceTree = "<group>"; };
 		C83D1B1D2AAD49800097643C /* GroupProjectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupProjectUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C83D1B2C2AAD49B50097643C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		C877CDC22ABC2CCC00657A3B /* GlobalSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSetting.swift; sourceTree = "<group>"; };
+		C877CDC42ABC2CDC00657A3B /* GlobalSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSettingView.swift; sourceTree = "<group>"; };
 		C89048322AB184CF00C065E9 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		C8962E5B2AB6CE4E002FF68E /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		C8B33CF02AAD53AE0083C554 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -233,6 +237,15 @@
 			path = GroupProjectUITests;
 			sourceTree = "<group>";
 		};
+		C877CDC12ABC2CB700657A3B /* GlobalSetting */ = {
+			isa = PBXGroup;
+			children = (
+				C877CDC22ABC2CCC00657A3B /* GlobalSetting.swift */,
+				C877CDC42ABC2CDC00657A3B /* GlobalSettingView.swift */,
+			);
+			path = GlobalSetting;
+			sourceTree = "<group>";
+		};
 		C8962E5A2AB6CE32002FF68E /* SearchView */ = {
 			isa = PBXGroup;
 			children = (
@@ -263,6 +276,7 @@
 		F7823C002AB382CA0012699D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				C877CDC12ABC2CB700657A3B /* GlobalSetting */,
 				F788EDB92AB6959D002D1383 /* AppState */,
 			);
 			path = Helpers;
@@ -614,9 +628,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C877CDC32ABC2CCC00657A3B /* GlobalSetting.swift in Sources */,
 				F79AC6272AB58CC600BC0ED7 /* PostViewModel.swift in Sources */,
 				F79AC6242AB58CA900BC0ED7 /* HomeViewModel.swift in Sources */,
 				F78AD28B2AB4E553003EFB1D /* PostView.swift in Sources */,
+				C877CDC52ABC2CDC00657A3B /* GlobalSettingView.swift in Sources */,
 				F788EDBF2AB69C6C002D1383 /* NavigationCoordinator.swift in Sources */,
 				F788EDBB2AB695B3002D1383 /* AppState.swift in Sources */,
 				C83D1B032AAD497F0097643C /* AuthenticationView.swift in Sources */,

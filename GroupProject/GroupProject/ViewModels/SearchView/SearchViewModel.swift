@@ -8,13 +8,14 @@ import Foundation
 import Combine
 
 class SearchViewModel: ObservableObject {
+    
     @Published var users: [User] = [] // Store the list of users
     
     init() {
         fetchAllUsers()
     }
     func fetchAllUsers() {
-        UserService.fetchAllUsers { [weak self] result in
+        UserService.fetchAllUsers { [weak self]result in
             switch result {
             case .success(let users):
                 DispatchQueue.main.async {

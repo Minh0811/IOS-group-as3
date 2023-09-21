@@ -9,14 +9,16 @@ import SwiftUI
 
 struct AuthenticationView: View {
     @EnvironmentObject var appState: AppState
-    
+    @StateObject private var globalSettings = GlobalSettings.shared
     var body: some View {
         NavigationView {
             VStack {
                 if appState.isUserLoggedIn {
                     TabBarView()
+                        .environmentObject(globalSettings)
                 } else {
                     LoginView(appState: appState)
+                        .environmentObject(globalSettings)
                 }
             }
            
