@@ -27,6 +27,20 @@ class SearchViewModel: ObservableObject {
             }
         }
     }
+    
+    func fetchUsers() {
+        Task {
+            do {
+                let fetchedUsers = try await UserService().fetchUsers()
+                DispatchQueue.main.async {
+                    self.users = fetchedUsers
+                }
+            } catch {
+                // Handle error
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
 
 
