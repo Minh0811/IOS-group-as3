@@ -14,6 +14,7 @@ import SwiftUI
 struct UserProfileView: View {
     @ObservedObject var userService = UserService()
     let user: User
+    @EnvironmentObject var globalSettings: GlobalSettings
     @State private var showEditProfile = false
     @State private var isFollowing = false
     //@State private var refreshFlag = false
@@ -33,15 +34,19 @@ struct UserProfileView: View {
                     if let fullname = user.fullname {
                         Text(fullname)
                             .font(.footnote)
+                            .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                             .fontWeight(.semibold)
                     }
                     if let bio = user.bio {
                         Text(bio)
+                            .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                             .font(.footnote)
                     }
                     Text("Follower: \(user.followers.count)")
+                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                         .font(.footnote)
                     Text("Following: \(user.following.count)")
+                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                         .font(.footnote)
                     // Add more user properties here as needed
                     }
@@ -100,6 +105,7 @@ struct UserProfileView: View {
                 }
             }
             }
+            .background(globalSettings.isDark ? Color.black : Color.white)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
 

@@ -17,100 +17,127 @@ struct CurrentUserProfileView: View {
     @State private var isLoggedOut: Bool = false
     @State var currentUser: User?
     @Environment (\.dismiss) var dismiss
+    @EnvironmentObject var globalSettings: GlobalSettings
+    @State private var isGlobalSettingsPresented = false
     
     var body: some View {
-        ScrollView {
-            VStack {
-                if let user = currentUser {
-                    HStack{
-                        CircularProfileImageView(user: user, size: .large )
-                        Spacer()
-                        Button(action: {
-                            userService.fetchCurrentUser { user in
-                                self.currentUser = user
+       
+        
+            ScrollView {
+                
+                VStack {
+                    if let user = currentUser {
+                        HStack{
+                            CircularProfileImageView(user: user, size: .large )
+                            Spacer()
+                            Button(action: {
+                                userService.fetchCurrentUser { user in
+                                    self.currentUser = user
+                                }
+                            }) {
+                                Image(systemName: "gobackward")
                             }
-                        }) {
-                            Image(systemName: "gobackward")
+                        }
+                        .padding(.horizontal)
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("\(user.id)")
+                                .font(.footnote)
+                                .fontWeight(.semibold)
+                            Text("\(user.username)")
+                                .font(.footnote)
+                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                                .fontWeight(.semibold)
+                            Text("\(user.fullname ?? "N/A")")
+                                .font(.footnote)
+                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                                .fontWeight(.semibold)
+                            Text("\(user.bio ?? "N/A")")
+                                .font(.footnote)
+                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                            Text("Followers: \(user.followers.count)")
+                                .font(.footnote)
+                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                            Text("Following: \(user.following.count)")
+                                .font(.footnote)
+                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                        
+                    }
+                    
+                    NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentUser ?? User(id: "", username: "", email: "", followers: [], following: [])))) {
+                        Text("Edit Profile")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .frame(width: 360, height: 32)
+                            .foregroundColor(.gray)
+                            .background(
+                                RoundedRectangle(cornerRadius: 6)
+                                    .stroke(Color.gray, lineWidth: 1)
+                            )
+                    }
+                    
+                    //                VStack(spacing: 20) {
+                    //                    ForEach(viewModel.userPosts) { post in
+                    //
+                    //                        NavigationLink(
+                    //                            destination: DetailView(),
+                    //                            label: {
+                    //                                UserPostView(post: post)
+                    //                            })
+                    //                        .navigationBarHidden(true)
+                    //                        .foregroundColor(.black)
+                    //                    }
+                    //                }
+                    //currentUser: currentuser ?? User(id: "", username: "", email: "")
+                    CurrentUserPostView(viewModel: viewModel, currentUser: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))
+                    
+                    Button(action: {
+                        userService.logoutUser()
+                        appState.isUserLoggedIn = false
+                        appState.resetNavigation() // Reset the navigation
+                    }) {
+                        Text("Logout")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .frame(width: 360, height: 44)
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding(.top)
+                    // Perform an action when the button is tapped (optional)
+                    
+                    Button() {
+                        isGlobalSettingsPresented = true
+                    } label: {
+                        NavigationLink(destination: GlobalSettingView().environmentObject(globalSettings)){
+                            Image(systemName: "moonphase.last.quarter")
+                                .font(.headline)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
                         }
                     }
-                    .padding(.horizontal)
                     
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("\(user.id)")
-                            .font(.footnote)
-                            .fontWeight(.semibold)
-                        Text("\(user.username)")
-                            .font(.footnote)
-                            .fontWeight(.semibold)
-                        Text("\(user.fullname ?? "N/A")")
-                            .font(.footnote)
-                            .fontWeight(.semibold)
-                        Text("\(user.bio ?? "N/A")")
-                            .font(.footnote)
-                        Text("Followers: \(user.followers.count)")
-                            .font(.footnote)
-                        Text("Following: \(user.following.count)")
-                            .font(.footnote)
+                }
+                .onAppear {
+                    userService.fetchCurrentUser { user in
+                        self.currentUser = user
+                        if let userId = user?.id {
+                            viewModel.fetchUserPosts(userId: userId)
+                        }
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
-                
                 }
-                
-                NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentUser ?? User(id: "", username: "", email: "", followers: [], following: [])))) {
-                    Text("Edit Profile")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .frame(width: 360, height: 32)
-                        .foregroundColor(.gray)
-                        .background(
-                            RoundedRectangle(cornerRadius: 6)
-                                .stroke(Color.gray, lineWidth: 1)
-                        )
+                .onDisappear {
+                    currentUser = nil
                 }
-               
-//                VStack(spacing: 20) {
-//                    ForEach(viewModel.userPosts) { post in
-//
-//                        NavigationLink(
-//                            destination: DetailView(),
-//                            label: {
-//                                UserPostView(post: post)
-//                            })
-//                        .navigationBarHidden(true)
-//                        .foregroundColor(.black)
-//                    }
-//                }
-                //currentUser: currentuser ?? User(id: "", username: "", email: "")
-                CurrentUserPostView(viewModel: viewModel, currentUser: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))
 
-                Button(action: {
-                    userService.logoutUser()
-                    appState.isUserLoggedIn = false
-                    appState.resetNavigation() // Reset the navigation
-                }) {
-                    Text("Logout")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .frame(width: 360, height: 44)
-                        .background(Color.red)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
-                .padding(.top)
-            }
-            .onAppear {
-                userService.fetchCurrentUser { user in
-                       self.currentUser = user
-                       if let userId = user?.id {
-                           viewModel.fetchUserPosts(userId: userId)
-                       }
-                   }
-            }
-            .onDisappear {
-                currentUser = nil
-            }
         }
+        .background(globalSettings.isDark ? Color.black : Color.white)
         .toolbarBackground(.hidden, for: .navigationBar)
         .toolbarBackground(.hidden, for: .tabBar)
         .navigationBarTitleDisplayMode(.inline)
@@ -149,5 +176,6 @@ struct CurrentUserProfileView: View {
 struct CurrentUserProfileView_Previews: PreviewProvider {
     static var previews: some View {
         CurrentUserProfileView()
+            .environmentObject(GlobalSettings.shared)
     }
 }

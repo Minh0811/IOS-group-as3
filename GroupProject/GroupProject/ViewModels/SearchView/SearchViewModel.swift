@@ -15,7 +15,7 @@ class SearchViewModel: ObservableObject {
         fetchAllUsers()
     }
     func fetchAllUsers() {
-        UserService.fetchAllUsers { [weak self] result in
+        UserService.fetchAllUsers { [weak self]result in
             switch result {
             case .success(let users):
                 DispatchQueue.main.async {
