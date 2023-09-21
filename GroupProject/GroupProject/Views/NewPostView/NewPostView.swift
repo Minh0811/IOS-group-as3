@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct NewPostView: View {
     @State private var selectedImage: UIImage?
@@ -13,7 +14,8 @@ struct NewPostView: View {
     @State private var isImagePickerPresented: Bool = false
     @State private var isLoading: Bool = false
     @State private var postCreatedSuccessfully: Bool = false
-
+    @State var isSheetPresented : Bool = false
+    @State var location : LocationItem = LocationItem(name: "", coordinate: CLLocationCoordinate2D(latitude: 0,longitude: 0))
     var body: some View {
         VStack {
             if let image = selectedImage {
@@ -21,21 +23,33 @@ struct NewPostView: View {
                     .resizable()
                     .scaledToFit()
             }
-
+            
             Button("Select Image") {
                 isImagePickerPresented = true
             }
-
+            
             TextField("Enter caption", text: $caption)
                 .padding()
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(8)
-
+            if location.name == ""{
+                Button(action:{ isSheetPresented=true
+                })
+                {
+                    Text("picker")
+                        .padding()
+                        
+                        .cornerRadius(8)
+                }
+            }else{
+                Text(location.name).padding()
+                    .cornerRadius(8)
+            }
             Button("Create Post") {
                 Task {
                     isLoading = true
                     do {
-                        let success = try await PostService().createPost(image: selectedImage!, caption: caption)
+                        let success = try await PostService().createPost(image: selectedImage!, caption: caption, location: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
                         postCreatedSuccessfully = success
                     } catch {
                         // Handle error
@@ -48,6 +62,9 @@ struct NewPostView: View {
         }
         .sheet(isPresented: $isImagePickerPresented) {
             NewPostImagePicker(selectedImage: $selectedImage)
+        }
+        .sheet(isPresented: $isSheetPresented){
+            SearchView(isSheetPresented: $isSheetPresented, location: $location )
         }
         .alert(isPresented: $postCreatedSuccessfully) {
             Alert(title: Text("Success"), message: Text("Post created successfully!"), dismissButton: .default(Text("OK")))

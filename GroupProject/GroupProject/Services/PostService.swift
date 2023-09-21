@@ -9,12 +9,13 @@ import SwiftUI
 
 import Firebase
 import FirebaseStorage
+import CoreLocation
 
 class PostService: ObservableObject {
     let db = Firestore.firestore()
     
     // Function to create a new post
-    func createPost(image: UIImage, caption: String) async throws -> Bool {
+    func createPost(image: UIImage, caption: String, location: CLLocationCoordinate2D) async throws -> Bool {
         do {
             // Await the result of the uploadImage function
             let imageUrl = try await ImageUploader.uploadImage(image: image)
@@ -41,7 +42,9 @@ class PostService: ObservableObject {
                 "imageUrl": unwrappedImageUrl,
                 "caption": caption,
                 "timestamp": Timestamp(date: Date()),
-                "commentsCount": 0  // Initialize commentsCount to 0 for new posts
+                "commentsCount": 0,  // Initialize commentsCount to 0 for new posts
+                "lat": location.latitude,
+                "long": location.longitude
             ]
             
             return try await withCheckedThrowingContinuation { continuation in
@@ -83,8 +86,9 @@ class PostService: ObservableObject {
                     let caption = data["caption"] as? String ?? ""
                     let like = data["like"] as? [String] ?? []
                     let username = data["username"] as? String ?? ""  // Extracting the username
-                    
-                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like)
+                    let latitude = data["lat"] as? String ?? ""
+                    let longitude = data["long"] as? String ?? ""
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like, coordinates: Coordinates(latitude: Double(latitude) ?? 10.5,longitude: Double(longitude) ?? 101.5))
                 }
                 
                 continuation.resume(returning: posts)
@@ -118,7 +122,7 @@ class PostService: ObservableObject {
                     let username = data["username"] as? String ?? ""
                     let like = data["like"] as? [String] ?? []
 
-                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like)
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like, coordinates: Coordinates(latitude: 10.7,longitude: 106.69))
                 }
 
                 continuation.resume(returning: posts)

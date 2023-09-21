@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		469B7C532AB40AC000F060E7 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469B7C522AB40AC000F060E7 /* Post.swift */; };
 		469B7C572AB40C3A00F060E7 /* PostEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469B7C562AB40C3A00F060E7 /* PostEditView.swift */; };
+		B33C46222ABC47BF00EA82A3 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33C46212ABC47BF00EA82A3 /* MapView.swift */; };
+		B33C46272ABC4B9400EA82A3 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33C46262ABC4B9400EA82A3 /* MapViewModel.swift */; };
+		B3D80DAD2ABC6FD400AD321E /* PlaceSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D80DAC2ABC6FD400AD321E /* PlaceSearchViewModel.swift */; };
+		B3D80DAF2ABC700300AD321E /* PlaceSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D80DAE2ABC700300AD321E /* PlaceSearchView.swift */; };
 		C833CC442AB551D300691124 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C833CC432AB551D300691124 /* EditProfileView.swift */; };
 		C833CC462AB5520E00691124 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C833CC452AB5520E00691124 /* EditProfileViewModel.swift */; };
 		C833CC482AB5525B00691124 /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C833CC472AB5525B00691124 /* ImageUploader.swift */; };
@@ -85,6 +89,10 @@
 /* Begin PBXFileReference section */
 		469B7C522AB40AC000F060E7 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		469B7C562AB40C3A00F060E7 /* PostEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditView.swift; sourceTree = "<group>"; };
+		B33C46212ABC47BF00EA82A3 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		B33C46262ABC4B9400EA82A3 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		B3D80DAC2ABC6FD400AD321E /* PlaceSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchViewModel.swift; sourceTree = "<group>"; };
+		B3D80DAE2ABC700300AD321E /* PlaceSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchView.swift; sourceTree = "<group>"; };
 		C833CC432AB551D300691124 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		C833CC452AB5520E00691124 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		C833CC472AB5525B00691124 /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
@@ -169,6 +177,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B33C46202ABC47A300EA82A3 /* MapView */ = {
+			isa = PBXGroup;
+			children = (
+				B33C46212ABC47BF00EA82A3 /* MapView.swift */,
+			);
+			path = MapView;
+			sourceTree = "<group>";
+		};
+		B33C46252ABC4B8600EA82A3 /* MapView */ = {
+			isa = PBXGroup;
+			children = (
+				B33C46262ABC4B9400EA82A3 /* MapViewModel.swift */,
+			);
+			path = MapView;
+			sourceTree = "<group>";
+		};
+		B33C46282ABC55FF00EA82A3 /* PlacePickerView */ = {
+			isa = PBXGroup;
+			children = (
+				B3D80DAE2ABC700300AD321E /* PlaceSearchView.swift */,
+			);
+			path = PlacePickerView;
+			sourceTree = "<group>";
+		};
+		B33C46292ABC560B00EA82A3 /* PlacePickerViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B3D80DAC2ABC6FD400AD321E /* PlaceSearchViewModel.swift */,
+			);
+			path = PlacePickerViewModel;
+			sourceTree = "<group>";
+		};
 		C83D1AF42AAD497E0097643C = {
 			isa = PBXGroup;
 			children = (
@@ -323,6 +363,7 @@
 		F790F1BF2AB138B600D85149 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B33C46282ABC55FF00EA82A3 /* PlacePickerView */,
 				F788EDC32AB792CE002D1383 /* TabView */,
 				F790F1C22AB13C7400D85149 /* AuthenticationView */,
 				C8C591422AB6B2F500D52E53 /* SearchUserView */,
@@ -330,6 +371,7 @@
 				F790F1C42AB13C9700D85149 /* HomeView */,
 				F78AD2892AB4E539003EFB1D /* PostView */,
 				F790F1C52AB13D6000D85149 /* NewPostView */,
+				B33C46202ABC47A300EA82A3 /* MapView */,
 				F790F1C62AB13D6E00D85149 /* UserProfileView */,
 			);
 			path = Views;
@@ -338,6 +380,8 @@
 		F790F1C12AB138CA00D85149 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				B33C46292ABC560B00EA82A3 /* PlacePickerViewModel */,
+				B33C46252ABC4B8600EA82A3 /* MapView */,
 				C8962E5A2AB6CE32002FF68E /* SearchView */,
 				F79AC62B2AB58D0500BC0ED7 /* LoginView */,
 				F79AC6222AB58C9B00BC0ED7 /* HomeViewModel */,
@@ -618,9 +662,11 @@
 				F79AC6242AB58CA900BC0ED7 /* HomeViewModel.swift in Sources */,
 				F78AD28B2AB4E553003EFB1D /* PostView.swift in Sources */,
 				F788EDBF2AB69C6C002D1383 /* NavigationCoordinator.swift in Sources */,
+				B33C46222ABC47BF00EA82A3 /* MapView.swift in Sources */,
 				F788EDBB2AB695B3002D1383 /* AppState.swift in Sources */,
 				C83D1B032AAD497F0097643C /* AuthenticationView.swift in Sources */,
 				C833CC482AB5525B00691124 /* ImageUploader.swift in Sources */,
+				B3D80DAF2ABC700300AD321E /* PlaceSearchView.swift in Sources */,
 				F790F1CB2AB1437200D85149 /* UserService.swift in Sources */,
 				F788EDC72AB7A3BA002D1383 /* NewPostImagePicker.swift in Sources */,
 				C83D1B2D2AAD49B50097643C /* LoginView.swift in Sources */,
@@ -644,7 +690,9 @@
 				C8C591412AB6AFDA00D52E53 /* CurrentUserProfileView.swift in Sources */,
 				F788EDC22AB78C12002D1383 /* PostService.swift in Sources */,
 				C833CC462AB5520E00691124 /* EditProfileViewModel.swift in Sources */,
+				B33C46272ABC4B9400EA82A3 /* MapViewModel.swift in Sources */,
 				C8C591442AB6B32000D52E53 /* SearchUserView.swift in Sources */,
+				B3D80DAD2ABC6FD400AD321E /* PlaceSearchViewModel.swift in Sources */,
 				C8962E5C2AB6CE4E002FF68E /* SearchViewModel.swift in Sources */,
 				C89048332AB184CF00C065E9 /* RegisterView.swift in Sources */,
 				F79AFFEC2ABB880700992EFA /* Extensions.swift in Sources */,
@@ -812,6 +860,9 @@
 				DEVELOPMENT_ASSET_PATHS = "\"GroupProject/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -840,6 +891,9 @@
 				DEVELOPMENT_ASSET_PATHS = "\"GroupProject/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

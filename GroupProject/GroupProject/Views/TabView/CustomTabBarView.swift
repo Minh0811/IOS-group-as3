@@ -16,6 +16,7 @@ struct CustomTabBarView: View {
     ("magnifyingglass","Search"),
     ("plus.square.fill","Create Post"),
     ("person.fill","Profile"),
+    ("map.fill","Map")
     ]
     
     var body: some View {
@@ -25,7 +26,7 @@ struct CustomTabBarView: View {
                 .foregroundColor(Color("Background"))
                 //.shadow(radius: 2)
             HStack{
-                ForEach(0..<4){ index in
+                ForEach(0..<5){ index in
                     Button {
                         tabSelection = index 
                     } label: {
