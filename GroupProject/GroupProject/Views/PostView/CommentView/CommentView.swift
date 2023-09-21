@@ -20,7 +20,7 @@ struct CommentView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 
                 Button("Post") {
-                    print("Post button pressed.")
+                  
                     if let currentUser = currentUser {
                         print("Current user is authenticated with ID: \(currentUser.id)")
                         viewModel.postComment(text: commentText, by: currentUser, for: postId)
@@ -46,12 +46,18 @@ struct CommentView: View {
  
         }
         .onAppear {
-            viewModel.fetchComments(for: postId)
-            print("Fetching comments for postId: \(postId) in CommentView")
+         
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                viewModel.fetchComments(for: postId)
+               
+            }
             UserService().fetchCurrentUser { user in
                 self.currentUser = user
             }
+          
+        
         }
+
 
 
     }

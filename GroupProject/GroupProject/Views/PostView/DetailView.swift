@@ -18,8 +18,8 @@ import SwiftUI
 struct DetailView: View {
     var post: Post
     @ObservedObject var viewModel: PostViewModel
-    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
-    
+    //@Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
+    @State private var navigateToCommentView = false
     var body: some View {
         ZStack {
             
@@ -35,9 +35,16 @@ struct DetailView: View {
                 DescriptionView(post: post)
                
                 NavigationLink(
-                    destination:  CommentView(viewModel: viewModel, postId: post.id),
-                    label: { Text("CommentView")
-                    })
+                    destination: CommentView(viewModel: viewModel, postId: post.id),
+                    isActive: $navigateToCommentView,
+                    label: { EmptyView() }
+                )
+
+                Button("CommentView") {
+                    navigateToCommentView = true
+                }
+
+
                
             }
             .edgesIgnoringSafeArea(.top)
@@ -45,12 +52,18 @@ struct DetailView: View {
            
         }
         .onAppear{
+            print("DetailView is appearing for postId: \(post.id)")
             viewModel.fetchComments(for: post.id)
+            print("Finished DetailView .onAppear for postId: \(post.id)")
         }
-        .navigationBarBackButtonHidden(true)
-        .customBackButton(presentationMode: presentationMode)
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .toolbarBackground(.hidden, for: .tabBar)
+        .onChange(of: viewModel.posts) { newPosts in
+                    print("DetailView: posts were updated. New count: \(newPosts.count)")
+                }
+        
+        //.navigationBarBackButtonHidden(true)
+        //.customBackButton(presentationMode: presentationMode)
+       // .toolbarBackground(.hidden, for: .navigationBar)
+       // .toolbarBackground(.hidden, for: .tabBar)
     }
 }
 

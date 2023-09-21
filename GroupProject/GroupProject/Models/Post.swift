@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Post: Identifiable, Codable {
+struct Post: Identifiable, Codable, Equatable {
     var id: String
     var userId: String  // User ID of the post creator
     var username: String  // Username of the post creator
@@ -15,4 +15,10 @@ struct Post: Identifiable, Codable {
     var caption: String  // Caption or status of the post
     var like: [String]
     var commentsCount: Int = 0
+}
+
+extension Post {
+    static func == (lhs: Post, rhs: Post) -> Bool {
+        return lhs.id == rhs.id // Assuming `id` uniquely identifies a Post
+    }
 }
