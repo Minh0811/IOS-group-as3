@@ -9,13 +9,13 @@ import SwiftUI
 import Kingfisher
 
 struct PostView: View {
-    
+    @ObservedObject var userService = UserService()
     @ObservedObject var viewModel = PostViewModel()
-
-   
+    
+    @State var currentUser: User?
     @State private var searchText = ""
-   
-    var currentUser: User
+   // var currentUserLike: User
+    // var currentUser: User
     var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
     var filteredPosts: [Post] {
         if searchText.isEmpty {
@@ -28,9 +28,9 @@ struct PostView: View {
             }
         }
     }
-
     
-
+    
+    
     var body: some View {
         ScrollView(showsIndicators: false) {
             HStack {
@@ -43,13 +43,15 @@ struct PostView: View {
                         NavigationLink(
                             destination: DetailView(post: post, viewModel: viewModel),
                             label: { ForEach(viewModel.allUsers) { user in
-
-
-                                if user.id == post.userId && post.like.contains("\(currentUser.id)"){
-                                    CardView(post: post, postOwner: user, currentUser: currentUser, numOfLike: post.like.count, isLike: true, likeArray: post.like)
+                                
+                                
+                                if let currentUserId = currentUser?.id, user.id == post.userId && post.like.contains(currentUserId) {
+                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id:"", username:"", email:"", followers: [],
+                                                                                                           following: []), numOfLike: post.like.count, isLike: true, likeArray: post.like)
                                 } else if user.id == post.userId {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser, numOfLike: post.like.count, isLike: false, likeArray: post.like)
-
+                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id:"", username:"", email:"", followers: [],
+                                                                                                          following: []), numOfLike: post.like.count, isLike: false, likeArray: post.like)
+                                    
                                 }
                             }
                             })
@@ -61,6 +63,10 @@ struct PostView: View {
             }
         }
         .padding(.bottom)
+        .onAppear{
+            viewModel.fetchPosts()
+            currentUser = userService.currentUser
+        }
     }
 }
 

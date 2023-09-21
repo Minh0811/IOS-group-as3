@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBgZfIu1jEHLai6Fj67VavmQbct7mG7hGg</string>
+	<string>AIzaSyCg5RqyIBn4m69imNWie4IwsyqHMNJsgfc</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1092754998313</string>
+	<string>577840279781</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>s3804620.Tran.Huy.Khanh.GroupProject</string>
 	<key>PROJECT_ID</key>
-	<string>group-ios</string>
+	<string>testing-for-minh</string>
 	<key>STORAGE_BUCKET</key>
-	<string>group-ios.appspot.com</string>
+	<string>testing-for-minh.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1092754998313:ios:38489bc12d99367f788838</string>
+	<string>1:577840279781:ios:114a5ed55c7b4747a0240c</string>
 </dict>
 </plist>

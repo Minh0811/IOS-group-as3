@@ -8,6 +8,7 @@ import Foundation
 import Combine
 
 class SearchViewModel: ObservableObject {
+    
     @Published var users: [User] = [] // Store the list of users
     
     init() {

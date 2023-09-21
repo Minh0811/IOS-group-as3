@@ -8,18 +8,18 @@
 import SwiftUI
 
 class PostViewModel: ObservableObject {
+   // @Published var userService = UserService()
     @Published var dataLoaded: Bool = false
     @Published var posts: [Post] = []
     @Published var userPosts: [Post] = [] {
-            didSet {
-                if !userPosts.isEmpty {
-                    dataLoaded = true
-                }
+        didSet {
+            if !userPosts.isEmpty {
+                dataLoaded = true
             }
         }
-
-    @Published var dataLoaded: Bool = false
-
+    }
+    
+    
     @Published var allUsers: [User] = [] // Store the list of users
     
     @Published var comments: [Comment] = []
@@ -28,7 +28,7 @@ class PostViewModel: ObservableObject {
         fetchAllUsers()
         fetchPosts()
     }
-
+    
     
     func fetchPosts() {
         Task {
@@ -43,7 +43,7 @@ class PostViewModel: ObservableObject {
             }
         }
     }
-
+    
     func fetchUserPosts(userId: String) {
         Task {
             do {
@@ -59,8 +59,8 @@ class PostViewModel: ObservableObject {
             }
         }
     }
-
-
+    
+    
     func editPost(postId: String, newCaption: String) async {
         do {
             try await PostService().editPost(id: postId, newCaption: newCaption)
@@ -83,12 +83,12 @@ class PostViewModel: ObservableObject {
         }
     }
     
-
+    
     func likePost(postId: String, userIdArray: [String]) {
         Task {
             try? await PostService().likePost(id: postId, likeArray: userIdArray)
         }
-
+    }
     
     func fetchComments(for postId: String) {
         Task {
@@ -105,7 +105,7 @@ class PostViewModel: ObservableObject {
             }
         }
     }
-
+    
     func postComment(text: String, by user: User, for postId: String) {
         let newComment = Comment(id: UUID().uuidString, postId: postId, userId: user.id, username: user.username, text: text, timestamp: Date())
         Task {
@@ -120,7 +120,7 @@ class PostViewModel: ObservableObject {
                     // TODO: Update the post's commentsCount in the Firestore database as well
                 }
                 // Update the post's commentsCount in the Firestore database
-                           try await PostService().incrementCommentsCount(for: postId)
+                try await PostService().incrementCommentsCount(for: postId)
                 
                 fetchComments(for: postId)  // Refresh comments after posting
             } catch {
@@ -130,11 +130,11 @@ class PostViewModel: ObservableObject {
         }
         fetchComments(for: postId)
     }
-
+    
     
     func commentCount(for postId: String) -> Int {
         return comments.filter { $0.postId == postId }.count
-
+        
     }
 }
 
