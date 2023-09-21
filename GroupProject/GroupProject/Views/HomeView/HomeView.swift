@@ -11,6 +11,7 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @ObservedObject var userService = UserService()
     @State private var search: String = ""
     @State private var selectedIndex: Int = 1
     
@@ -28,12 +29,12 @@ struct HomeView: View {
                         ScrollView (showsIndicators: false) {
                             VStack (alignment: .leading) {                     
                                 // Menu and profile picture
-                                AppBarView()
+                                //AppBarView()
                                 // Title
                                 TagLineView()
                                     .padding()
                                 //Sreach Bar
-                                SearchAndScanView(search: $search)
+                                //SearchAndScanView(search: $search)
                                 
                                 
                                 //Post tags
@@ -49,7 +50,7 @@ struct HomeView: View {
                                 }
                                 
                                 
-                                PostView()
+                                PostView(currentUser: userService.currentUser ?? User(id: "", username: "", email: "",followers: [], following: []))
                                 
                                 
                                 
@@ -111,30 +112,30 @@ struct TagLineView: View {
     }
 }
 
-struct SearchAndScanView: View {
-    @Binding var search: String
-    var body: some View {
-        HStack {
-            HStack {
-                Image("Search")
-                    .padding(.trailing, 8)
-                TextField("Search Furniture", text: $search)
-            }
-            .padding(.all, 10)
-            .background(Color.white)
-            .cornerRadius(10.0)
-            .padding(.trailing, 8)
-            
-            Button(action: {}) {
-                Image("Search")
-                    .padding(.all, 13)
-                    .background(Color("Primary"))
-                    .cornerRadius(10.0)
-            }
-        }
-        .padding(.horizontal)
-    }
-}
+//struct SearchAndScanView: View {
+//    @Binding var search: String
+//    var body: some View {
+//        HStack {
+//            HStack {
+//                Image("Search")
+//                    .padding(.trailing, 8)
+//                TextField("Search Furniture", text: $search)
+//            }
+//            .padding(.all, 10)
+//            .background(Color.white)
+//            .cornerRadius(10.0)
+//            .padding(.trailing, 8)
+//            
+//            Button(action: {}) {
+//                Image("Search")
+//                    .padding(.all, 13)
+//                    .background(Color("Primary"))
+//                    .cornerRadius(10.0)
+//            }
+//        }
+//        .padding(.horizontal)
+//    }
+//}
 
 struct CategoryView: View {
     let isActive: Bool

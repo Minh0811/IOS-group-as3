@@ -17,13 +17,16 @@ class PostViewModel: ObservableObject {
                 }
             }
         }
-     
+
+    @Published var dataLoaded: Bool = false
+
     @Published var allUsers: [User] = [] // Store the list of users
     
     @Published var comments: [Comment] = []
     
     init() {
         fetchAllUsers()
+        fetchPosts()
     }
 
     
@@ -80,6 +83,12 @@ class PostViewModel: ObservableObject {
         }
     }
     
+
+    func likePost(postId: String, userIdArray: [String]) {
+        Task {
+            try? await PostService().likePost(id: postId, likeArray: userIdArray)
+        }
+
     
     func fetchComments(for postId: String) {
         Task {
@@ -125,6 +134,7 @@ class PostViewModel: ObservableObject {
     
     func commentCount(for postId: String) -> Int {
         return comments.filter { $0.postId == postId }.count
+
     }
 }
 

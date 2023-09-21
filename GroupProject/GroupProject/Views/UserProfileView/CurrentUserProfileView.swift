@@ -47,13 +47,17 @@ struct CurrentUserProfileView: View {
                             .fontWeight(.semibold)
                         Text("\(user.bio ?? "N/A")")
                             .font(.footnote)
+                        Text("Followers: \(user.followers.count)")
+                            .font(.footnote)
+                        Text("Following: \(user.following.count)")
+                            .font(.footnote)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 
                 }
                 
-                NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentUser ?? User(id: "", username: "", email: "")))) {
+                NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentUser ?? User(id: "", username: "", email: "", followers: [], following: [])))) {
                     Text("Edit Profile")
                         .font(.subheadline)
                         .fontWeight(.semibold)
@@ -78,7 +82,7 @@ struct CurrentUserProfileView: View {
 //                    }
 //                }
                 //currentUser: currentuser ?? User(id: "", username: "", email: "")
-                CurrentUserPostView(viewModel: viewModel, currentUser: currentUser ?? User(id: "", username: "", email: ""))
+                CurrentUserPostView(viewModel: viewModel, currentUser: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))
 
                 Button(action: {
                     userService.logoutUser()

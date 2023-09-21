@@ -91,7 +91,7 @@ struct UserPostView: View {
 struct CurrentUserPostView_Previews: PreviewProvider {
     static var previews: some View {
         // Create a mock user for the preview
-        let mockUser = User(id: "80gqEow1wJRHXHgxw7XmSAjqZ8Y2", username: "mockUser", email: "mock@example.com")
+        let mockUser = User(id: "80gqEow1wJRHXHgxw7XmSAjqZ8Y2", username: "mockUser", email: "mock@example.com", followers: [], following: [])
         
         // Create a mock viewModel for the preview
         let mockViewModel = PostViewModel()

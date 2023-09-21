@@ -137,8 +137,23 @@ class PostService: ObservableObject {
             throw error
         }
     }
+
+    
+    func likePost(id: String, likeArray: [String]) async throws {
+        do {
+            guard ((Auth.auth().currentUser?.uid) != nil) else {
+                throw NSError(domain: "Auth", code: 1, userInfo: [NSLocalizedDescriptionKey: "User not logged in"])
+            }
+            try await db.collection("posts").document(id).setData(["like": likeArray], merge: true)
+        } catch {
+            throw error
+        }
+    }
+
+
     func incrementCommentsCount(for postId: String) async throws {
         let postRef = db.collection("posts").document(postId)
         try await postRef.updateData(["commentsCount": FieldValue.increment(Int64(1))])
     }
+
 }
