@@ -15,7 +15,7 @@ class PostService: ObservableObject {
     let db = Firestore.firestore()
     
     // Function to create a new post
-    func createPost(image: UIImage, caption: String, location: CLLocationCoordinate2D) async throws -> Bool {
+    func createPost(image: UIImage, caption: String, name: String, location: CLLocationCoordinate2D) async throws -> Bool {
         do {
             // Await the result of the uploadImage function
             let imageUrl = try await ImageUploader.uploadImage(image: image)
@@ -43,6 +43,7 @@ class PostService: ObservableObject {
                 "caption": caption,
                 "timestamp": Timestamp(date: Date()),
                 "commentsCount": 0,  // Initialize commentsCount to 0 for new posts
+                "name" : name,
                 "lat": location.latitude,
                 "long": location.longitude
             ]
@@ -60,9 +61,9 @@ class PostService: ObservableObject {
             throw error
         }
     }
+    
 
-
-
+    
     
     // Function to fetch posts
     func fetchPosts() async throws -> [Post] {
@@ -86,9 +87,10 @@ class PostService: ObservableObject {
                     let caption = data["caption"] as? String ?? ""
                     let like = data["like"] as? [String] ?? []
                     let username = data["username"] as? String ?? ""  // Extracting the username
+                    let name = data["name"] as? String ?? ""
                     let latitude = data["lat"] as? String ?? ""
                     let longitude = data["long"] as? String ?? ""
-                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like, coordinates: Coordinates(latitude: Double(latitude) ?? 10.5,longitude: Double(longitude) ?? 101.5))
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like,name: name, coordinates: Coordinates(latitude: Double(latitude) ?? 10.5,longitude: Double(longitude) ?? 101.5))
                 }
                 
                 continuation.resume(returning: posts)
@@ -121,8 +123,11 @@ class PostService: ObservableObject {
                     let caption = data["caption"] as? String ?? ""
                     let username = data["username"] as? String ?? ""
                     let like = data["like"] as? [String] ?? []
+                    let name = data["name"] as? String ?? ""
+                    let latitude = data["lat"] as? String ?? "10.7"
+                    let longitude = data["long"] as? String ?? "106.69"
 
-                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like, coordinates: Coordinates(latitude: 10.7,longitude: 106.69))
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like,name: name ,coordinates: Coordinates(latitude: Double(latitude) ?? 10.5,longitude: Double(longitude) ?? 101.5))
                 }
 
                 continuation.resume(returning: posts)

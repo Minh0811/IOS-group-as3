@@ -15,7 +15,7 @@ struct NewPostView: View {
     @State private var isLoading: Bool = false
     @State private var postCreatedSuccessfully: Bool = false
     @State var isSheetPresented : Bool = false
-    @State var location : LocationItem = LocationItem(name: "", coordinate: CLLocationCoordinate2D(latitude: 0,longitude: 0))
+    @State var location : LocationItem = LocationItem(imageUrl:"test-image", name: "", coordinate: CLLocationCoordinate2D(latitude: 0,longitude: 0))
     var body: some View {
         VStack {
             if let image = selectedImage {
@@ -49,7 +49,7 @@ struct NewPostView: View {
                 Task {
                     isLoading = true
                     do {
-                        let success = try await PostService().createPost(image: selectedImage!, caption: caption, location: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
+                        let success = try await PostService().createPost(image: selectedImage!, caption: caption, name: location.name, location: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
                         postCreatedSuccessfully = success
                     } catch {
                         // Handle error

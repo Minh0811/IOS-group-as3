@@ -15,6 +15,7 @@ struct Post: Identifiable, Codable, Equatable {
     var caption: String  // Caption or status of the post
     var like: [String]
     var commentsCount: Int = 0
+    var name: String
     var coordinates : Coordinates
     var location : CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: coordinates.latitude, longitude: coordinates.longitude)
@@ -32,6 +33,7 @@ extension Post {
 
 struct LocationItem: Identifiable {
     let id = UUID()
+    let imageUrl:String
     let name : String
     var coordinate: CLLocationCoordinate2D
 }

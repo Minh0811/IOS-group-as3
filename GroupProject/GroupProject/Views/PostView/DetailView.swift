@@ -77,7 +77,7 @@ struct DetailView_Previews: PreviewProvider {
         username: "mockUsername",
         imageUrl: "https://example.com/mock-image.jpg",
         caption: "This is a mock caption for the mock post.",
-        like: ["user1", "user2", "user3"], coordinates: Coordinates(latitude: 10,longitude: 10)
+        like: ["user1", "user2", "user3"], name: "Sydney", coordinates: Coordinates(latitude: 10,longitude: 10)
     )
     static var mockViewModel = PostViewModel()
     static var previews: some View {

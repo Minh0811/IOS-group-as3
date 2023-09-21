@@ -13,16 +13,18 @@ enum MapDetails{
 }
 
 final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
-    static let photoLocations: [LocationItem] = [
-        LocationItem(name: "Place", coordinate: CLLocationCoordinate2D(latitude: 10.724250, longitude: 106.693520)),
-            LocationItem(name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.799250, longitude: 106.692520)),
-            LocationItem(name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.789250, longitude: 106.691520)),
-            LocationItem(name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.769250, longitude: 106.699520)),
-            LocationItem(name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.739250, longitude: 106.698520)),
-            LocationItem(name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.719250, longitude: 106.667520)),
-            LocationItem(name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.723250, longitude: 106.656520)),
-            LocationItem(name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.739250, longitude: 106.614520)),
-            LocationItem(name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.649250, longitude: 106.695520)),
+    @Published var posts: [Post] = []
+    var postService = PostService()
+    @Published var photoLocations: [LocationItem] = [
+        LocationItem(imageUrl: "testing-image", name: "Place", coordinate: CLLocationCoordinate2D(latitude: 10.724250, longitude: 106.693520)),
+        LocationItem(imageUrl: "testing-image", name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.799250, longitude: 106.692520)),
+        LocationItem(imageUrl: "testing-image", name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.789250, longitude: 106.691520)),
+        LocationItem(imageUrl: "testing-image", name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.769250, longitude: 106.699520)),
+        LocationItem(imageUrl: "testing-image", name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.739250, longitude: 106.698520)),
+        LocationItem(imageUrl: "testing-image", name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.719250, longitude: 106.667520)),
+        LocationItem(imageUrl: "testing-image", name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.723250, longitude: 106.656520)),
+        LocationItem(imageUrl: "testing-image", name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.739250, longitude: 106.614520)),
+        LocationItem(imageUrl: "testing-image", name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.649250, longitude: 106.695520)),
             // Add more locations here...
         ]
     var locationManager : CLLocationManager?
@@ -33,6 +35,23 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
             locationManager!.delegate = self
         }else{
             print("WRONG")
+        }
+    }
+    func fetchPosts() {
+        Task {
+            do {
+                let fetchedPosts = try await PostService().fetchPosts()
+                DispatchQueue.main.async {
+                    self.posts = fetchedPosts
+                    for post in self.posts{
+                        self.photoLocations.append(LocationItem(imageUrl: post.imageUrl ,name: post.name, coordinate: post.location))
+                    print("locations added")
+                    }
+                }
+            } catch {
+                // Handle error
+                print(error.localizedDescription)
+            }
         }
     }
     private func checkLocationAuthorization() {

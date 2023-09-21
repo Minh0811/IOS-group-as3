@@ -45,7 +45,7 @@ struct SearchView: View {
                                     .font(.caption).foregroundColor(.gray)
                             }
                         }.onTapGesture {
-                            location = LocationItem(name: place.name!, coordinate: CLLocationCoordinate2D(latitude: 10, longitude: 10))
+                            location = LocationItem(imageUrl: "", name: place.name!, coordinate: CLLocationCoordinate2D(latitude: 10, longitude: 10))
                             isSheetPresented = false
                         }
                     }

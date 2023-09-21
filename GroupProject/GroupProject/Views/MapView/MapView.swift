@@ -7,11 +7,11 @@ struct MapView: View {
     @State private var displayPostSheet = false
     
     var body: some View{
-        Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: MapViewModel.photoLocations ){locationItem in
+        Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: viewModel.photoLocations ){locationItem in
             MapAnnotation(coordinate: locationItem.coordinate) {
                 VStack{
                     HStack {
-                        Image("unnamed")
+                        Image(locationItem.imageUrl)
                             .resizable()
                             .foregroundColor(.red)
                             .frame(width: 50, height: 50)
