@@ -32,19 +32,30 @@ struct NewPostView: View {
                 Button() {
                     isImagePickerPresented = true
                 } label: {
-                    Image("img")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 100, height: 100)
-                    
+                    VStack {
+                        Image("img")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 100)
+                            .padding(.top)
+                        Text("Choose your image")
+                            .fontWeight(.semibold)
+                            .font(.title)
+                            .foregroundColor(.gray)
+                            .padding([.leading, .bottom, .trailing])
+                    }
                 }
-                .padding(.horizontal)
-                Rectangle()
-                    .stroke(Color("Primary"), lineWidth: 4)
-                    .frame(width: 100, height: 80)
+//                .padding(.horizontal)
+//                Rectangle()
+//                    .stroke(Color.white, lineWidth: 4)
+//                    .frame(width: 100, height: 80)
+                .background()
+                .opacity(1)
+                .cornerRadius(30)
+                
             }
 
-
+            Spacer()
             TextField("Enter caption", text: $caption, axis: .vertical)
                 .padding(.horizontal)
                 .frame(width: 350, height: 90)
@@ -59,11 +70,11 @@ struct NewPostView: View {
                         }) {
                             Text(selectedCategory)
                                 .font(Font.custom("Baskerville-Bold", size: 18))
-                                .foregroundColor(Color("Primary"))
+                                .foregroundColor(Color("Color"))
                                 .padding(.horizontal)
                                 .background(
                                     RoundedRectangle(cornerRadius: 8)
-                                     .stroke(Color("Primary"), lineWidth: 1)
+                                     .stroke(Color("Color"), lineWidth: 1)
                                      
                                 )
                         }
@@ -79,7 +90,7 @@ struct NewPostView: View {
                                 }) {
                                     Text(category)
                                         .font(Font.custom("Baskerville-Bold", size: 18))
-                                        .foregroundColor(Color("Primary"))
+                                        .foregroundColor(Color("Color"))
                                         
                                         
                                 }
@@ -108,13 +119,14 @@ struct NewPostView: View {
                     .foregroundColor(.black)
                     .padding()
                     .padding(.horizontal)
-                    .background(Color("Primary"))
+                    .background(Color("Color"))
                     .cornerRadius(30)
                     .shadow(radius: 10)
             }
             .disabled(isLoading || selectedImage == nil)
             Spacer()
         }
+        .background(Image("theme"))
         
         .sheet(isPresented: $isImagePickerPresented) {
             NewPostImagePicker(selectedImage: $selectedImage)

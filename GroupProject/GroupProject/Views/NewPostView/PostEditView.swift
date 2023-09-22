@@ -19,6 +19,7 @@ struct PostEditView: View {
         GeometryReader { geometry in
             ScrollView {
                 VStack(spacing: 16) {
+                    Spacer()
                     HStack(spacing: 16) {
                         KFImage(URL(string: user.profileImageUrl ?? ""))
                             .resizable()
@@ -37,13 +38,13 @@ struct PostEditView: View {
                         
                         Spacer()
                     }
-                    
-                    
+                    Spacer()
+                    Spacer()
                     AsyncImage(url: post.imageUrl)
                         .frame(width: 300, height: 250)
                         .cornerRadius(20.0)
                         .padding(20) // Adjust padding as needed
-                    TextField("Write something ...", text: $status)
+                    TextField("Write something ...", text: $status, axis: .vertical)
                         .textFieldStyle(.roundedBorder)
                         .frame(width: geometry.size.width * 0.87)
                     Button(action: {
@@ -58,13 +59,12 @@ struct PostEditView: View {
                             .font(Font.custom("Baskerville-Bold", size: 26))
                             .frame(width: 100, height: 70)
                             .foregroundColor(.white)
-                            .background(Color("Primary"))
+                            .background(Color("Color"))
                             .cornerRadius(30)
                             .shadow(radius: 10)
                             .padding()
                     }
                     
-                    Spacer()
                 }
                 .padding()
                 .onAppear {
@@ -72,6 +72,7 @@ struct PostEditView: View {
                 }
             }
         }
+        .background(Image("theme"))
 
     }
 }
