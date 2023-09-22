@@ -3,3 +3,5 @@
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
 
+userInterfaceState.xcuserstate
+*.xcuserdatad/*
