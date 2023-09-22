@@ -88,7 +88,7 @@ struct PostView: View {
                     Spacer()
                 }
             }
-            // .background(globalSettings.isDark ? Color.black : Color("LightBackground"))
+
             .padding(.bottom)
             .onAppear{
                 viewModel.fetchPosts()
@@ -99,6 +99,7 @@ struct PostView: View {
 }
 
 struct CardView: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
     var post: Post
     var postOwner: User
     var currentUser: User
@@ -185,8 +186,13 @@ struct CardView: View {
             }
         }
         .padding()
-        .background(Color.white)
+        .background(globalSettings.isDark ? Color("DarkPost") :  Color("LightPost"))
+        
         .cornerRadius(20.0)
+        .overlay(
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(Color("DarkPost"), lineWidth: 5)
+        )
         
     }
 }
@@ -213,7 +219,7 @@ struct CategoryView: View {
             Text(text)
                 .font(.system(size: 18))
                 .fontWeight(.medium)
-                .foregroundColor(isActive ? Color("PrimaryText") : Color.black.opacity(0.5))
+                .foregroundColor(isActive ? Color("PrimaryText") : Color("LightText"))
             if (isActive) { Color("PrimaryText")
                     .frame(width: 15, height: 2)
                     .clipShape(Capsule())

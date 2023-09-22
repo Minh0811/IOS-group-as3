@@ -49,7 +49,7 @@ struct CustomTabBarView: View {
                                     // .offset(y: 3)
                             }
                         }
-                        .foregroundColor(index == tabSelection ? Color("Primary") : .gray)
+                        .foregroundColor(index == tabSelection ? Color("PrimaryText") : Color("LightText"))
                     }
                 }
                 .frame(height: 80)

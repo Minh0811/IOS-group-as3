@@ -16,20 +16,21 @@ struct NewPostView: View {
     @State private var selectedCategory: String = "All"
     let categories = ["All", "Coffee", "Foods", "Schools", "Street Foods", "Beauty"]
     @EnvironmentObject var globalSettings: GlobalSettings
-
+    
     
     var body: some View {
+        
         VStack {
             if let image = selectedImage {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
             }
-
+            
             Button("Select Image") {
                 isImagePickerPresented = true
             }
-
+            
             TextField("Enter caption", text: $caption)
                 .padding()
             
@@ -48,7 +49,7 @@ struct NewPostView: View {
                     isLoading = true
                     do {
                         let success = try await PostService().createPost(image: selectedImage!, caption: caption, category: selectedCategory)
-
+                        
                         postCreatedSuccessfully = success
                     } catch {
                         // Handle error
