@@ -5,7 +5,7 @@ import Foundation
 struct MapView: View {
     @StateObject private var postViewModel = PostViewModel()
     @StateObject private var viewModel = MapViewModel()
-    @State private var displayPostSheet = false
+    @State private var displayDetail = false
     var body: some View{
         Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: viewModel.posts ){locationItem in
             MapAnnotation(coordinate: locationItem.location) {
@@ -36,11 +36,11 @@ struct MapView: View {
                         .frame(width: 10,height: 10)
                         .rotationEffect(Angle(degrees: 180))
                         .offset(x: -12.5, y:-10)
+                    NavigationLink("", destination: DetailView(post: locationItem, viewModel: postViewModel), isActive: $displayDetail)
+                            .opacity(0) // Make the NavigationLink invisible
                 }.onTapGesture {
-                    displayPostSheet = true
+                    displayDetail = true
                     print(locationItem.caption)
-                }.sheet(isPresented: $displayPostSheet) {
-                    DetailView(post: locationItem, viewModel: postViewModel)
                 }
                 
             }
