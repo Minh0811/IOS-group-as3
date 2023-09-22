@@ -15,7 +15,7 @@ class SearchViewModel: ObservableObject {
         fetchAllUsers()
     }
     func fetchAllUsers() {
-        UserService.fetchAllUsers { [weak self] result in
+        UserService.fetchAllUsers { [weak self]result in
             switch result {
             case .success(let users):
                 DispatchQueue.main.async {
@@ -24,6 +24,20 @@ class SearchViewModel: ObservableObject {
             case .failure(let error):
                 // Handle the error appropriately
                 print("Error fetching users:", error)
+            }
+        }
+    }
+    
+    func fetchUsers() {
+        Task {
+            do {
+                let fetchedUsers = try await UserService().fetchUsers()
+                DispatchQueue.main.async {
+                    self.users = fetchedUsers
+                }
+            } catch {
+                // Handle error
+                print(error.localizedDescription)
             }
         }
     }

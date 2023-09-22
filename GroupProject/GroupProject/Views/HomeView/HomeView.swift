@@ -13,7 +13,8 @@ struct HomeView: View {
     
     @ObservedObject var userService = UserService()
     @State private var search: String = ""
-   
+    @EnvironmentObject var globalSettings: GlobalSettings
+
     
     var body: some View {
         
@@ -50,6 +51,7 @@ struct HomeView: View {
                         
                         
                     }
+                    
                 }
                 //        .navigationBarTitle("") //this must be empty
                 //        .navigationBarHidden(true)
@@ -59,12 +61,14 @@ struct HomeView: View {
         }
         .toolbarBackground(.hidden, for: .navigationBar)
         .toolbarBackground(.hidden, for: .tabBar)
-        .environment(\.colorScheme, .light)
+        .background(globalSettings.isDark ? Color.black : Color.white)
+        
     }
 }
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            
     }
 }
 

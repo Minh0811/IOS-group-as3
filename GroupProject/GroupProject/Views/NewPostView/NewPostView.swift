@@ -13,9 +13,10 @@ struct NewPostView: View {
     @State private var isImagePickerPresented: Bool = false
     @State private var isLoading: Bool = false
     @State private var postCreatedSuccessfully: Bool = false
-    
     @State private var selectedCategory: String = "All"
     let categories = ["All", "Coffee", "Foods", "Schools", "Street Foods", "Beauty"]
+    @EnvironmentObject var globalSettings: GlobalSettings
+
     
     var body: some View {
         VStack {
@@ -31,6 +32,7 @@ struct NewPostView: View {
 
             TextField("Enter caption", text: $caption)
                 .padding()
+            
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(8)
             
@@ -57,12 +59,14 @@ struct NewPostView: View {
             }
             .disabled(isLoading || selectedImage == nil)
         }
+        
         .sheet(isPresented: $isImagePickerPresented) {
             NewPostImagePicker(selectedImage: $selectedImage)
         }
         .alert(isPresented: $postCreatedSuccessfully) {
             Alert(title: Text("Success"), message: Text("Post created successfully!"), dismissButton: .default(Text("OK")))
         }
+        
     }
 }
 

@@ -11,7 +11,7 @@ import Kingfisher
 struct PostView: View {
     @ObservedObject var userService = UserService()
     @ObservedObject var viewModel = PostViewModel()
-    
+    @EnvironmentObject var globalSettings: GlobalSettings
     @State var currentUser: User?
     @State private var searchText = ""
     @State private var selectedIndex: Int = 0
@@ -86,6 +86,7 @@ struct PostView: View {
                 Spacer()
             }
         }
+        .background(globalSettings.isDark ? Color.black : Color.white)
         .padding(.bottom)
         .onAppear{
             viewModel.fetchPosts()
@@ -203,6 +204,7 @@ struct CardView: View {
         .padding()
         .background(Color.white)
         .cornerRadius(20.0)
+        
     }
 }
 
@@ -215,6 +217,7 @@ struct PostView_Previews: PreviewProvider {
             Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
                 .ignoresSafeArea()
             PostView(currentUser: User(id: "1", username: "Test", email: "check@gmail.com",followers: [],following: []))
+                .environmentObject(GlobalSettings.shared)
         }
     }
 }
