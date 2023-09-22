@@ -51,6 +51,9 @@ struct SearchUserView: View {
                         
                     }
                 }
+                .onAppear {
+                    viewModel.fetchAllUsers()
+                }
                 
                 .padding(.top, 8)
                 .searchable(text: $searchText)

@@ -35,51 +35,13 @@ struct UserProfileView: View {
         ScrollView {
             VStack {
                 CircularProfileImageView(user: user, size: .large )
-
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    if let fullname = user.fullname {
-                        Text(fullname)
-                            .font(.footnote)
-                            .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                            .fontWeight(.semibold)
-                    }
-                    if let bio = user.bio {
-                        Text(bio)
-                            .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                            .font(.footnote)
-                    }
-                    Text("Follower: \(user.followers.count)")
-                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                        .font(.footnote)
-                    Text("Following: \(user.following.count)")
-                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                        .font(.footnote)
-                    // Add more user properties here as needed
-                    }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
-                }
-//            Button {
-//                if user.isCurrentUser {
-//                    showEditProfile.toggle()
-//                    print("Show edit profile")
-//                } else if userService.currentUser != nil {
-//                    if userService.currentUser!.following.contains(user.id) {
-//                        // Show the unfollow button
-//                        userService.unfollowUser(userIDToUnfollow: user.id)
-//                    } else {
-//                        // Show the follow button
-//                        userService.followUser(userIDToFollow: user.id)
-//                    }
-      if user.followers.contains("\(currentUser.id)") {
-                    InfoView(userId: user.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: true, isCurrentUser: false)
-                } else if user.id == currentUser.id {
-                    InfoView(userId: user.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: true)
-
-                } else {
-                    InfoView(userId: user.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: false)
-                }
+                if user.id == currentUser.id {
+                    InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: true, followerArray: user.followers, followingArray: currentUser.following)
+                } else if !user.followers.contains("\(currentUser.id)") {
+                    InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: false, followerArray: user.followers, followingArray: currentUser.following)
+                } else if user.followers.contains("\(currentUser.id)") {
+                   InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: true, isCurrentUser: false, followerArray: user.followers, followingArray: currentUser.following)
+               }
                 }
             LazyVGrid(columns: gridItems, spacing: 1) {
                 ForEach(0 ... 5, id: \.self) { index in
@@ -88,9 +50,11 @@ struct UserProfileView: View {
                         .scaledToFill()
 
                 }
-
             }
-            .background(globalSettings.isDark ? Color.black : Color.white)
+            }
+        .onAppear {
+            SearchViewModel().fetchAllUsers()
+        }
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
     
@@ -100,23 +64,28 @@ struct UserProfileView: View {
 
 struct InfoView: View {
     @State var userId: String
+    @State var currentUserId: String
     @State var fullName: String
     @State var bio: String
     @State var follower: Int
     @State var following: Int
     @State var isFollow: Bool
     @State var isCurrentUser: Bool
-    @State private var selectedTab: Int = 3
+    @State var followerArray: [String]
+    @State var followingArray: [String]
     
     @ObservedObject var userService = UserService()
+    @ObservedObject var viewModel = SearchViewModel()
     
     func follow() {
-        userService.followUser(userIDToFollow: userId)
+        followerArray.append("\(currentUserId)")
+        followingArray.append("\(userId)")
         follower += 1
     }
     
     func unfollow() {
-        userService.unfollowUser(userIDToUnfollow: userId)
+        followerArray = followerArray.filter() {$0 != "\(currentUserId)"}
+        followingArray = followingArray.filter() {$0 != "\(userId)"}
         follower -= 1
     }
     var body: some View {
@@ -134,7 +103,7 @@ struct InfoView: View {
             
             if isCurrentUser {
                 Button() {
-                    isFollow.toggle()
+        
                 } label: {
                     Text("Follow")
                         .foregroundColor(.white)
@@ -148,6 +117,8 @@ struct InfoView: View {
                 Button() {
                     isFollow == true ? unfollow() : follow()
                     isFollow.toggle()
+                    userService.followUser(userId: userId, currentUserId: currentUserId, followerArray: followerArray, followingArray: followingArray)
+//                    viewModel.fetchAllUsers()
                 } label: {
                     Text(isFollow == true ? "Unfollow" : "Follow")
                         .foregroundColor(.white)
