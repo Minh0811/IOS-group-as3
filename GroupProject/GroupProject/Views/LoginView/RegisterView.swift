@@ -20,10 +20,20 @@ struct RegisterView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Text("Create an Account")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.bottom, 20)
+            Spacer()
+            VStack(alignment: .leading){
+                Text("Registation")
+                    .font(Font.custom("Baskerville-Bold", size: 45))
+                    .foregroundColor(Color("Color"))
+                    .fontWeight(.bold)
+                Text("Create an Account")
+                    .font(Font.custom("Times New Roman", size: 20))
+                    .foregroundColor(Color("Color"))
+                    .fontWeight(.bold)
+                    .padding(.bottom, 20)
+            }
+            
+            
             TextField("User Name:", text: $viewModel.username)
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
@@ -41,16 +51,18 @@ struct RegisterView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.horizontal, 24)
-            
-            SecureField("Password", text: $viewModel.password)
-                .autocapitalization(.none)
-                .disableAutocorrection(true)
-                .font(.subheadline)
-                .padding(12)
+            HStack{
+                SecureField("Password", text: $viewModel.password)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                    .font(.subheadline)
+                   
+                Image(systemName: "eye.slash")
+                    .padding(.horizontal)
+            }.padding(12)
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.horizontal, 24)
-            
             Button {
                 viewModel.createNewAccount { success in
                         if success {
@@ -67,12 +79,12 @@ struct RegisterView: View {
                 
                     Spacer()
                     Text("Create Account")
-                        .font(.headline)
+                        .font(Font.custom("Baskerville-Bold", size: 20))
+                        .foregroundColor(Color("Color 2"))
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity)
                         .frame(height: 44)
-                        .background(Color(.systemGreen))
-                        .foregroundColor(.white)
+                        .background(Color("Color"))
                         .cornerRadius(10)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
@@ -95,7 +107,9 @@ struct RegisterView: View {
                     .transition(.opacity)
                     .animation(.easeInOut(duration: 0.5))
             }
+            
         }
+        .background(Image("theme"))
         .padding()
         .navigationBarTitle("Register", displayMode: .inline)
     }
