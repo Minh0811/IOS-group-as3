@@ -13,7 +13,9 @@ enum MapDetails{
 }
 
 final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+    @Published var dataLoaded: Bool = false
     @Published var posts: [Post] = []
+
     var postService = PostService()
     @Published var photoLocations: [LocationItem] = [
         LocationItem(imageUrl: "testing-image", name: "Place", coordinate: CLLocationCoordinate2D(latitude: 10.724250, longitude: 106.693520)),
@@ -27,6 +29,7 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
         LocationItem(imageUrl: "testing-image", name: "Place",coordinate: CLLocationCoordinate2D(latitude: 10.649250, longitude: 106.695520)),
             // Add more locations here...
         ]
+    
     var locationManager : CLLocationManager?
     @Published var region = MKCoordinateRegion(center:MapDetails.startingLocation,span: MapDetails.defaultSpan)
     func checkIfLocationServiceIsEnabled(){

@@ -43,6 +43,9 @@ struct MapView: View {
             .ignoresSafeArea()
             .accentColor(.pink)
             .onAppear{
+                Task{
+                    viewModel.fetchPosts()
+                }
                 viewModel.checkIfLocationServiceIsEnabled()
             }
     }
