@@ -28,18 +28,26 @@ struct DetailView: View {
                 //            Product Image
                 
                 AsyncImage(url: post.imageUrl)
-                        .aspectRatio(1,contentMode: .fit)
-                        .edgesIgnoringSafeArea(.top)
+                    .aspectRatio(1,contentMode: .fit)
+                    .edgesIgnoringSafeArea(.top)
                 
                 DescriptionView(post: post)
-               
-                NavigationLink(destination: CommentView(viewModel: viewModel, postId: post.id)) {
-                    Text("Comment View")
+                
+                NavigationLink(destination: CommentView(viewModel: viewModel, postId: post.id, post: post)) {
+                    HStack {
+                        Text("Comment View")
+                    }
+                    .frame(width: 200, height: 60)
+                    .background(ZStack{
+                        Color(hue: 1.0, saturation: 0.064, brightness: 0.38)
+                        RoundedRectangle(cornerRadius: 16, style: .continuous).foregroundColor(.white).blur(radius: 3)
+                    })
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }
             }
             .edgesIgnoringSafeArea(.top)
             
-           
+            
         }
         .onAppear{
             print("DetailView is appearing for postId: \(post.id)")
@@ -47,13 +55,13 @@ struct DetailView: View {
             print("Finished DetailView .onAppear for postId: \(post.id)")
         }
         .onChange(of: viewModel.posts) { newPosts in
-                    print("DetailView: posts were updated. New count: \(newPosts.count)")
-                }
+            print("DetailView: posts were updated. New count: \(newPosts.count)")
+        }
         
         //.navigationBarBackButtonHidden(true)
         //.customBackButton(presentationMode: presentationMode)
-       // .toolbarBackground(.hidden, for: .navigationBar)
-       // .toolbarBackground(.hidden, for: .tabBar)
+        // .toolbarBackground(.hidden, for: .navigationBar)
+        // .toolbarBackground(.hidden, for: .tabBar)
     }
 }
 
@@ -91,16 +99,18 @@ struct DescriptionView: View {
                     .font(.title3)
                     .fontWeight(.light)
                     .padding(.vertical, 3)
-            
+                
                 Spacer()
             }
             
-        
-          
+            
+            
         }
         .padding()
         .padding(.top)
         .background(Color("Bg"))
+        .opacity(0.8)
+        .cornerRadius(15)
         //.cornerRadius(30, corners: [.topLeft, .topRight])
         //.offset(x: 0, y: -30.0)
     }
