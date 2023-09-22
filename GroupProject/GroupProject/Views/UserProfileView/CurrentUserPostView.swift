@@ -55,36 +55,7 @@ struct UserPostThumbnailView: View {
     }
 }
 
-struct UserPostView: View {
-    let post: Post
-    
-    var body: some View {
-        VStack {
- 
-            AsyncImage(url: post.imageUrl)
-                .frame(width: 320, height: 320)
-                .cornerRadius(20.0)
-            
-            HStack(spacing: 2) {
-                Text(post.userId)
-                    .font(.title3)
-                    .fontWeight(.bold)
-                Text(post.username)
-                    .font(.title3)
-                    .fontWeight(.bold)
-                Text(post.caption)
-                    .font(.title3)
-                    .fontWeight(.light)
-                NavigationLink(destination: PostEditView(viewModel: PostViewModel(), post: post)) {
-                    Text("Edit")
-                }
-            }
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(20.0)
-    }
-}
+
 
 
 

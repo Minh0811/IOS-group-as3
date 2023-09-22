@@ -20,12 +20,14 @@ struct LoginView: View {
         VStack(spacing: 20) {
             Spacer()
             
-            // Logo
-            Image("Login")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 200, height: 100)
             
+            VStack(alignment: .leading){
+                Text("Sign in")
+                    .font(Font.custom("Baskerville-Bold", size: 45))
+                    .foregroundColor(Color("Color"))
+                    .fontWeight(.bold)
+            }
+           
             // Email Field
             TextField("Email", text: $viewModel.email)
                 .autocapitalization(.none)
@@ -53,12 +55,18 @@ struct LoginView: View {
                 }
             }) {
                 Text("Login")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .frame(width: 360, height: 44)
-                    .background(Color(.systemBlue))
-                    .foregroundColor(.white)
+                    .font(Font.custom("Baskerville-Bold", size: 20))
+                    .foregroundColor(Color("Color"))
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(Color("Color 2"))
+                    
                     .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color(.systemGreen), lineWidth: 1)
+                    )
             }
             .padding(.vertical)
             .alert(isPresented: $viewModel.showingError) {
@@ -81,16 +89,24 @@ struct LoginView: View {
             // Create Account Button
             NavigationLink(destination: RegisterView(appState: appState)) {
                 Text("Create Account")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .frame(width: 360, height: 44)
-                    .background(Color(.systemGreen))
-                    .foregroundColor(.white)
+                    .foregroundColor(Color("Color 2"))
+
+                    .font(Font.custom("Baskerville-Bold", size: 20))
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(Color("Color"))
+                    
                     .cornerRadius(10)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color(.systemGreen), lineWidth: 1)
+                    )
             }
             
-            Spacer()
+            
         }
+        .background(Image("theme"))
         .padding()
     }
 }

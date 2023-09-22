@@ -74,27 +74,6 @@ struct HomeView_Previews: PreviewProvider {
 
 
 
-struct AppBarView: View {
-    var body: some View {
-        HStack {
-            Button(action: {}) {
-                Image("menu")
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(10.0)
-            }
-            Spacer()
-            
-            Button(action: {}) {
-                Image(uiImage: #imageLiteral(resourceName: "Profile"))
-                    .resizable()
-                    .frame(width: 42, height: 42)
-                    .cornerRadius(10.0)
-            }
-        }
-        .padding(.horizontal)
-    }
-}
 
 struct TagLineView: View {
     var body: some View {
@@ -105,30 +84,6 @@ struct TagLineView: View {
     }
 }
 
-//struct SearchAndScanView: View {
-//    @Binding var search: String
-//    var body: some View {
-//        HStack {
-//            HStack {
-//                Image("Search")
-//                    .padding(.trailing, 8)
-//                TextField("Search Furniture", text: $search)
-//            }
-//            .padding(.all, 10)
-//            .background(Color.white)
-//            .cornerRadius(10.0)
-//            .padding(.trailing, 8)
-//            
-//            Button(action: {}) {
-//                Image("Search")
-//                    .padding(.all, 13)
-//                    .background(Color("Primary"))
-//                    .cornerRadius(10.0)
-//            }
-//        }
-//        .padding(.horizontal)
-//    }
-//}
 
 struct CategoryView: View {
     let isActive: Bool

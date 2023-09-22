@@ -22,14 +22,17 @@ struct SplashScreenView: View {
             VStack{
                 VStack {
                     // Your splash screen content here
-                    
-                    Image("ins")
-                        .resizable()
-                        .scaledToFit()
-                        .font(.system(size: 80))
-                        .foregroundColor(.red)
-                        .frame(width: 280, height: 280)
+                    VStack{
+                        Image("green")
+                            .resizable()
+                            .scaledToFit()
+                            .font(.system(size: 80))
+                            .foregroundColor(.red)
+                            .frame(width: 210, height: 210)
+                            .clipShape(Circle())
+                    }.background(Color("Color"))
                         .clipShape(Circle())
+                    
                     Text("Hé lô em")
                         .font(Font.custom("Baskerville-Bold", size: 26))
                         .foregroundColor(.black.opacity(0.80))
@@ -42,7 +45,7 @@ struct SplashScreenView: View {
                                         self.opacity = 1.00
                             }
                     }
-            }.background(Image("backgound"))
+            }.background(Image("theme"))
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     withAnimation {

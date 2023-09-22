@@ -58,10 +58,14 @@ struct PostView: View {
                         }
                         .padding()
                     }
-                    
-                    TextField("Search", text: $searchText)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal)
+                    HStack{
+                        
+                        TextField("Search", text: $searchText)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding(.leading)
+                        Image("Search")
+                            .padding()
+                    }
                     ForEach(filteredPosts) { post in
                         NavigationLink(
                             destination: DetailView(post: post, viewModel: viewModel),
@@ -90,8 +94,10 @@ struct PostView: View {
         .padding(.bottom)
         .onAppear{
             viewModel.fetchPosts()
+            
             currentUser = userService.currentUser
         }
+        
     }
 }
 
@@ -120,17 +126,18 @@ struct CardView: View {
             HStack(spacing: 0) {
                 KFImage(URL(string: postOwner.profileImageUrl ?? ""))
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 70, height: 50)
+                    .aspectRatio(contentMode: .fill)
+//                    .scaledToFill()
+                    .frame(width: 70, height: 70)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color(.gray),lineWidth: 3))
-                
+                    .padding(.horizontal)
                 Text("\(postOwner.username)")
                 
                 Spacer()
                 
                 if postOwner.id == currentUser.id {
-                    NavigationLink(destination: PostEditView(viewModel: PostViewModel(), post: post)) {
+                    NavigationLink(destination: PostEditView(viewModel: PostViewModel(), post: post, user: postOwner)) {
                         Image(systemName: "ellipsis")
                             .rotationEffect(.degrees(-90))
                     }
@@ -201,6 +208,7 @@ struct CardView: View {
                     .frame(width: 10)
             }
         }
+       
         .padding()
         .background(Color.white)
         .cornerRadius(20.0)
