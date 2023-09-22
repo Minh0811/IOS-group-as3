@@ -3,12 +3,12 @@ import SwiftUI
 import Foundation
 
 struct MapView: View {
+    @StateObject private var postViewModel = PostViewModel()
     @StateObject private var viewModel = MapViewModel()
     @State private var displayPostSheet = false
-    
     var body: some View{
-        Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: viewModel.photoLocations ){locationItem in
-            MapAnnotation(coordinate: locationItem.coordinate) {
+        Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: viewModel.posts ){locationItem in
+            MapAnnotation(coordinate: locationItem.location) {
                 VStack{
                     HStack {
                         Image(locationItem.imageUrl)
@@ -35,8 +35,14 @@ struct MapView: View {
                         .foregroundColor(.gray)
                         .frame(width: 10,height: 10)
                         .rotationEffect(Angle(degrees: 180))
-                        .offset(x: -11.5, y:-10)
+                        .offset(x: -12.5, y:-10)
+                }.onTapGesture {
+                    displayPostSheet = true
+                    print(locationItem.caption)
+                }.sheet(isPresented: $displayPostSheet) {
+                    DetailView(post: locationItem, viewModel: postViewModel)
                 }
+                
             }
             
         }
