@@ -28,24 +28,14 @@ struct DetailView: View {
                 //            Product Image
                 
                 AsyncImage(url: post.imageUrl)
-                        //.resizable()
                         .aspectRatio(1,contentMode: .fit)
                         .edgesIgnoringSafeArea(.top)
                 
                 DescriptionView(post: post)
                
-                NavigationLink(
-                    destination: CommentView(viewModel: viewModel, postId: post.id),
-                    isActive: $navigateToCommentView,
-                    label: { EmptyView() }
-                )
-
-                Button("CommentView") {
-                    navigateToCommentView = true
+                NavigationLink(destination: CommentView(viewModel: viewModel, postId: post.id)) {
+                    Text("Comment View")
                 }
-
-
-               
             }
             .edgesIgnoringSafeArea(.top)
             
