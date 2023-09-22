@@ -16,7 +16,7 @@ struct CommentView: View {
         VStack {
             // Input field and button to post a comment
             HStack {
-                TextField("Add a comment...", text: $commentText)
+                TextField("Add a comment...", text: $commentText, axis: .vertical)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 
                 Button("Post") {
