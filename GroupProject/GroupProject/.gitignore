@@ -2,4 +2,4 @@
 **/.DS_Store
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
-
+*.xcuserdatad/userInterfaceState.xcuserstate
