@@ -13,7 +13,7 @@ import SwiftUI
 
 struct UserProfileView: View {
     var user: User
-    var currentUser: User
+    @State var currentUser: User
     
     @ObservedObject var userService = UserService()
     
@@ -48,9 +48,6 @@ struct UserProfileView: View {
                 }
             }
             }
-        .onAppear {
-            SearchViewModel().fetchAllUsers()
-        }
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
     
@@ -76,6 +73,7 @@ struct InfoView: View {
     func follow() {
         followerArray.append("\(currentUserId)")
         followingArray.append("\(userId)")
+//        print(followingArray)
         follower += 1
     }
     
