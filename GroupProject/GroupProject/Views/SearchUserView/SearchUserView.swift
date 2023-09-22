@@ -53,6 +53,9 @@ struct SearchUserView: View {
                 }
                 .onAppear {
                     viewModel.fetchAllUsers()
+                    userService.fetchCurrentUser { user in
+                        userService.currentUser = user ?? User(id: "N/A", username: "N/A", email: "N/A", followers: [], following: [])
+                    }
                 }
                 
                 .padding(.top, 8)
