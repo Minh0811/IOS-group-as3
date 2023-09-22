@@ -22,7 +22,7 @@ struct CustomTabBarView: View {
         ZStack{
             Capsule()
                 .frame(height: 60)
-                .foregroundColor(Color("Background"))
+                .foregroundColor(Color("LightBackground"))
                 //.shadow(radius: 2)
             HStack{
                 ForEach(0..<4){ index in

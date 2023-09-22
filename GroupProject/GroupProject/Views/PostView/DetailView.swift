@@ -35,13 +35,10 @@ struct DetailView: View {
                 DescriptionView(post: post)
                
                 NavigationLink(
-                    destination: CommentView(viewModel: viewModel, postId: post.id),
-                    isActive: $navigateToCommentView,
-                    label: { EmptyView() }
-                )
-
-                Button("CommentView") {
-                    navigateToCommentView = true
+                    destination: CommentView(viewModel: viewModel, postId: post.id)
+                ) {
+                    Image(systemName: "bubble.left")
+                    Text("Comment")
                 }
 
 

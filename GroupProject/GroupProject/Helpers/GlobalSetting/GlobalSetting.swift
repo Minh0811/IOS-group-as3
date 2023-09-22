@@ -12,7 +12,7 @@ class GlobalSettings: ObservableObject {
 
    
     
-       static let shared = GlobalSettings()
+    static let shared = GlobalSettings()
     
     @Published var isDark: Bool = false
       

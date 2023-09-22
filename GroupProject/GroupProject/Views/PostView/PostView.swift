@@ -20,77 +20,80 @@ struct PostView: View {
     // var currentUser: User
     
     // Insert the modified filteredPosts here
-        var filteredPosts: [Post] {
-            var result = viewModel.posts
-
-            // Filter based on search text
-            if !searchText.isEmpty {
-                result = result.filter { post in
-                    return post.caption.lowercased().contains(searchText.lowercased())
-                }
+    var filteredPosts: [Post] {
+        var result = viewModel.posts
+        
+        // Filter based on search text
+        if !searchText.isEmpty {
+            result = result.filter { post in
+                return post.caption.lowercased().contains(searchText.lowercased())
             }
-
-            // Filter based on selected category
-            if categories[selectedIndex] != "All" {
-                result = result.filter { post in
-                    return post.category == categories[selectedIndex]
-                }
-            }
-
-            return result
         }
+        
+        // Filter based on selected category
+        if categories[selectedIndex] != "All" {
+            result = result.filter { post in
+                return post.category == categories[selectedIndex]
+            }
+        }
+        
+        return result
+    }
     
     
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            HStack {
-                Spacer()
-                VStack(spacing: 20) {
-                    
-                    ScrollView (.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(0 ..< categories.count) { i in
-                                Button(action: {selectedIndex = i}) {
-                                    CategoryView(isActive: selectedIndex == i, text: categories[i])
+        ZStack{
+            globalSettings.isDark ? Color("DarkBackground").ignoresSafeArea() :  Color("LightBackground").ignoresSafeArea()
+            ScrollView(showsIndicators: false) {
+                HStack {
+                    Spacer()
+                    VStack(spacing: 20) {
+                        
+                        ScrollView (.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(0 ..< categories.count) { i in
+                                    Button(action: {selectedIndex = i}) {
+                                        CategoryView(isActive: selectedIndex == i, text: categories[i])
+                                    }
                                 }
                             }
+                            .padding()
                         }
-                        .padding()
-                    }
-                    
-                    TextField("Search", text: $searchText)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal)
-                    ForEach(filteredPosts) { post in
-                        NavigationLink(
-                            destination: DetailView(post: post, viewModel: viewModel),
-                            label: { ForEach(viewModel.allUsers) { user in
-
-                                if let currentUserId = currentUser?.id, user.id == post.userId && post.like.contains(currentUserId) {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser ??
-                                             User(id:"", username:"", email:"", followers: [],following: []),
-                                             numOfLike: post.like.count, isLike: true, likeArray: post.like)
-                                } else if user.id == post.userId {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser ??
-                                             User(id:"", username:"", email:"", followers: [],following: []),
-                                             numOfLike: post.like.count, isLike: false, likeArray: post.like)
+                        
+                        TextField("Search", text: $searchText)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding(.horizontal)
+                        ForEach(filteredPosts) { post in
+                            NavigationLink(
+                                destination: DetailView(post: post, viewModel: viewModel),
+                                label: { ForEach(viewModel.allUsers) { user in
                                     
+                                    if let currentUserId = currentUser?.id, user.id == post.userId && post.like.contains(currentUserId) {
+                                        CardView(post: post, postOwner: user, currentUser: currentUser ??
+                                                 User(id:"", username:"", email:"", followers: [],following: []),
+                                                 numOfLike: post.like.count, isLike: true, likeArray: post.like)
+                                    } else if user.id == post.userId {
+                                        CardView(post: post, postOwner: user, currentUser: currentUser ??
+                                                 User(id:"", username:"", email:"", followers: [],following: []),
+                                                 numOfLike: post.like.count, isLike: false, likeArray: post.like)
+                                        
+                                    }
                                 }
-                            }
-                            })
-                        .navigationBarHidden(true)
-                        .foregroundColor(.black)
+                                })
+                            .navigationBarHidden(true)
+                            .foregroundColor(.black)
+                        }
                     }
+                    Spacer()
                 }
-                Spacer()
             }
-        }
-        .background(globalSettings.isDark ? Color.black : Color.white)
-        .padding(.bottom)
-        .onAppear{
-            viewModel.fetchPosts()
-            currentUser = userService.currentUser
+            // .background(globalSettings.isDark ? Color.black : Color("LightBackground"))
+            .padding(.bottom)
+            .onAppear{
+                viewModel.fetchPosts()
+                currentUser = userService.currentUser
+            }
         }
     }
 }
@@ -151,30 +154,7 @@ struct CardView: View {
             }
             
             Divider()
-            HStack(spacing: 0) {
-                
-                
-                HStack(spacing: 0) {
-                    Image(systemName: "heart.fill")
-                        .foregroundColor(.pink)
-                    
-                    Spacer()
-                        .frame(width: 5)
-                    Text("\(numOfLike)")
-                }
-                
-                Spacer()
-                
-                HStack(spacing: 0) {
-                    Image(systemName: "text.bubble")
-                    Spacer()
-                        .frame(width: 5)
-                    Text("\(post.commentsCount)")
-                }
-                .padding(.horizontal, 10)
-            }
             
-            Divider()
             HStack(spacing: 0) {
                 
                 Spacer()
@@ -186,16 +166,19 @@ struct CardView: View {
                 } label: {
                     Image(systemName: isLike == true ? "heart.fill" : "heart")
                         .foregroundColor(isLike == true ? .pink : .black)
-                    Text("Like")
+                    Text("\(numOfLike)")
                 }
                 
                 Spacer()
-                Button() {
-                    
-                } label: {
+                
+                NavigationLink(
+                    destination: CommentView(viewModel: viewModel, postId: post.id)
+                ) {
                     Image(systemName: "bubble.left")
                     Text("Comment")
                 }
+                
+            
                 
                 Spacer()
                     .frame(width: 10)
@@ -219,5 +202,23 @@ struct PostView_Previews: PreviewProvider {
             PostView(currentUser: User(id: "1", username: "Test", email: "check@gmail.com",followers: [],following: []))
                 .environmentObject(GlobalSettings.shared)
         }
+    }
+}
+
+struct CategoryView: View {
+    let isActive: Bool
+    let text: String
+    var body: some View {
+        VStack (alignment: .leading, spacing: 0) {
+            Text(text)
+                .font(.system(size: 18))
+                .fontWeight(.medium)
+                .foregroundColor(isActive ? Color("PrimaryText") : Color.black.opacity(0.5))
+            if (isActive) { Color("PrimaryText")
+                    .frame(width: 15, height: 2)
+                    .clipShape(Capsule())
+            }
+        }
+        .padding(.trailing)
     }
 }
