@@ -13,9 +13,8 @@ struct HomeView: View {
     
     @ObservedObject var userService = UserService()
     @State private var search: String = ""
-    @State private var selectedIndex: Int = 1
     @EnvironmentObject var globalSettings: GlobalSettings
-    private let categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
+
     
     var body: some View {
         
@@ -38,16 +37,7 @@ struct HomeView: View {
                                 
                                 
                                 //Post tags
-                                ScrollView (.horizontal, showsIndicators: false) {
-                                    HStack {
-                                        ForEach(0 ..< categories.count) { i in
-                                            Button(action: {selectedIndex = i}) {
-                                                CategoryView(isActive: selectedIndex == i, text: categories[i])
-                                            }
-                                        }
-                                    }
-                                    .padding()
-                                }
+                  
                                 
                                 
                                 PostView()

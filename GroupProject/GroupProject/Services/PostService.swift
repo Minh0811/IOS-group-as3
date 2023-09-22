@@ -14,7 +14,7 @@ class PostService: ObservableObject {
     let db = Firestore.firestore()
     
     // Function to create a new post
-    func createPost(image: UIImage, caption: String) async throws -> Bool {
+    func createPost(image: UIImage, caption: String, category: String) async throws -> Bool {
         do {
             // Await the result of the uploadImage function
             let imageUrl = try await ImageUploader.uploadImage(image: image)
@@ -40,6 +40,7 @@ class PostService: ObservableObject {
                 "username": username,
                 "imageUrl": unwrappedImageUrl,
                 "caption": caption,
+                "category": category,
                 "timestamp": Timestamp(date: Date()),
                 "commentsCount": 0  // Initialize commentsCount to 0 for new posts
             ]
@@ -82,15 +83,17 @@ class PostService: ObservableObject {
                     let imageUrl = data["imageUrl"] as? String ?? ""
                     let caption = data["caption"] as? String ?? ""
                     let like = data["like"] as? [String] ?? []
-                    let username = data["username"] as? String ?? ""  // Extracting the username
+                    let username = data["username"] as? String ?? ""
+                    let category = data["category"] as? String ?? "All"  // Extracting the category
                     
-                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like)
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like, category: category)
                 }
                 
                 continuation.resume(returning: posts)
             }
         }
     }
+
     
     func fetchUserPosts(userId: String) async throws -> [Post] {
         return try await withCheckedThrowingContinuation { continuation in
@@ -117,8 +120,9 @@ class PostService: ObservableObject {
                     let caption = data["caption"] as? String ?? ""
                     let username = data["username"] as? String ?? ""
                     let like = data["like"] as? [String] ?? []
+                    let category = data["category"] as? String ?? "All"  // Extracting the category
 
-                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like)
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like, category: category)
                 }
 
                 continuation.resume(returning: posts)

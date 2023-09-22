@@ -14,20 +14,31 @@ struct PostView: View {
     @EnvironmentObject var globalSettings: GlobalSettings
     @State var currentUser: User?
     @State private var searchText = ""
-   // var currentUserLike: User
+    @State private var selectedIndex: Int = 0
+    private let categories = ["All", "Coffee", "Foods", "Schools", "Street Foods", "Beauty"]
+    // var currentUserLike: User
     // var currentUser: User
-    var categories = ["Coffee", "Foods", "Schools", "Street Foods", "Beauty", "etx..."]
-    var filteredPosts: [Post] {
-        if searchText.isEmpty {
-            return viewModel.posts
-        } else {
-            return viewModel.posts.filter { post in
-                
-                let postcaption = post.caption.lowercased().contains(searchText.lowercased())
-                return  postcaption
+    
+    // Insert the modified filteredPosts here
+        var filteredPosts: [Post] {
+            var result = viewModel.posts
+
+            // Filter based on search text
+            if !searchText.isEmpty {
+                result = result.filter { post in
+                    return post.caption.lowercased().contains(searchText.lowercased())
+                }
             }
+
+            // Filter based on selected category
+            if categories[selectedIndex] != "All" {
+                result = result.filter { post in
+                    return post.category == categories[selectedIndex]
+                }
+            }
+
+            return result
         }
-    }
     
     
     
@@ -36,6 +47,18 @@ struct PostView: View {
             HStack {
                 Spacer()
                 VStack(spacing: 20) {
+                    
+                    ScrollView (.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(0 ..< categories.count) { i in
+                                Button(action: {selectedIndex = i}) {
+                                    CategoryView(isActive: selectedIndex == i, text: categories[i])
+                                }
+                            }
+                        }
+                        .padding()
+                    }
+                    
                     TextField("Search", text: $searchText)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.horizontal)
@@ -43,14 +66,15 @@ struct PostView: View {
                         NavigationLink(
                             destination: DetailView(post: post, viewModel: viewModel),
                             label: { ForEach(viewModel.allUsers) { user in
-                                
-                                
+
                                 if let currentUserId = currentUser?.id, user.id == post.userId && post.like.contains(currentUserId) {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id:"", username:"", email:"", followers: [],
-                                                                                                           following: []), numOfLike: post.like.count, isLike: true, likeArray: post.like)
+                                    CardView(post: post, postOwner: user, currentUser: currentUser ??
+                                             User(id:"", username:"", email:"", followers: [],following: []),
+                                             numOfLike: post.like.count, isLike: true, likeArray: post.like)
                                 } else if user.id == post.userId {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser ?? User(id:"", username:"", email:"", followers: [],
-                                                                                                          following: []), numOfLike: post.like.count, isLike: false, likeArray: post.like)
+                                    CardView(post: post, postOwner: user, currentUser: currentUser ??
+                                             User(id:"", username:"", email:"", followers: [],following: []),
+                                             numOfLike: post.like.count, isLike: false, likeArray: post.like)
                                     
                                 }
                             }
