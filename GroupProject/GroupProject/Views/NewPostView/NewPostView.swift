@@ -16,13 +16,13 @@ struct NewPostView: View {
     @State private var postCreatedSuccessfully: Bool = false
     @State var isSheetPresented : Bool = false
     @State var location : LocationItem = LocationItem(imageUrl:"test-image", name: "", coordinate: CLLocationCoordinate2D(latitude: 0,longitude: 0))
-
+    
     @State private var selectedCategory: String = "All"
     let categories = ["All", "Coffee", "Foods", "Schools", "Street Foods", "Beauty"]
     @EnvironmentObject var globalSettings: GlobalSettings
-
+    
     @State private var isDropdownVisible = false
-
+    
     
     var body: some View {
         VStack {
@@ -50,16 +50,16 @@ struct NewPostView: View {
                             .padding([.leading, .bottom, .trailing])
                     }
                 }
-//                .padding(.horizontal)
-//                Rectangle()
-//                    .stroke(Color.white, lineWidth: 4)
-//                    .frame(width: 100, height: 80)
+                //                .padding(.horizontal)
+                //                Rectangle()
+                //                    .stroke(Color.white, lineWidth: 4)
+                //                    .frame(width: 100, height: 80)
                 .background()
                 .opacity(1)
                 .cornerRadius(30)
                 
             }
-
+            
             Spacer()
             TextField("Enter caption", text: $caption, axis: .vertical)
                 .padding(.horizontal)
@@ -73,7 +73,7 @@ struct NewPostView: View {
                 {
                     Text("picker")
                         .padding()
-                        
+                    
                         .cornerRadius(8)
                 }
             }else{
@@ -81,54 +81,54 @@ struct NewPostView: View {
                 })
                 {
                     Text(location.name).padding()
-                    .cornerRadius(8)
-                    .cornerRadius(8)
+                        .cornerRadius(8)
+                        .cornerRadius(8)
                 }
                 
             }
             Button(action: {
-                            withAnimation {
-                                isDropdownVisible.toggle()
-                            }
-                        }) {
-                            Text(selectedCategory)
-                                .font(Font.custom("Baskerville-Bold", size: 18))
-                                .foregroundColor(Color("Color"))
-                                .padding(.horizontal)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 8)
-                                     .stroke(Color("Color"), lineWidth: 1)
-                                     
-                                )
-                        }
-                        .padding()
+                withAnimation {
+                    isDropdownVisible.toggle()
+                }
+            }) {
+                Text(selectedCategory)
+                    .font(Font.custom("Baskerville-Bold", size: 18))
+                    .foregroundColor(Color("Color"))
+                    .padding(.horizontal)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color("Color"), lineWidth: 1)
                         
-                        if isDropdownVisible {
-                            List(categories, id: \.self) { category in
-                                Button(action: {
-                                    selectedCategory = category
-                                    withAnimation {
-                                        isDropdownVisible.toggle()
-                                    }
-                                }) {
-                                    Text(category)
-                                        .font(Font.custom("Baskerville-Bold", size: 18))
-                                        .foregroundColor(Color("Color"))
-                                        
-                                        
-                                }
-                            }
-                            .frame(width: 280, height: 100)
-                            .cornerRadius(8)
-                            
-                        }
+                    )
+            }
+            .padding()
             
-Button("Create Post") {
+            if isDropdownVisible {
+                List(categories, id: \.self) { category in
+                    Button(action: {
+                        selectedCategory = category
+                        withAnimation {
+                            isDropdownVisible.toggle()
+                        }
+                    }) {
+                        Text(category)
+                            .font(Font.custom("Baskerville-Bold", size: 18))
+                            .foregroundColor(Color("Color"))
+                        
+                        
+                    }
+                }
+                .frame(width: 280, height: 100)
+                .cornerRadius(8)
+                
+            }
+            
+            Button(action: {
                 Task {
                     isLoading = true
                     do {
                         let success = try await PostService().createPost(image: selectedImage!, caption: caption, category: selectedCategory, name: location.name, location: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
-
+                        
                         postCreatedSuccessfully = success
                     } catch {
                         // Handle error
@@ -136,7 +136,7 @@ Button("Create Post") {
                     }
                     isLoading = false
                 }
-            } label: {
+            }) {
                 Text("Post")
                     .font(Font.custom("Baskerville-Bold", size: 24))
                     .foregroundColor(.black)
