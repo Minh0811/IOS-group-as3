@@ -21,6 +21,7 @@ struct EditProfileView: View {
     var body: some View {
         VStack(spacing: 16) {
             // Profile Image
+            Spacer()
             if let profileImage = viewModel.profileImage {
                 profileImage
                     .resizable()
@@ -38,6 +39,8 @@ struct EditProfileView: View {
             Button("Change Profile Picture") {
                 isImagePickerPresented.toggle()
             }
+            .foregroundColor(Color("Color"))
+            .font(Font.custom("Baskerville-Bold", size: 17))
             .fullScreenCover(isPresented: $isImagePickerPresented) {
                 UserImagePicker(selectedImage: Binding<UIImage?>(get: {
                     self.viewModel.uiImage
@@ -77,12 +80,15 @@ struct EditProfileView: View {
                 }
             }
             .padding()
-            .background(Color.blue)
+            .font(Font.custom("Baskerville-Bold", size: 26))
+            .background(Color("Color"))
             .foregroundColor(.white)
             .cornerRadius(8)
-        }
+            
+        } .background(Image("theme"))
         
         .padding()
+        
     }
 }
 

@@ -21,6 +21,8 @@ struct NewPostView: View {
     let categories = ["All", "Coffee", "Foods", "Schools", "Street Foods", "Beauty"]
     @EnvironmentObject var globalSettings: GlobalSettings
 
+    @State private var isDropdownVisible = false
+
     
     var body: some View {
         VStack {
@@ -30,21 +32,41 @@ struct NewPostView: View {
                     .scaledToFit()
             }
             
-            Button("Select Image") {
-                isImagePickerPresented = true
+            Spacer()
+            ZStack{
+                Button() {
+                    isImagePickerPresented = true
+                } label: {
+                    VStack {
+                        Image("img")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 100)
+                            .padding(.top)
+                        Text("Choose your image")
+                            .fontWeight(.semibold)
+                            .font(.title)
+                            .foregroundColor(.gray)
+                            .padding([.leading, .bottom, .trailing])
+                    }
+                }
+//                .padding(.horizontal)
+//                Rectangle()
+//                    .stroke(Color.white, lineWidth: 4)
+//                    .frame(width: 100, height: 80)
+                .background()
+                .opacity(1)
+                .cornerRadius(30)
+                
             }
-            
-            TextField("Enter caption", text: $caption)
-                .padding()
-            
+
+            Spacer()
+            TextField("Enter caption", text: $caption, axis: .vertical)
+                .padding(.horizontal)
+                .frame(width: 350, height: 90)
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(8)
-            Picker("Select Category", selection: $selectedCategory) {
-                ForEach(categories, id: \.self) { category in
-                    Text(category).tag(category)
-                }
-            }
-            .pickerStyle(MenuPickerStyle())
+                .padding()
             if location.name == ""{
                 Button(action:{ isSheetPresented=true
                 })
@@ -55,13 +77,53 @@ struct NewPostView: View {
                         .cornerRadius(8)
                 }
             }else{
-                Text(location.name).padding()
+                Button(action:{ isSheetPresented=true
+                })
+                {
+                    Text(location.name).padding()
                     .cornerRadius(8)
+                    .cornerRadius(8)
+                }
+                
             }
+            Button(action: {
+                            withAnimation {
+                                isDropdownVisible.toggle()
+                            }
+                        }) {
+                            Text(selectedCategory)
+                                .font(Font.custom("Baskerville-Bold", size: 18))
+                                .foregroundColor(Color("Color"))
+                                .padding(.horizontal)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 8)
+                                     .stroke(Color("Color"), lineWidth: 1)
+                                     
+                                )
+                        }
+                        .padding()
+                        
+                        if isDropdownVisible {
+                            List(categories, id: \.self) { category in
+                                Button(action: {
+                                    selectedCategory = category
+                                    withAnimation {
+                                        isDropdownVisible.toggle()
+                                    }
+                                }) {
+                                    Text(category)
+                                        .font(Font.custom("Baskerville-Bold", size: 18))
+                                        .foregroundColor(Color("Color"))
+                                        
+                                        
+                                }
+                            }
+                            .frame(width: 280, height: 100)
+                            .cornerRadius(8)
+                            
+                        }
             
-            
-            
-            Button("Create Post") {
+Button("Create Post") {
                 Task {
                     isLoading = true
                     do {
@@ -74,9 +136,20 @@ struct NewPostView: View {
                     }
                     isLoading = false
                 }
+            } label: {
+                Text("Post")
+                    .font(Font.custom("Baskerville-Bold", size: 24))
+                    .foregroundColor(.black)
+                    .padding()
+                    .padding(.horizontal)
+                    .background(Color("Color"))
+                    .cornerRadius(30)
+                    .shadow(radius: 10)
             }
             .disabled(isLoading || selectedImage == nil)
+            Spacer()
         }
+        .background(Image("theme"))
         
         .sheet(isPresented: $isImagePickerPresented) {
             NewPostImagePicker(selectedImage: $selectedImage)

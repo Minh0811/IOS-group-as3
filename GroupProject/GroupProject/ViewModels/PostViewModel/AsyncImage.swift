@@ -20,6 +20,8 @@ struct AsyncImage: View {
                 // Placeholder until the image is loaded
                 Image(systemName: "photo")
                     .resizable()
+                    .frame(width: 350, height: 350)
+                    .cornerRadius(10.0)
             }
         }
         .onAppear(perform: loadImage)

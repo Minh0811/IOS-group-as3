@@ -6,81 +6,90 @@
 //
 
 import SwiftUI
-
+import Kingfisher
 struct PostEditView: View {
     
     @State var status: String = ""
     @ObservedObject var viewModel: PostViewModel
     @Environment(\.dismiss) var dimiss
     var post: Post
+    var user: User
     
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
-                VStack (spacing: 0){
-                    HStack (spacing: 0){
-                        
-                        //use's profile image
-                        Image("user")
+                VStack(spacing: 16) {
+                    Spacer()
+                    HStack(spacing: 16) {
+                        KFImage(URL(string: user.profileImageUrl ?? ""))
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 70, height: 50)
+                            .frame(width: 70, height: 70)
                             .clipShape(Circle())
-                            .overlay(Circle().stroke(Color(.gray),lineWidth: 3))
-                
-                        VStack(spacing: 0) {
-                            //username
+                            .overlay(Circle().stroke(Color(.gray), lineWidth: 3))
+                        
+                        VStack(alignment: .leading, spacing: 8) {
                             Text(post.username)
                                 .font(.system(size: 16))
-                                .multilineTextAlignment(.leading)
-                            //uploaded date of status
+                            
                             Text("15 Sep, 2023")
                                 .font(.system(size: 16))
-                                .multilineTextAlignment(.leading)
                         }
                         
-                                                
                         Spacer()
-                            .frame(width: geometry.size.width * 0.5)
                     }
-                    
                     Spacer()
-                        .frame(height: geometry.size.height * 0.04)
-                    //edit text field
-                    VStack(spacing: 0) {
-                        TextField("Write something ...", text: $status, axis: .vertical)
-                            .textFieldStyle(.roundedBorder)
-                            .frame(width: geometry.size.width * 0.87)
-                    }
-                    
                     Spacer()
-                        .frame(height: geometry.size.width * 0.08)
-                    //status's image
                     AsyncImage(url: post.imageUrl)
-                        
-                        .frame(width: UIScreen.main.bounds.width, height: geometry.size.height * 0.45)
+                        .frame(width: 300, height: 250)
                         .cornerRadius(20.0)
-                    
-                    Button("Save") {
+                        .padding(20) // Adjust padding as needed
+                    TextField("Write something ...", text: $status, axis: .vertical)
+                        .textFieldStyle(.roundedBorder)
+                        .frame(width: geometry.size.width * 0.87)
+                    Button(action: {
                         Task {
                             do {
                                 await viewModel.editPost(postId: post.id, newCaption: status)
-                                dimiss()
+                                //dismiss()
                             }
                         }
+                    }) {
+                        Text("Save")
+                            .font(Font.custom("Baskerville-Bold", size: 26))
+                            .frame(width: 100, height: 70)
+                            .foregroundColor(.white)
+                            .background(Color("Color"))
+                            .cornerRadius(30)
+                            .shadow(radius: 10)
+                            .padding()
                     }
+                    
                 }
+                .padding()
                 .onAppear {
                     status = post.caption
                 }
             }
         }
+        .background(Image("theme"))
+
     }
 }
 
 struct PostEditView_Previews: PreviewProvider {
+    static var viewModel = PostViewModel()
     static var previews: some View {
-        PostEditView(viewModel: PostViewModel(), post: Post(id: "1", userId: "2", username: "Test", imageUrl: "None", caption: "Caption", like: [], category: "All", name: "Sydney", coordinates: Coordinates(latitude: 10.7,longitude: 106.69)))
-
+        PostEditView(viewModel: viewModel, post: Post(
+            id: "1234567890",
+            userId: "userID_12345",
+            username: "mockUsername",
+            imageUrl: "https://example.com/mock-image.jpg",
+            caption: "This is a mock caption for the mock post.",
+            like: ["user1", "user2", "user3"],
+            category: "All", 
+            name: "Sydney", 
+            coordinates: Coordinates(latitude: 10.7,longitude: 106.69)
+        ), user: User(id: "1", username: "Test", email: "check@gmail.com",followers: [],following: []))
     }
 }

@@ -25,6 +25,7 @@ struct Post: Identifiable, Codable, Equatable {
 struct Coordinates: Codable {
     var latitude: Double
     var longitude: Double
+
 }
 extension Post {
     static func == (lhs: Post, rhs: Post) -> Bool {
