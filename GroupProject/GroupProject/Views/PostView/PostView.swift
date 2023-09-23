@@ -66,9 +66,7 @@ struct PostView: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .padding(.horizontal)
                         ForEach(filteredPosts) { post in
-                            NavigationLink(
-                                destination: DetailView(post: post, viewModel: viewModel),
-                                label: { ForEach(viewModel.allUsers) { user in
+                             ForEach(viewModel.allUsers) { user in
                                     
                                     if let currentUserId = currentUser?.id, user.id == post.userId && post.like.contains(currentUserId) {
                                         CardView(post: post, postOwner: user, currentUser: currentUser ??
@@ -81,7 +79,7 @@ struct PostView: View {
                                         
                                     }
                                 }
-                                })
+                           
                             .navigationBarHidden(true)
                             .foregroundColor(.black)
                         }

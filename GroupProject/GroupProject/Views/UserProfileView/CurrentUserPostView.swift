@@ -23,7 +23,7 @@ struct CurrentUserPostView: View {
             LazyVGrid(columns: gridLayout, spacing: 2) {
                 ForEach(viewModel.userPosts) { post in
                     NavigationLink(
-                        destination: DetailView(post: post, viewModel: viewModel),
+                        destination: CommentView(viewModel: viewModel, postId: post.id, post: post),
                         label: {
                             UserPostThumbnailView(post: post)
                         })

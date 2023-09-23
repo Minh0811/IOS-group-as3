@@ -14,7 +14,7 @@ struct CommentView: View {
     @State private var commentText: String = ""
     @State var currentUser: User?
     var body: some View {
-
+        
         List {
             AsyncImage(url: post.imageUrl)
                 .aspectRatio(1,contentMode: .fit)
@@ -22,39 +22,51 @@ struct CommentView: View {
             
             DescriptionView(post: post)
             
-            HStack {
-                CircularProfileImageView(user: currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", followers: [], following: []), size: .small )
-                TextField("Add a comment...", text: $commentText, axis: .vertical)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                Button() {
-                    
-                    if let currentUser = currentUser {
-                        print("Current user is authenticated with ID: \(currentUser.id)")
-                        viewModel.postComment(text: commentText, by: currentUser, for: postId)
-                        commentText = ""  // Clear the input field after posting
-                    } else {
-                        print("User is not authenticated.")
-                    }
-                } label: {
-                    Image(systemName: "paperplane.fill")
+            ZStack {
+                HStack {
+                    CircularProfileImageView(user: currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", followers: [], following: []), size: .small )
+                    TextField("Add a comment...", text: $commentText, axis: .vertical)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
-                .disabled(currentUser == nil)
                 
+                HStack {
+                    Spacer()
+                    
+                    ZStack {
+                        Image(systemName: "paperplane.fill")
+                            .foregroundColor(.blue)
+                    }
+                    .frame(width: 30, height: 30)
+                    .onTapGesture {
+                        if currentUser == nil || commentText == "" {
+                            
+                        }
+                        else {
+                            if let currentUser = currentUser {
+                                print("Current user is authenticated with ID: \(currentUser.id)")
+                                viewModel.postComment(text: commentText, by: currentUser, for: postId)
+                                commentText = ""  // Clear the input field after posting
+                            } else {
+                                print("User is not authenticated.")
+                            }
+                        }
+                    }
+                    
+                }
             }
-            .padding()
+            
             ForEach(viewModel.comments) { comment in
                 VStack(alignment: .leading) {
                     //Text("Comments")
                     HStack {
                         ForEach(viewModel.allUsers) { user in
-                            if user.id == post.userId {
+                            if user.id == comment.userId {
                                 CircularProfileImageView(user: user, size: .small )
                             }
                         }
                         Text(comment.username).bold()
                     }
-//                    Text(comment.username).bold()
+                    //                    Text(comment.username).bold()
                     Text(comment.text)
                 }
             }
