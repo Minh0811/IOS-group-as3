@@ -10,17 +10,25 @@ import SwiftUI
 struct CommentView: View {
     @ObservedObject var viewModel: PostViewModel
     let postId: String
+    var post: Post
     @State private var commentText: String = ""
     @State var currentUser: User?
     var body: some View {
-        VStack {
-            // Input field and button to post a comment
+
+        List {
+            AsyncImage(url: post.imageUrl)
+                .aspectRatio(1,contentMode: .fit)
+                .edgesIgnoringSafeArea(.top)
+            
+            DescriptionView(post: post)
+            
             HStack {
-                TextField("Add a comment...", text: $commentText)
+                CircularProfileImageView(user: currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", followers: [], following: []), size: .small )
+                TextField("Add a comment...", text: $commentText, axis: .vertical)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 
-                Button("Post") {
-                  
+                Button() {
+                    
                     if let currentUser = currentUser {
                         print("Current user is authenticated with ID: \(currentUser.id)")
                         viewModel.postComment(text: commentText, by: currentUser, for: postId)
@@ -28,38 +36,39 @@ struct CommentView: View {
                     } else {
                         print("User is not authenticated.")
                     }
+                } label: {
+                    Image(systemName: "paperplane.fill")
                 }
                 .disabled(currentUser == nil)
-
+                
             }
             .padding()
-
-            // List of comments
-
-            List(viewModel.comments, id: \.self) { comment in
+            ForEach(viewModel.comments) { comment in
                 VStack(alignment: .leading) {
                     //Text("Comments")
-                    Text(comment.username).bold()
+                    HStack {
+                        ForEach(viewModel.allUsers) { user in
+                            if user.id == post.userId {
+                                CircularProfileImageView(user: user, size: .small )
+                            }
+                        }
+                        Text(comment.username).bold()
+                    }
+//                    Text(comment.username).bold()
                     Text(comment.text)
                 }
             }
- 
         }
         .onAppear {
-         
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 viewModel.fetchComments(for: postId)
-               
+                
             }
             UserService().fetchCurrentUser { user in
                 self.currentUser = user
             }
-          
-        
         }
-
-
-
     }
 }
 
@@ -68,9 +77,9 @@ struct CommentView: View {
 struct CommentView_Previews: PreviewProvider {
     static var mockViewModel = PostViewModel()  // Create a mock view model
     static var mockPostId = "123456"  // Provide a mock post ID
-
+    
     static var previews: some View {
-        CommentView(viewModel: mockViewModel, postId: mockPostId)
+        CommentView(viewModel: mockViewModel, postId: mockPostId, post: Post(id: "1", userId: "1", username: "Test", imageUrl: "", caption: "", like: [], category: ""))
     }
 }
 

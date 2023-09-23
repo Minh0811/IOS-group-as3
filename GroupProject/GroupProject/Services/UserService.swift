@@ -115,6 +115,7 @@ class UserService: ObservableObject {
                 print("Success store user info")
             }
     }
+    
     func updateUserProfileData(data: [String: Any]) async throws {
         guard let id = Auth.auth().currentUser?.uid else { return }
         
@@ -174,32 +175,84 @@ class UserService: ObservableObject {
         }
     }
     
-    func followUser(userIDToFollow: String) {
-        guard let currentUserID = Auth.auth().currentUser?.uid else {
-            // Handle the case where the current user is not authenticated
-            return
+    func fetchUsers() async throws -> [User] {
+        return try await withCheckedThrowingContinuation { continuation in
+            db.collection("users").getDocuments { snapshot, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    continuation.resume(throwing: NSError(domain: "Firestore", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch users"]))
+                    return
+                }
+                
+                let users = documents.compactMap { document -> User? in
+                    let data = document.data()
+                    let id = document.documentID
+                    let username = data["username"] as? String ?? ""
+                    let email = data["email"] as? String ?? ""
+                    let profileImageUrl = data["profileImageUrl"] as? String
+                    let fullname = data["fullname"] as? String
+                    let bio = data["bio"] as? String
+                    let followers = data["followers"] as? [String] ?? []
+                    let following = data["following"] as? [String] ?? []
+                    
+                    return User(id: id, username: username, email: email, profileImageUrl: profileImageUrl, fullname: fullname, bio: bio, followers: followers, following: following)
+                }
+                
+                continuation.resume(returning: users)
+            }
         }
-        
-        // Add the user ID to the following list of the current user
-        db.collection("users").document(currentUserID).updateData(["following": FieldValue.arrayUnion([userIDToFollow])])
-        
-        // Add the current user's ID to the followers list of the user being followed
-        db.collection("users").document(userIDToFollow).updateData(["followers": FieldValue.arrayUnion([currentUserID])])
     }
     
-    func unfollowUser(userIDToUnfollow: String) {
-        guard let currentUserID = Auth.auth().currentUser?.uid else {
-            // Handle the case where the current user is not authenticated
+    func followUser(userId: String, currentUserId: String, followerArray: [String], followingArray: [String]) {
+        guard ((Auth.auth().currentUser?.uid) != nil) else {
             return
         }
-        
-        // Remove the user ID from the following list of the current user
-        db.collection("users").document(currentUserID).updateData(["following": FieldValue.arrayRemove([userIDToUnfollow])])
-        
-        // Remove the current user's ID from the followers list of the user being unfollowed
-        db.collection("users").document(userIDToUnfollow).updateData(["followers": FieldValue.arrayRemove([currentUserID])])
+        db.collection("users").document(userId).setData(["followers": followerArray], merge: true)
+        db.collection("users").document(currentUserId).setData(["following": followingArray], merge: true)
     }
     
-    
-    
+//    func fetchAUser() async throws -> User {
+//        guard let id = Auth.auth().currentUser?.uid else {
+//            return User(id: "N/A", username: "N/A", email: "N/A", followers: [], following: [])
+//        }
+//        
+//        return try await withCheckedThrowingContinuation { continuation in
+//            db.collection("posts")
+//              .whereField("userId", isEqualTo: id)
+//              .order(by: "timestamp", descending: true)
+//              .getDocuments { snapshot, error in
+//
+//                  if let error = error {
+//                      continuation.resume(throwing: error)
+//                      return
+//                  }
+//                
+//
+//                guard let documents = snapshot?.documents else {
+//                    continuation.resume(throwing: NSError(domain: "Firestore", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch user"]))
+//                    return
+//                }
+//
+//                let user = documents.compactMap { document -> User? in
+//                    let data = document.data()
+//                    let id = document.documentID
+//                    let username = data["username"] as? String ?? ""
+//                    let email = data["email"] as? String ?? ""
+//                    let profileImageUrl = data["profileImageUrl"] as? String
+//                    let fullname = data["fullname"] as? String
+//                    let bio = data["bio"] as? String
+//                    let followers = data["followers"] as? [String] ?? []
+//                    let following = data["following"] as? [String] ?? []
+//
+//                    return User(id: id, username: username, email: email, profileImageUrl: profileImageUrl, fullname: fullname, bio: bio, followers: followers, following: following)
+//                }
+//                  self.currentUser = user[0]
+//                  continuation.resume(returning: user[0])
+//            }
+//        }
+//    }
 }
