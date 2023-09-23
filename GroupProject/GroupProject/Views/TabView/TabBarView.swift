@@ -35,6 +35,7 @@ struct TabBarView: View {
          .overlay(alignment: .bottom){
              CustomTabBarView(tabSelection: $selectedTab)
                  .padding(.horizontal)
+                 .offset(y: 20)
          }
        
      }

@@ -20,88 +20,87 @@ struct PostView: View {
     // var currentUser: User
     
     // Insert the modified filteredPosts here
-        var filteredPosts: [Post] {
-            var result = viewModel.posts
-
-            // Filter based on search text
-            if !searchText.isEmpty {
-                result = result.filter { post in
-                    return post.caption.lowercased().contains(searchText.lowercased())
-                }
+    var filteredPosts: [Post] {
+        var result = viewModel.posts
+        
+        // Filter based on search text
+        if !searchText.isEmpty {
+            result = result.filter { post in
+                return post.caption.lowercased().contains(searchText.lowercased())
             }
-
-            // Filter based on selected category
-            if categories[selectedIndex] != "All" {
-                result = result.filter { post in
-                    return post.category == categories[selectedIndex]
-                }
-            }
-
-            return result
         }
+        
+        // Filter based on selected category
+        if categories[selectedIndex] != "All" {
+            result = result.filter { post in
+                return post.category == categories[selectedIndex]
+            }
+        }
+        
+        return result
+    }
     
     
     
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            HStack {
-                Spacer()
-                VStack(spacing: 20) {
-                    
-                    ScrollView (.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(0 ..< categories.count) { i in
-                                Button(action: {selectedIndex = i}) {
-                                    CategoryView(isActive: selectedIndex == i, text: categories[i])
+        ZStack{
+           
+            ScrollView(showsIndicators: false) {
+                HStack {
+                    Spacer()
+                    VStack(spacing: 20) {
+                        
+                        ScrollView (.horizontal, showsIndicators: false) {
+                            HStack {
+                                ForEach(0 ..< categories.count) { i in
+                                    Button(action: {selectedIndex = i}) {
+                                        CategoryView(isActive: selectedIndex == i, text: categories[i])
+                                    }
                                 }
                             }
+                            .padding(.top, 20)
+                            .padding(.horizontal, 15)
                         }
-                        .padding()
-                    }
-                    HStack{
                         
                         TextField("Search", text: $searchText)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding(.leading)
-                        Image("Search")
-                            .padding()
-                    }
-                    ForEach(filteredPosts) { post in
-                        NavigationLink(
-                            destination: DetailView(post: post, viewModel: viewModel),
-                            label: { ForEach(viewModel.allUsers) { user in
-
-                                if let currentUserId = currentUser?.id, user.id == post.userId && post.like.contains(currentUserId) {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser ??
-                                             User(id:"", username:"", email:"", followers: [],following: []),
-                                             numOfLike: post.like.count, isLike: true, likeArray: post.like)
-                                } else if user.id == post.userId {
-                                    CardView(post: post, postOwner: user, currentUser: currentUser ??
-                                             User(id:"", username:"", email:"", followers: [],following: []),
-                                             numOfLike: post.like.count, isLike: false, likeArray: post.like)
+                            .padding(.horizontal)
+                        ForEach(filteredPosts) { post in
+                            NavigationLink(
+                                destination: DetailView(post: post, viewModel: viewModel),
+                                label: { ForEach(viewModel.allUsers) { user in
                                     
+                                    if let currentUserId = currentUser?.id, user.id == post.userId && post.like.contains(currentUserId) {
+                                        CardView(post: post, postOwner: user, currentUser: currentUser ??
+                                                 User(id:"", username:"", email:"", followers: [],following: []),
+                                                 numOfLike: post.like.count, isLike: true, likeArray: post.like)
+                                    } else if user.id == post.userId {
+                                        CardView(post: post, postOwner: user, currentUser: currentUser ??
+                                                 User(id:"", username:"", email:"", followers: [],following: []),
+                                                 numOfLike: post.like.count, isLike: false, likeArray: post.like)
+                                        
+                                    }
                                 }
-                            }
-                            })
-                        .navigationBarHidden(true)
-                        .foregroundColor(.black)
+                                })
+                            .navigationBarHidden(true)
+                            .foregroundColor(.black)
+                        }
                     }
+                    Spacer()
                 }
-                Spacer()
+            }
+
+            .padding(.bottom)
+            .onAppear{
+                viewModel.fetchPosts()
+                currentUser = userService.currentUser
             }
         }
-        .background(globalSettings.isDark ? Color.black : Color.white)
-        .padding(.bottom)
-        .onAppear{
-            viewModel.fetchPosts()
-            
-            currentUser = userService.currentUser
-        }
-        
     }
 }
 
 struct CardView: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
     var post: Post
     var postOwner: User
     var currentUser: User
@@ -126,14 +125,23 @@ struct CardView: View {
             HStack(spacing: 0) {
                 KFImage(URL(string: postOwner.profileImageUrl ?? ""))
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-//                    .scaledToFill()
-                    .frame(width: 70, height: 70)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 70, height: 50)
                     .clipShape(Circle())
-                    .overlay(Circle().stroke(Color(.gray),lineWidth: 3))
-                    .padding(.horizontal)
-                Text("\(postOwner.username)")
+                    .overlay(Circle().stroke(Color("Color"),lineWidth: 3))
+                    .padding(.horizontal, 2)
+                    .padding(.vertical, 2)
                 
+                Text("\(postOwner.username)")
+                    .font(.custom("PlayfairDisplay-Regular", size: 18))
+                    .padding(.trailing, 15)
+                    .padding(.leading, 5)
+                Text("\(post.category)")
+                    .font(.custom("PlayfairDisplay-Regular", size: 13))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Color("PrimaryText"))
+                    .cornerRadius(5)
                 Spacer()
                 
                 if postOwner.id == currentUser.id {
@@ -144,11 +152,9 @@ struct CardView: View {
                 }
             }
             
-            Divider()
-            
             AsyncImage(url: post.imageUrl)
-                .frame(width: 320, height: 320)
-                .cornerRadius(20.0)
+                .frame(width: 350, height: 350)
+                .cornerRadius(10.0)
             HStack(spacing: 2) {
                 
                 Text(post.caption)
@@ -158,30 +164,7 @@ struct CardView: View {
             }
             
             Divider()
-            HStack(spacing: 0) {
-                
-                
-                HStack(spacing: 0) {
-                    Image(systemName: "heart.fill")
-                        .foregroundColor(.pink)
-                    
-                    Spacer()
-                        .frame(width: 5)
-                    Text("\(numOfLike)")
-                }
-                
-                Spacer()
-                
-                HStack(spacing: 0) {
-                    Image(systemName: "text.bubble")
-                    Spacer()
-                        .frame(width: 5)
-                    Text("\(post.commentsCount)")
-                }
-                .padding(.horizontal, 10)
-            }
             
-            Divider()
             HStack(spacing: 0) {
                 
                 Spacer()
@@ -192,26 +175,33 @@ struct CardView: View {
                     viewModel.likePost(postId: post.id, userIdArray: likeArray)
                 } label: {
                     Image(systemName: isLike == true ? "heart.fill" : "heart")
-                        .foregroundColor(isLike == true ? .pink : .black)
-                    Text("Like")
+                        .foregroundColor(isLike == true ? Color("Color") : .black)
+                    Text("\(numOfLike)")
                 }
                 
                 Spacer()
-                Button() {
+                
+                NavigationLink(
                     
-                } label: {
+                    destination: CommentView(viewModel: viewModel, postId: post.id, post: post)
+                ) {
                     Image(systemName: "bubble.left")
                     Text("Comment")
                 }
                 
-                Spacer()
-                    .frame(width: 10)
+            
+                
+                
             }
         }
-       
         .padding()
-        .background(Color.white)
+        .background(globalSettings.isDark ? Color("DarkPost") :  Color("LightPost"))
+        
         .cornerRadius(20.0)
+        .overlay(
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(globalSettings.isDark ? Color("LightPost") :  Color("DarkPost"), lineWidth: 3)
+        )
         
     }
 }
@@ -227,5 +217,23 @@ struct PostView_Previews: PreviewProvider {
             PostView(currentUser: User(id: "1", username: "Test", email: "check@gmail.com",followers: [],following: []))
                 .environmentObject(GlobalSettings.shared)
         }
+    }
+}
+
+struct CategoryView: View {
+    let isActive: Bool
+    let text: String
+    var body: some View {
+        VStack (alignment: .leading, spacing: 0) {
+            Text(text)
+                .font(.system(size: 18))
+                .fontWeight(.medium)
+                .foregroundColor(isActive ? Color("PrimaryText") : Color("LightText"))
+            if (isActive) { Color("PrimaryText")
+                    .frame(width: 15, height: 2)
+                    .clipShape(Capsule())
+            }
+        }
+        .padding(.trailing)
     }
 }
