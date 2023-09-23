@@ -51,7 +51,7 @@ struct DetailView: View {
         }
         .onAppear{
             print("DetailView is appearing for postId: \(post.id)")
-            viewModel.fetchComments(for: post.id)
+           // viewModel.fetchComments(for: post.id)
             print("Finished DetailView .onAppear for postId: \(post.id)")
         }
         .onChange(of: viewModel.posts) { newPosts in

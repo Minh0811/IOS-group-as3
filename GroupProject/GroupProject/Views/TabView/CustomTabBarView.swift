@@ -10,7 +10,7 @@ import SwiftUI
 struct CustomTabBarView: View {
     @Binding var tabSelection: Int
     @Namespace private var AnimcationNamespace
-    
+    @EnvironmentObject var globalSettings: GlobalSettings
     let tabBarItems: [(image: String, title: String)] = [
     ("house.fill","Home"),
     ("magnifyingglass","Search"),
@@ -21,13 +21,13 @@ struct CustomTabBarView: View {
     var body: some View {
         ZStack{
             Capsule()
-                .frame(height: 80)
-                .foregroundColor(Color("Background"))
-                //.shadow(radius: 2)
+                .frame(height: 60)
+                .foregroundColor( globalSettings.isDark ? Color("DarkTab")  :  Color("LightTab"))
+                .shadow(radius: 2)
             HStack{
                 ForEach(0..<4){ index in
                     Button {
-                        tabSelection = index 
+                        tabSelection = index
                     } label: {
                         VStack(spacing: 8){
                             Spacer()
@@ -38,18 +38,18 @@ struct CustomTabBarView: View {
                             if index == tabSelection{
                                 Rectangle()
                                     .frame(height: 8)
-                                    .foregroundColor(Color("Primary"))
+                                    .foregroundColor(.clear)
                                     .matchedGeometryEffect(id: "selectedTabId", in: AnimcationNamespace)
-                                    .offset(y: 1)
+                                    .offset(y: 3)
                                     .cornerRadius(4)
                             } else {
                                 Rectangle()
                                     .frame(height: 8)
                                     .foregroundColor(.clear)
-                                     .offset(y: 3)
+                                    // .offset(y: 3)
                             }
                         }
-                        .foregroundColor(index == tabSelection ? Color("Primary") : .gray)
+                        .foregroundColor(index == tabSelection ? Color("PrimaryIcon") : Color("LightTabIcon"))
                     }
                 }
                 .frame(height: 80)
