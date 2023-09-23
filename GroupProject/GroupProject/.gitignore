@@ -1,12 +1,11 @@
+# Ignore .DS_Store files
 .DS_Store
 **/.DS_Store
+
+# Ignore Xcode user-specific files
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
-*.xcuserdatad/userInterfaceState.xcuserstate
-minhvo.xcuserdatad/
-GroupProject.xcodeproj/project.xcworkspace/xcuserdata/minhvo.xcuserdatad/
-GroupProject.xcodeproj/xcuserdata/minhvo.xcuserdatad/
-
-userInterfaceState.xcuserstate
 *.xcuserdatad/*
-.DS_Store
+
+# If you specifically want to ignore only the userInterfaceState.xcuserstate file, you can use:
+**/xcuserdata/*/UserInterfaceState.xcuserstate
