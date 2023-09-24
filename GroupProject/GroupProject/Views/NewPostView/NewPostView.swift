@@ -13,10 +13,10 @@ struct NewPostView: View {
     @State private var caption: String = ""
     @State private var isImagePickerPresented: Bool = false
     @State private var isLoading: Bool = false
+    @State private var isDropdownVisible = false
     @State private var postCreatedSuccessfully: Bool = false
     @State var isSheetPresented : Bool = false
     @State var location : LocationItem = LocationItem(imageUrl:"test-image", name: "", coordinate: CLLocationCoordinate2D(latitude: 0,longitude: 0))
-    
     @State private var selectedCategory: String = "All"
     let categories = ["All", "Coffee", "Foods", "Schools", "Street Foods", "Beauty"]
     @EnvironmentObject var globalSettings: GlobalSettings
@@ -40,7 +40,6 @@ struct NewPostView: View {
                 {
                     Text("picker")
                         .padding()
-                    
                         .cornerRadius(8)
                 }
             }else{
@@ -49,11 +48,10 @@ struct NewPostView: View {
                 {
                     Text(location.name).padding()
                         .cornerRadius(8)
-                        .cornerRadius(8)
                 }
                 
             }
-                PostButton(isLoading: $isLoading, postCreatedSuccessfully: $postCreatedSuccessfully, selectedImage: selectedImage, caption: caption, selectedCategory: selectedCategory)
+                PostButton(isLoading: $isLoading, postCreatedSuccessfully: $postCreatedSuccessfully, selectedImage: selectedImage, caption: caption, selectedCategory: selectedCategory,name: location.name,location: Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
                 
                 
             }
@@ -188,13 +186,15 @@ struct PostButton: View {
     let selectedImage: UIImage?
     let caption: String
     let selectedCategory: String
+    let name: String
+    let location: Coordinates
     
     var body: some View {
         Button {
             Task {
                 isLoading = true
                 do {
-                    let success = try await PostService().createPost(image: selectedImage!, caption: caption, category: selectedCategory)
+                    let success = try await PostService().createPost(image: selectedImage!, caption: caption, category: selectedCategory, name: name,location: location)
                     postCreatedSuccessfully = success
                 } catch {
                     // Handle error
