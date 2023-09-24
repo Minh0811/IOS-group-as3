@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct TabBarView: View {
     @State private var selectedTab: Int = 0
@@ -27,6 +28,8 @@ struct TabBarView: View {
              // UserProfileView
              CurrentUserProfileView()
                  .tag(3)
+             MapView()
+                 .tag(4)
              
          }
    

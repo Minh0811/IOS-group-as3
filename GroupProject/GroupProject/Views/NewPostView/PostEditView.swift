@@ -80,7 +80,6 @@ struct PostEditView: View {
 struct PostEditView_Previews: PreviewProvider {
     static var viewModel = PostViewModel()
     static var previews: some View {
-      
         PostEditView(viewModel: viewModel, post: Post(
             id: "1234567890",
             userId: "userID_12345",
@@ -88,7 +87,9 @@ struct PostEditView_Previews: PreviewProvider {
             imageUrl: "https://example.com/mock-image.jpg",
             caption: "This is a mock caption for the mock post.",
             like: ["user1", "user2", "user3"],
-            category: "All"
+            category: "All", 
+            name: "Sydney", 
+            coordinates: Coordinates(latitude: 10.7,longitude: 106.69)
         ), user: User(id: "1", username: "Test", email: "check@gmail.com",followers: [],following: []))
     }
 }

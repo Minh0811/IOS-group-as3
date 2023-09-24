@@ -119,9 +119,30 @@ struct CommentView: View {
 struct CommentView_Previews: PreviewProvider {
     static var mockViewModel = PostViewModel()  // Create a mock view model
     static var mockPostId = "123456"  // Provide a mock post ID
+    let mockPost = Post(
+        id: "1234567890",
+        userId: "user001",
+        username: "JohnDoe",
+        imageUrl: "https://example.com/path/to/image.jpg",
+        caption: "Enjoying a beautiful sunset at the beach!",
+        like: ["user002", "user003", "user004"],
+        commentsCount: 5,
+        category: "Nature",
+        name: "Sunset Beach",
+        coordinates: Coordinates(latitude: 34.0522, longitude: -118.2437)
+    )
     
     static var previews: some View {
-        CommentView(viewModel: mockViewModel, postId: mockPostId, post: Post(id: "1", userId: "1", username: "Test", imageUrl: "", caption: "", like: [], category: ""))
+        CommentView(viewModel: mockViewModel, postId: mockPostId, post: Post( id: "1234567890",
+                                                                              userId: "user001",
+                                                                              username: "JohnDoe",
+                                                                              imageUrl: "https://example.com/path/to/image.jpg",
+                                                                              caption: "Enjoying a beautiful sunset at the beach!",
+                                                                              like: ["user002", "user003", "user004"],
+                                                                              commentsCount: 5,
+                                                                              category: "Nature",
+                                                                              name: "Sunset Beach",
+                                                                              coordinates: Coordinates(latitude: 34.0522, longitude: -118.2437)))
     }
 }
 

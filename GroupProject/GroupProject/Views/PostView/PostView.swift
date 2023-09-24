@@ -28,6 +28,15 @@ struct PostView: View {
             result = result.filter { post in
                 return post.caption.lowercased().contains(searchText.lowercased())
             }
+
+            // Filter based on selected category
+            if categories[selectedIndex] != "All" {
+                result = result.filter { post in
+                    return post.category == categories[selectedIndex]
+                }
+            }
+
+            return result
         }
         
         // Filter based on selected category
