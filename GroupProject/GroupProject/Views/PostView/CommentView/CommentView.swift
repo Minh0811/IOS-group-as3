@@ -9,76 +9,107 @@ import SwiftUI
 
 struct CommentView: View {
     @ObservedObject var viewModel: PostViewModel
+    @Environment(\.presentationMode) private var presentationMode:
+    Binding<PresentationMode>
+    @EnvironmentObject var globalSettings: GlobalSettings
     let postId: String
     var post: Post
     @State private var commentText: String = ""
     @State var currentUser: User?
+    
+    
     var body: some View {
-        
-        List {
-            AsyncImage(url: post.imageUrl)
-                .aspectRatio(1,contentMode: .fit)
-                .edgesIgnoringSafeArea(.top)
-            
-            DescriptionView(post: post)
-            
-            ZStack {
-                HStack {
-                    CircularProfileImageView(user: currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", followers: [], following: []), size: .small )
-                    TextField("Add a comment...", text: $commentText, axis: .vertical)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
+        ZStack {
+            globalSettings.isDark ? Color("DarkBackground") .ignoresSafeArea() :  Color("LightBackground").ignoresSafeArea()
+            ScrollView {
+                AsyncImage(url: post.imageUrl)
+                    .aspectRatio(1, contentMode: .fit)
+                    .edgesIgnoringSafeArea(.top)
                 
-                HStack {
-                    Spacer()
-                    
-                    ZStack {
-                        Image(systemName: "paperplane.fill")
-                            .foregroundColor(.blue)
-                    }
-                    .frame(width: 30, height: 30)
-                    .onTapGesture {
-                        if currentUser == nil || commentText == "" {
-                            
-                        }
-                        else {
-                            if let currentUser = currentUser {
-                                print("Current user is authenticated with ID: \(currentUser.id)")
-                                viewModel.postComment(text: commentText, by: currentUser, for: postId)
-                                commentText = ""  // Clear the input field after posting
-                            } else {
-                                print("User is not authenticated.")
-                            }
-                        }
-                    }
-                    
-                }
-            }
-            
-            ForEach(viewModel.comments) { comment in
-                VStack(alignment: .leading) {
-                    //Text("Comments")
+                DescriptionView(post: post)
+                    .padding(.horizontal)
+                
+                ZStack {
                     HStack {
-                        ForEach(viewModel.allUsers) { user in
-                            if user.id == comment.userId {
-                                CircularProfileImageView(user: user, size: .small )
+                        CircularProfileImageView(user: currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", followers: [], following: []), size: .small )
+                            .padding(.leading)
+                        
+                        TextField("Add a comment...", text: $commentText, axis: .vertical)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding(.horizontal)
+                        ZStack {
+                            Image(systemName: "paperplane.fill")
+                                .foregroundColor(globalSettings.isDark ? Color("DarkBackground") : Color.white)
+                        }
+                        .frame(width: 40, height: 40)
+                        .background(globalSettings.isDark ? Color("DarkBackground") : Color("Color 2"))
+                        .cornerRadius(20)
+                        //.shadow(radius: 5)
+                        .padding(.trailing)
+                        .onTapGesture {
+                            if currentUser == nil || commentText == "" {
+                                // Handle empty comment or unauthenticated user
+                            } else {
+                                if let currentUser = currentUser {
+                                    print("Current user is authenticated with ID: \(currentUser.id)")
+                                    viewModel.postComment(text: commentText, by: currentUser, for: postId)
+                                    commentText = ""  // Clear the input field after posting
+                                } else {
+                                    print("User is not authenticated.")
+                                }
                             }
                         }
-                        Text(comment.username).bold()
                     }
-                    //                    Text(comment.username).bold()
-                    Text(comment.text)
+                    .frame(height: 75)
+                    .background(globalSettings.isDark ? Color("DarkBackground") : Color("Color"))
                 }
-            }
-        }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                viewModel.fetchComments(for: postId)
+                .padding(.vertical, 10)
+                
+                ForEach(viewModel.comments) { comment in
+                    HStack() {
+                        VStack{
+                            HStack(alignment: .top) {
+                                ForEach(viewModel.allUsers) { user in
+                                    if user.id == comment.userId {
+                                        CircularProfileImageView(user: user, size: .small)
+                                            .padding(.trailing, 5)
+                                    }
+                                }
+                                VStack(alignment: .leading) {
+                                    Text(comment.username).bold()
+                                    Text(comment.text)
+                                }
+                            }
+                        }
+                        Spacer()
+                    }
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 15)
+                }
+                .frame(width: 350, height: 75)
+                .background(Color.white)
+                .cornerRadius(5)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(globalSettings.isDark ? Color("LightPost") :  Color("DarkPost"), lineWidth: 1)
+                )
+                
+                
                 
             }
-            UserService().fetchCurrentUser { user in
-                self.currentUser = user
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    viewModel.fetchComments(for: postId)
+                }
+                UserService().fetchCurrentUser { user in
+                    self.currentUser = user
+                }
             }
+            .edgesIgnoringSafeArea(.top)
+            .navigationBarBackButtonHidden(true)
+            .customBackButton(presentationMode: presentationMode)
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .toolbarBackground(.hidden, for: .tabBar)
         }
     }
 }
@@ -115,3 +146,27 @@ struct CommentView_Previews: PreviewProvider {
     }
 }
 
+struct DescriptionView: View {
+    var post: Post
+    
+    var body: some View {
+        VStack (alignment: .leading) {
+            //Title
+            Text(post.username)
+                .font(.title)
+                .fontWeight(.bold)
+            HStack (spacing: 4) {
+                Text(post.caption)
+                    .font(.title3)
+                    .fontWeight(.light)
+                    .padding(.trailing)
+                Spacer()
+            }
+        }
+        .padding()
+        .opacity(0.8)
+        .cornerRadius(15)
+        //.cornerRadius(30, corners: [.topLeft, .topRight])
+        //.offset(x: 0, y: -30.0)
+    }
+}

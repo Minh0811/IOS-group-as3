@@ -18,7 +18,7 @@ struct CurrentUserProfileView: View {
     @State var currentUser: User?
     @Environment (\.dismiss) var dismiss
     @EnvironmentObject var globalSettings: GlobalSettings
-    @State private var isGlobalSettingsPresented = false
+
     
     var body: some View {
        
@@ -29,6 +29,14 @@ struct CurrentUserProfileView: View {
                     if let user = currentUser {
                         HStack{
                             CircularProfileImageView(user: user, size: .large )
+                            Spacer()
+                            Text("Followers: \(user.followers.count)")
+                                .font(.footnote)
+                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                            Spacer()
+                            Text("Following: \(user.following.count)")
+                                .font(.footnote)
+                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                             Spacer()
                             Button(action: {
                                 userService.fetchCurrentUser { user in
@@ -41,9 +49,6 @@ struct CurrentUserProfileView: View {
                         .padding(.horizontal)
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("\(user.id)")
-                                .font(.footnote)
-                                .fontWeight(.semibold)
                             Text("\(user.username)")
                                 .font(.footnote)
                                 .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
@@ -55,19 +60,14 @@ struct CurrentUserProfileView: View {
                             Text("\(user.bio ?? "N/A")")
                                 .font(.footnote)
                                 .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                            Text("Followers: \(user.followers.count)")
-                                .font(.footnote)
-                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                            Text("Following: \(user.following.count)")
-                                .font(.footnote)
-                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                           
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                         
                     }
                     
-                    NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentUser ?? User(id: "", username: "", email: "", followers: [], following: [])))) {
+                    NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))).environmentObject(globalSettings)) {
                         Text("Edit Profile")
                             .font(.subheadline)
                             .fontWeight(.semibold)
@@ -79,19 +79,7 @@ struct CurrentUserProfileView: View {
                             )
                     }
                     
-                    //                VStack(spacing: 20) {
-                    //                    ForEach(viewModel.userPosts) { post in
-                    //
-                    //                        NavigationLink(
-                    //                            destination: DetailView(),
-                    //                            label: {
-                    //                                UserPostView(post: post)
-                    //                            })
-                    //                        .navigationBarHidden(true)
-                    //                        .foregroundColor(.black)
-                    //                    }
-                    //                }
-                    //currentUser: currentuser ?? User(id: "", username: "", email: "")
+                    
                     CurrentUserPostView(viewModel: viewModel, currentUser: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))
                     
                     Button(action: {
@@ -110,18 +98,7 @@ struct CurrentUserProfileView: View {
                     .padding(.top)
                     // Perform an action when the button is tapped (optional)
                     
-                    Button() {
-                        isGlobalSettingsPresented = true
-                    } label: {
-                        NavigationLink(destination: GlobalSettingView().environmentObject(globalSettings)){
-                            Image(systemName: "moonphase.last.quarter")
-                                .font(.headline)
-                                .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                        }
-                    }
+                   
                     
                 }
                 .onAppear {
@@ -144,35 +121,7 @@ struct CurrentUserProfileView: View {
         .navigationBarBackButtonHidden(true)
     }
 }
-//struct UserPostsView: View {
-//    let post: Post
-//    
-//    var body: some View {
-//        VStack {
-//            AsyncImage(url: post.imageUrl)
-//                .frame(width: 320, height: 200)
-//                .cornerRadius(20.0)
-//            
-//            HStack(spacing: 2) {
-//                Text(post.userId)
-//                    .font(.title3)
-//                    .fontWeight(.bold)
-//                Text(post.username)
-//                    .font(.title3)
-//                    .fontWeight(.bold)
-//                Text(post.caption)
-//                    .font(.title3)
-//                    .fontWeight(.light)
-//                NavigationLink(destination: PostEditView(viewModel: PostViewModel(), post: post)) {
-//                    Text("Edit")
-//                }
-//            }
-//        }
-//        .padding()
-//        .background(Color.white)
-//        .cornerRadius(20.0)
-//    }
-//}
+
 struct CurrentUserProfileView_Previews: PreviewProvider {
     static var previews: some View {
         CurrentUserProfileView()

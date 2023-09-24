@@ -16,7 +16,7 @@ struct UserProfileView: View {
     @State var currentUser: User
     
     @ObservedObject var userService = UserService()
-
+    @ObservedObject var viewModel: PostViewModel
     
     @EnvironmentObject var globalSettings: GlobalSettings
 
@@ -26,11 +26,7 @@ struct UserProfileView: View {
     //@State private var refreshFlag = false
     //@State var user: User?
     @Environment (\.dismiss) var dismiss
-    private let gridItems: [GridItem] = [
-        .init(.flexible(), spacing: 1),
-        .init(.flexible(), spacing: 1),
-        .init(.flexible(), spacing: 1)
-    ]
+
     var body: some View {
         ScrollView {
             VStack {
@@ -43,17 +39,15 @@ struct UserProfileView: View {
                    InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: true, isCurrentUser: false, followerArray: user.followers, followingArray: currentUser.following)
                }
                 }
-            LazyVGrid(columns: gridItems, spacing: 1) {
-                ForEach(0 ... 5, id: \.self) { index in
-                    Image("Login")
-                        .resizable()
-                        .scaledToFill()
 
-                }
-            }
             }
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                if !viewModel.dataLoaded {
+                           viewModel.fetchUserPosts(userId: currentUser.id)
+                       }
+            }
     
     }
     
@@ -128,12 +122,15 @@ struct InfoView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal)
+        
     }
+    
 }
 
 
 struct UserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        UserProfileView(user: User.MOCK_USERS[0], currentUser: User(id: "1", username: "Test", email: "check@gmail.com", followers: [], following: []))
+        let mockViewModel = PostViewModel()
+        UserProfileView(user: User.MOCK_USERS[0], currentUser: User(id: "1", username: "Test", email: "check@gmail.com", followers: [], following: []), viewModel: mockViewModel)
     }
 }

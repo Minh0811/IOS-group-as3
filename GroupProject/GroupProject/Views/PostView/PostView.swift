@@ -191,6 +191,7 @@ struct CardView: View {
                 NavigationLink(
                     
                     destination: CommentView(viewModel: viewModel, postId: post.id, post: post)
+                        .environmentObject(globalSettings)
                 ) {
                     Image(systemName: "bubble.left")
                     Text("Comment")

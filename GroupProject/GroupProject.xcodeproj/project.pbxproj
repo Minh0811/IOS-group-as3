@@ -286,7 +286,6 @@
 			isa = PBXGroup;
 			children = (
 				C877CDC22ABC2CCC00657A3B /* GlobalSetting.swift */,
-				C877CDC42ABC2CDC00657A3B /* GlobalSettingView.swift */,
 			);
 			path = GlobalSetting;
 			sourceTree = "<group>";
@@ -400,6 +399,7 @@
 				F790F1C52AB13D6000D85149 /* NewPostView */,
 				B33C46202ABC47A300EA82A3 /* MapView */,
 				F790F1C62AB13D6E00D85149 /* UserProfileView */,
+				F7F7A4D22AC02100003AC14C /* EditProfileView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -458,8 +458,8 @@
 			children = (
 				C8C591402AB6AFDA00D52E53 /* CurrentUserProfileView.swift */,
 				F784B1672AB94C6400DCBC4B /* CurrentUserPostView.swift */,
-				C833CC432AB551D300691124 /* EditProfileView.swift */,
 				C833CC4A2AB552B200691124 /* CircularProfileImageView.swift */,
+				F7F7A4D12AC020E8003AC14C /* UserSetting */,
 			);
 			path = UserProfileView;
 			sourceTree = "<group>";
@@ -533,6 +533,22 @@
 				F79AFFEB2ABB880700992EFA /* Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F7F7A4D12AC020E8003AC14C /* UserSetting */ = {
+			isa = PBXGroup;
+			children = (
+				C877CDC42ABC2CDC00657A3B /* GlobalSettingView.swift */,
+			);
+			path = UserSetting;
+			sourceTree = "<group>";
+		};
+		F7F7A4D22AC02100003AC14C /* EditProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				C833CC432AB551D300691124 /* EditProfileView.swift */,
+			);
+			path = EditProfileView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

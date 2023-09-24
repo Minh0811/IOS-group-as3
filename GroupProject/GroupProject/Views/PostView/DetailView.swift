@@ -86,36 +86,6 @@ struct DetailView_Previews: PreviewProvider {
     }
 }
 
-struct DescriptionView: View {
-    var post: Post
-    
-    var body: some View {
-        VStack (alignment: .leading) {
-            //                Title
-            Text(post.username)
-                .font(.title)
-                .fontWeight(.bold)
-            //                Rating
-            HStack (spacing: 4) {
-                Text(post.caption)
-                    .font(.title3)
-                    .fontWeight(.light)
-                    .padding(.vertical, 3)
-                
-                Spacer()
-            }
-            
-            
-            
-        }
-        .padding()
-        .padding(.top)
-        .background(Color("Bg"))
-        .opacity(0.8)
-        .cornerRadius(15)
-        //.cornerRadius(30, corners: [.topLeft, .topRight])
-        //.offset(x: 0, y: -30.0)
-    }
-}
+
 
 
