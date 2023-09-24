@@ -35,7 +35,7 @@ struct CircularProfileImageView: View {
                 .scaledToFill()
                 .frame(width: size.dimension, height: size.dimension)
                 .clipShape(Circle())
-                .overlay(Circle().stroke(Color(.gray),lineWidth: 3))
+                .overlay(Circle().stroke(Color("Color"),lineWidth: 3))
         } else {
             Image(systemName: "person.circle.fill")
                 .resizable()

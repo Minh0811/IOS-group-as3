@@ -17,117 +17,27 @@ struct NewPostView: View {
     @State private var selectedCategory: String = "All"
     let categories = ["All", "Coffee", "Foods", "Schools", "Street Foods", "Beauty"]
     @EnvironmentObject var globalSettings: GlobalSettings
-
+    
     
     var body: some View {
-        VStack {
-            if let image = selectedImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFit()
-            }
-            
-            Spacer()
-            ZStack{
-                Button() {
-                    isImagePickerPresented = true
-                } label: {
-                    VStack {
-                        Image("img")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 100, height: 100)
-                            .padding(.top)
-                        Text("Choose your image")
-                            .fontWeight(.semibold)
-                            .font(.title)
-                            .foregroundColor(.gray)
-                            .padding([.leading, .bottom, .trailing])
-                    }
-                }
-//                .padding(.horizontal)
-//                Rectangle()
-//                    .stroke(Color.white, lineWidth: 4)
-//                    .frame(width: 100, height: 80)
-                .background()
-                .opacity(1)
-                .cornerRadius(30)
+        ScrollView{
+            VStack {
+                SelectImage(isImagePickerPresented: $isImagePickerPresented, selectedImage: $selectedImage)
+                    .background()
+                    .opacity(1)
+                    .cornerRadius(30)
+                
+                
+                ChooseCaption(caption: $caption)
+                
+                ChooseCategory(isDropdownVisible: $isDropdownVisible, selectedCategory: $selectedCategory, categories: categories)
+                
+                PostButton(isLoading: $isLoading, postCreatedSuccessfully: $postCreatedSuccessfully, selectedImage: selectedImage, caption: caption, selectedCategory: selectedCategory)
+                
                 
             }
-
-            Spacer()
-            TextField("Enter caption", text: $caption, axis: .vertical)
-                .padding(.horizontal)
-                .frame(width: 350, height: 90)
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(8)
-                .padding()
-            
-            Button(action: {
-                            withAnimation {
-                                isDropdownVisible.toggle()
-                            }
-                        }) {
-                            Text(selectedCategory)
-                                .font(Font.custom("Baskerville-Bold", size: 18))
-                                .foregroundColor(Color("Color"))
-                                .padding(.horizontal)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 8)
-                                     .stroke(Color("Color"), lineWidth: 1)
-                                     
-                                )
-                        }
-                        .padding()
-                        
-                        if isDropdownVisible {
-                            List(categories, id: \.self) { category in
-                                Button(action: {
-                                    selectedCategory = category
-                                    withAnimation {
-                                        isDropdownVisible.toggle()
-                                    }
-                                }) {
-                                    Text(category)
-                                        .font(Font.custom("Baskerville-Bold", size: 18))
-                                        .foregroundColor(Color("Color"))
-                                        
-                                        
-                                }
-                            }
-                            .frame(width: 280, height: 100)
-                            .cornerRadius(8)
-                            
-                        }
-            
-            Button() {
-                Task {
-                    isLoading = true
-                    do {
-                        let success = try await PostService().createPost(image: selectedImage!, caption: caption, category: selectedCategory)
-
-                        postCreatedSuccessfully = success
-                    } catch {
-                        // Handle error
-                        print(error.localizedDescription)
-                    }
-                    isLoading = false
-                }
-            } label: {
-                Text("Post")
-                    .font(Font.custom("Baskerville-Bold", size: 24))
-                    .foregroundColor(.black)
-                    .padding()
-                    .padding(.horizontal)
-                    .background(Color("Color"))
-                    .cornerRadius(30)
-                    .shadow(radius: 10)
-            }
-            .disabled(isLoading || selectedImage == nil)
-            Spacer()
         }
         .background(Image("theme"))
-        
         .sheet(isPresented: $isImagePickerPresented) {
             NewPostImagePicker(selectedImage: $selectedImage)
         }
@@ -141,5 +51,144 @@ struct NewPostView: View {
 struct NewPostView_Previews: PreviewProvider {
     static var previews: some View {
         NewPostView()
+    }
+}
+
+struct SelectImage: View {
+    @Binding var isImagePickerPresented: Bool
+    @Binding var selectedImage: UIImage?
+    
+    var body: some View {
+        Button() {
+            isImagePickerPresented = true
+        } label: {
+            VStack {
+                if let image = selectedImage {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100, height: 100)
+                        .padding(.top)
+                } else {
+                    Image("img")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100, height: 100)
+                        .padding(.top)
+                }
+                Text("Choose your image")
+                    .fontWeight(.semibold)
+                    .font(.title)
+                    .foregroundColor(.gray)
+                    .padding([.leading, .bottom, .trailing])
+            }
+        }
+    }
+}
+
+
+struct ChooseCaption: View {
+    @Binding var caption: String
+    
+    var body: some View {
+        TextField("Enter caption", text: $caption, axis: .vertical)
+            .padding(.horizontal)
+            .frame(width: 300, height: 70)
+            .background(Color.white)
+            .cornerRadius(8)
+            .padding()
+    }
+}
+
+struct ChooseCategory: View {
+    @Binding var isDropdownVisible: Bool
+    @Binding var selectedCategory: String
+    @EnvironmentObject var globalSettings: GlobalSettings
+    let categories: [String]
+    
+    var body: some View {
+        VStack {
+            Text("Choose a category:")
+                .font(Font.custom("Baskerville-Bold", size: 23))
+            Button(action: {
+                withAnimation {
+                    isDropdownVisible.toggle()
+                }
+            }) {
+                Text(selectedCategory)
+                    .font(Font.custom("Baskerville-Bold", size: 18))
+                    .foregroundColor(Color("Color"))
+                    .padding(.horizontal)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color("Color"), lineWidth: 1)
+                    )
+            }
+            .padding()
+            
+            if isDropdownVisible {
+                ZStack {
+                    globalSettings.isDark ? Color("LightPost").ignoresSafeArea() : Color("DarkPost").ignoresSafeArea()
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(categories, id: \.self) { category in
+                                Button(action: {
+                                    selectedCategory = category
+                                    withAnimation {
+                                        isDropdownVisible.toggle()
+                                    }
+                                }) {
+                                    Text(category)
+                                        .font(Font.custom("Baskerville-Bold", size: 18))
+                                        .foregroundColor(Color("Color"))
+                                }
+                                .frame(width: 100, height: 30)
+                                .padding(.horizontal, 15)
+                                .background(Color.white)
+                                .cornerRadius(10)
+                            }
+                        }
+                    }
+                }
+                .frame(width: 300, height: 80)
+                .cornerRadius(10)
+                .padding()
+            }
+        }
+    }
+}
+
+struct PostButton: View {
+    @Binding var isLoading: Bool
+    @Binding var postCreatedSuccessfully: Bool
+    let selectedImage: UIImage?
+    let caption: String
+    let selectedCategory: String
+    
+    var body: some View {
+        Button {
+            Task {
+                isLoading = true
+                do {
+                    let success = try await PostService().createPost(image: selectedImage!, caption: caption, category: selectedCategory)
+                    postCreatedSuccessfully = success
+                } catch {
+                    // Handle error
+                    print(error.localizedDescription)
+                }
+                isLoading = false
+            }
+        } label: {
+            Text("Post")
+                .font(Font.custom("Baskerville-Bold", size: 24))
+                .foregroundColor(.black)
+                .frame(width: 120, height: 30)
+                .padding()
+                .padding(.horizontal)
+                .background(Color("Color"))
+                .cornerRadius(30)
+                .shadow(radius: 10)
+        }
+        .disabled(isLoading || selectedImage == nil)
     }
 }
