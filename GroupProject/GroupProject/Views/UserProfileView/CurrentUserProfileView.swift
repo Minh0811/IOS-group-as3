@@ -18,67 +18,68 @@ struct CurrentUserProfileView: View {
     @State var currentUser: User?
     @Environment (\.dismiss) var dismiss
     @EnvironmentObject var globalSettings: GlobalSettings
-
+    
     
     var body: some View {
-       
-        
+        ZStack {
+            globalSettings.isDark ? Color("DarkBackground") .ignoresSafeArea() :  Color("LightBackground").ignoresSafeArea()
             ScrollView {
-                
                 VStack {
                     if let user = currentUser {
-                        HStack{
-                            CircularProfileImageView(user: user, size: .large )
-                            Spacer()
-                            Text("Followers: \(user.followers.count)")
-                                .font(.footnote)
-                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                            Spacer()
-                            Text("Following: \(user.following.count)")
-                                .font(.footnote)
-                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                            Spacer()
-                            Button(action: {
-                                userService.fetchCurrentUser { user in
-                                    self.currentUser = user
+                            VStack{
+                                HStack{
+                                    CircularProfileImageView(user: user, size: .large )
+                                    Spacer()
+                                    Text("Followers: \(user.followers.count)")
+                                        .font(Font.custom("", size: 18)).bold()
+                                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                                    Spacer()
+                                    Text("Following: \(user.following.count)")
+                                        .font(Font.custom("", size: 18)).bold()
+                                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                                    Spacer()
+                                    Button(action: {
+                                        userService.fetchCurrentUser { user in
+                                            self.currentUser = user
+                                        }
+                                    }) {
+                                        Image(systemName: "gobackward")
+                                    }
                                 }
-                            }) {
-                                Image(systemName: "gobackward")
+                                .padding(.horizontal)
+                                
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text("\(user.username)")
+                                        .font(Font.custom("Baskerville-Bold", size: 23)).bold()
+                                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                                    Text("\(user.fullname ?? "N/A")")
+                                        .font(Font.custom("Baskerville-Bold", size: 12))
+                                        .font(.footnote)
+                                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                                        .fontWeight(.semibold)
+                                    Text("\(user.bio ?? "N/A")")
+                                        .font(Font.custom("Baskerville-Bold", size: 12))
+                                        .font(.footnote)
+                                        .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
+                                    
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding()
+                                
+                                NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentUser ?? User(id: "", username: "", email: "", followers: [], following: [])))) {
+                                    Text("Edit Profile")
+                                        .font(.subheadline)
+                                        .fontWeight(.semibold)
+                                        .frame(width: 360, height: 32)
+                                        .foregroundColor(.gray)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 6)
+                                                .stroke(Color.gray, lineWidth: 1)
+                                    )
+                                }
                             }
-                        }
-                        .padding(.horizontal)
-                        
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("\(user.username)")
-                                .font(.footnote)
-                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                                .fontWeight(.semibold)
-                            Text("\(user.fullname ?? "N/A")")
-                                .font(.footnote)
-                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                                .fontWeight(.semibold)
-                            Text("\(user.bio ?? "N/A")")
-                                .font(.footnote)
-                                .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
-                           
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                        
+
                     }
-                    
-                    NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))).environmentObject(globalSettings)) {
-                        Text("Edit Profile")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .frame(width: 360, height: 32)
-                            .foregroundColor(.gray)
-                            .background(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .stroke(Color.gray, lineWidth: 1)
-                            )
-                    }
-                    
                     
                     CurrentUserPostView(viewModel: viewModel, currentUser: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))
                     
@@ -97,9 +98,6 @@ struct CurrentUserProfileView: View {
                     }
                     .padding(.top)
                     // Perform an action when the button is tapped (optional)
-                    
-                   
-                    
                 }
                 .onAppear {
                     userService.fetchCurrentUser { user in
@@ -112,13 +110,14 @@ struct CurrentUserProfileView: View {
                 .onDisappear {
                     currentUser = nil
                 }
-
+                
+            }
+            //  .background(globalSettings.isDark ? Color.black : Color.white)
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .toolbarBackground(.hidden, for: .tabBar)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
         }
-        .background(globalSettings.isDark ? Color.black : Color.white)
-        .toolbarBackground(.hidden, for: .navigationBar)
-        .toolbarBackground(.hidden, for: .tabBar)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
     }
 }
 
