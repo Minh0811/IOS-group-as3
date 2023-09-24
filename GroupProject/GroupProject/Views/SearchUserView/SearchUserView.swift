@@ -27,13 +27,18 @@ struct SearchUserView: View {
        }
     var body: some View {
 
-            NavigationStack{
+        NavigationStack{
+            GeometryReader { geometry in
+                //  Calculate the ratio between current device and iphone 14
+                var scalingFactor: CGFloat {
+                    return geometry.size.width / globalSettings.iphone14ProBaseWidth
+                }
                 ScrollView{
                     LazyVStack(spacing: 12){
                         ForEach(filteredUsers){ user in
                             NavigationLink(value: user){
                                 HStack {
-                                    CircularProfileImageView(user: user, size: .small )
+                                    CircularProfileImageView(user: user, size: .small, scalingFactor: scalingFactor )
                                     VStack(alignment: .leading){
                                         Text(user.username)
                                             .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
@@ -65,12 +70,12 @@ struct SearchUserView: View {
                 }
                 .background(globalSettings.isDark ? Color("DarkBackground") :  Color("LightBackground"))
                 .navigationDestination(for: User.self, destination: {user in
-                    UserProfileView(user: user, currentUser: userService.currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", fullname: "N/A", bio: "N/A", followers: [], following: []), viewModel: postViewModel)
+                    UserProfileView(user: user, currentUser: userService.currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", fullname: "N/A", bio: "N/A", followers: [], following: []), viewModel: postViewModel, scalingFactor: scalingFactor)
                 })
                 .navigationTitle("Search User")
                 .navigationBarTitleDisplayMode(.inline)
             }
-        
+        }
     }
 }
 

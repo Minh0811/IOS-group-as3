@@ -23,6 +23,7 @@ struct AuthenticationView: View {
             }
            
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

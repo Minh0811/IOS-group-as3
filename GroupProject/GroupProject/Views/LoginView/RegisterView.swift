@@ -19,52 +19,57 @@ struct RegisterView: View {
         }
 
     var body: some View {
-        VStack(spacing: 20) {
-            Spacer()
-            VStack(alignment: .leading){
-                Text("Registation")
-                    .font(Font.custom("Baskerville-Bold", size: 45))
-                    .foregroundColor(Color("Color"))
-                    .fontWeight(.bold)
-                Text("Create an Account")
-                    .font(Font.custom("Times New Roman", size: 20))
-                    .foregroundColor(Color("Color"))
-                    .fontWeight(.bold)
-                    .padding(.bottom, 20)
-            }
-            
-            
-            TextField("User Name:", text: $viewModel.username)
-                .autocapitalization(.none)
-                .disableAutocorrection(true)
-                .font(.subheadline)
-                .padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding(.horizontal, 24)
-           
-            TextField("Email", text: $viewModel.email)
-                .autocapitalization(.none)
-                .disableAutocorrection(true)
-                .font(.subheadline)
-                .padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding(.horizontal, 24)
-            HStack{
-                SecureField("Password", text: $viewModel.password)
+        ZStack {
+            Image("theme")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
+            VStack(spacing: 20) {
+                Spacer()
+                VStack(alignment: .leading){
+                    Text("Registation")
+                        .font(Font.custom("Baskerville-Bold", size: 45))
+                        .foregroundColor(Color("Color"))
+                        .fontWeight(.bold)
+                    Text("Create an Account")
+                        .font(Font.custom("Times New Roman", size: 20))
+                        .foregroundColor(Color("Color"))
+                        .fontWeight(.bold)
+                        .padding(.bottom, 20)
+                }
+                
+                
+                TextField("User Name:", text: $viewModel.username)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .font(.subheadline)
-                   
-                Image(systemName: "eye.slash")
-                    .padding(.horizontal)
-            }.padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding(.horizontal, 24)
-            Button {
-                viewModel.createNewAccount { success in
+                    .padding(12)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .padding(.horizontal, 24)
+                
+                TextField("Email", text: $viewModel.email)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                    .font(.subheadline)
+                    .padding(12)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .padding(.horizontal, 24)
+                HStack{
+                    SecureField("Password", text: $viewModel.password)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .font(.subheadline)
+                    
+                    Image(systemName: "eye.slash")
+                        .padding(.horizontal)
+                }.padding(12)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
+                    .padding(.horizontal, 24)
+                Button {
+                    viewModel.createNewAccount { success in
                         if success {
                             // Registration succeeded
                             isRegistrationSuccessful = true
@@ -75,8 +80,8 @@ struct RegisterView: View {
                             errorMessage = viewModel.errorMessage
                         }
                     }
-            } label: {
-                
+                } label: {
+                    
                     Spacer()
                     Text("Create Account")
                         .font(Font.custom("Baskerville-Bold", size: 20))
@@ -90,28 +95,27 @@ struct RegisterView: View {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color(.systemGreen), lineWidth: 1)
                         )
-                
+                    
+                }
+                if let error = errorMessage {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .padding(.top, 8)
+                        .transition(.opacity)
+                        .animation(.easeInOut(duration: 0.5))
+                } else if isRegistrationSuccessful {
+                    Text("Registration Successful")
+                        .font(.caption)
+                        .foregroundColor(.green)
+                        .padding(.top, 8)
+                        .transition(.opacity)
+                        .animation(.easeInOut(duration: 0.5))
+                }
+                Spacer()
             }
-            if let error = errorMessage {
-                Text(error)
-                    .font(.caption)
-                    .foregroundColor(.red)
-                    .padding(.top, 8)
-                    .transition(.opacity)
-                    .animation(.easeInOut(duration: 0.5))
-            } else if isRegistrationSuccessful {
-                Text("Registration Successful")
-                    .font(.caption)
-                    .foregroundColor(.green)
-                    .padding(.top, 8)
-                    .transition(.opacity)
-                    .animation(.easeInOut(duration: 0.5))
-            }
-            
+            .navigationBarTitle("Register", displayMode: .inline)
         }
-        .background(Image("theme"))
-        .padding()
-        .navigationBarTitle("Register", displayMode: .inline)
     }
 }
 

@@ -12,6 +12,7 @@ struct CommentView: View {
     @Environment(\.presentationMode) private var presentationMode:
     Binding<PresentationMode>
     @EnvironmentObject var globalSettings: GlobalSettings
+    let scalingFactor: CGFloat
     let postId: String
     var post: Post
     @State private var commentText: String = ""
@@ -26,72 +27,19 @@ struct CommentView: View {
                     .aspectRatio(1, contentMode: .fit)
                     .edgesIgnoringSafeArea(.top)
                 
-                DescriptionView(post: post)
+                DescriptionView(post: post, scalingFactor: scalingFactor)
                     .padding(.horizontal)
                 
-                ZStack {
-                    HStack {
-                        CircularProfileImageView(user: currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", followers: [], following: []), size: .small )
-                            .padding(.leading)
-                        
-                        TextField("Add a comment...", text: $commentText, axis: .vertical)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding(.horizontal)
-                        ZStack {
-                            Image(systemName: "paperplane.fill")
-                                .foregroundColor(globalSettings.isDark ? Color("DarkBackground") : Color.white)
-                        }
-                        .frame(width: 40, height: 40)
-                        .background(globalSettings.isDark ? Color("DarkBackground") : Color("Color 2"))
-                        .cornerRadius(20)
-                        //.shadow(radius: 5)
-                        .padding(.trailing)
-                        .onTapGesture {
-                            if currentUser == nil || commentText == "" {
-                                // Handle empty comment or unauthenticated user
-                            } else {
-                                if let currentUser = currentUser {
-                                    print("Current user is authenticated with ID: \(currentUser.id)")
-                                    viewModel.postComment(text: commentText, by: currentUser, for: postId)
-                                    commentText = ""  // Clear the input field after posting
-                                } else {
-                                    print("User is not authenticated.")
-                                }
-                            }
-                        }
-                    }
-                    .frame(height: 75)
-                    .background(globalSettings.isDark ? Color("DarkBackground") : Color("Color"))
-                }
-                .padding(.vertical, 10)
+                AddComment(viewModel: viewModel, postId: postId, post: post, scalingFactor: scalingFactor)
+                    .padding(.vertical, 10 * scalingFactor)
                 
-                ForEach(viewModel.comments) { comment in
-                    HStack() {
-                        VStack{
-                            HStack(alignment: .top) {
-                                ForEach(viewModel.allUsers) { user in
-                                    if user.id == comment.userId {
-                                        CircularProfileImageView(user: user, size: .small)
-                                            .padding(.trailing, 5)
-                                    }
-                                }
-                                VStack(alignment: .leading) {
-                                    Text(comment.username).bold()
-                                    Text(comment.text)
-                                }
-                            }
-                        }
-                        Spacer()
-                    }
-                    .padding(.vertical, 5)
-                    .padding(.horizontal, 15)
-                }
-                .frame(width: 350, height: 75)
+                AllComments(viewModel: viewModel, globalSettings: _globalSettings, scalingFactor: scalingFactor)
+                .frame(width: 350 * scalingFactor, height: 75 * scalingFactor)
                 .background(Color.white)
-                .cornerRadius(5)
+                .cornerRadius(5 * scalingFactor)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(globalSettings.isDark ? Color("LightPost") :  Color("DarkPost"), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 20 * scalingFactor)
+                        .stroke(globalSettings.isDark ? Color("LightPost") :  Color("DarkPost"), lineWidth: 1 * scalingFactor)
                 )
                 
                 
@@ -111,55 +59,29 @@ struct CommentView: View {
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbarBackground(.hidden, for: .tabBar)
         }
+        
     }
 }
 
 
-
-struct CommentView_Previews: PreviewProvider {
-    static var mockViewModel = PostViewModel()  // Create a mock view model
-    static var mockPostId = "123456"  // Provide a mock post ID
-    let mockPost = Post(
-        id: "1234567890",
-        userId: "user001",
-        username: "JohnDoe",
-        imageUrl: "https://example.com/path/to/image.jpg",
-        caption: "Enjoying a beautiful sunset at the beach!",
-        like: ["user002", "user003", "user004"],
-        commentsCount: 5,
-        category: "Nature",
-        name: "Sunset Beach",
-        coordinates: Coordinates(latitude: 34.0522, longitude: -118.2437)
-    )
-    
-    static var previews: some View {
-        CommentView(viewModel: mockViewModel, postId: mockPostId, post: Post( id: "1234567890",
-                                                                              userId: "user001",
-                                                                              username: "JohnDoe",
-                                                                              imageUrl: "https://example.com/path/to/image.jpg",
-                                                                              caption: "Enjoying a beautiful sunset at the beach!",
-                                                                              like: ["user002", "user003", "user004"],
-                                                                              commentsCount: 5,
-                                                                              category: "Nature",
-                                                                              name: "Sunset Beach",
-                                                                              coordinates: Coordinates(latitude: 34.0522, longitude: -118.2437)))
-    }
-}
 
 struct DescriptionView: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
     var post: Post
-    
+    let scalingFactor: CGFloat
     var body: some View {
         VStack (alignment: .leading) {
             //Title
             Text(post.username)
-                .font(.title)
-                .fontWeight(.bold)
+                .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                .font(.custom("PlayfairDisplay-Regular", size: 18 * scalingFactor))
+            
             HStack (spacing: 4) {
                 Text(post.caption)
                     .font(.title3)
                     .fontWeight(.light)
-                    .padding(.trailing)
+                    .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                    .font(.custom("PlayfairDisplay-Regular", size: 13 * scalingFactor))
                 Spacer()
             }
         }
@@ -168,5 +90,91 @@ struct DescriptionView: View {
         .cornerRadius(15)
         //.cornerRadius(30, corners: [.topLeft, .topRight])
         //.offset(x: 0, y: -30.0)
+    }
+}
+
+struct AddComment: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
+    @ObservedObject var viewModel: PostViewModel
+    let postId: String
+    var post: Post
+    var currentUser: User?
+    @State private var commentText: String = ""
+    let scalingFactor: CGFloat
+    var body: some View {
+        ZStack {
+            HStack {
+                CircularProfileImageView(user: currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", followers: [], following: []), size: .small, scalingFactor: scalingFactor )
+                    .padding(.leading)
+                Spacer()
+                TextField("Add a comment...", text: $commentText, axis: .vertical)
+                    .padding(.horizontal)
+                    .frame(width: 200 * scalingFactor, height: 40 * scalingFactor)
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .font(.custom("PlayfairDisplay-Regular", size: 18 * scalingFactor))
+                Spacer()
+                ZStack {
+                    Image(systemName: "paperplane.fill")
+                        .frame(width: 40 * scalingFactor, height: 40 * scalingFactor)
+                        .foregroundColor(globalSettings.isDark ? Color("DarkBackground") : Color.white)
+                }
+                .frame(width: 40 , height: 40 )
+                .background(globalSettings.isDark ? Color("DarkBackground") : Color("Color 2"))
+                .cornerRadius(20  * scalingFactor)
+                //.shadow(radius: 5)
+                .padding(.trailing, 15  * scalingFactor)
+                .onTapGesture {
+                    if currentUser == nil || commentText == "" {
+                        // Handle empty comment or unauthenticated user
+                    } else {
+                        if let currentUser = currentUser {
+                            print("Current user is authenticated with ID: \(currentUser.id)")
+                            viewModel.postComment(text: commentText, by: currentUser, for: postId)
+                            commentText = ""  // Clear the input field after posting
+                        } else {
+                            print("User is not authenticated.")
+                        }
+                    }
+                }
+            }
+            .frame(height: 75 * scalingFactor)
+            .background(globalSettings.isDark ? Color("DarkBackground") : Color("Color"))
+        }
+    }
+}
+
+struct AllComments: View {
+    @ObservedObject var viewModel: PostViewModel
+    @EnvironmentObject var globalSettings: GlobalSettings
+    let scalingFactor: CGFloat
+    
+    var body: some View {
+        ForEach(viewModel.comments) { comment in
+            HStack() {
+                VStack{
+                    HStack(alignment: .top) {
+                        ForEach(viewModel.allUsers) { user in
+                            if user.id == comment.userId {
+                                CircularProfileImageView(user: user, size: .small, scalingFactor: scalingFactor)
+                                    .padding(.trailing, 5)
+                            }
+                        }
+                        VStack(alignment: .leading) {
+                            Text(comment.username)
+                                .bold()
+                                .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                                .font(.custom("PlayfairDisplay-Regular", size: 18 * scalingFactor))
+                            Text(comment.text)
+                                .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                                .font(.custom("PlayfairDisplay-Regular", size: 18 * scalingFactor))
+                        }
+                    }
+                }
+                Spacer()
+            }
+            .padding(.vertical, 5 * scalingFactor)
+            .padding(.horizontal, 15 * scalingFactor)
+        }
     }
 }

@@ -21,6 +21,7 @@ struct CustomTabBarView: View {
     
     var body: some View {
         ZStack{
+            
             Capsule()
                 .frame(height: 60)
                 .foregroundColor( globalSettings.isDark ? Color("DarkTab")  :  Color("LightTab"))

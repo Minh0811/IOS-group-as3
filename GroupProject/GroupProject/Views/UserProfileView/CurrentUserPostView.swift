@@ -12,6 +12,7 @@ struct CurrentUserPostView: View {
     @ObservedObject var viewModel: PostViewModel
     var currentUser: User
   //  @State private var isDataLoaded: Bool = false
+    let scalingFactor: CGFloat
     @EnvironmentObject var globalSettings: GlobalSettings
     private let gridLayout = [
         GridItem(.flexible(), spacing: 2),
@@ -24,7 +25,7 @@ struct CurrentUserPostView: View {
             LazyVGrid(columns: gridLayout, spacing: 2) {
                 ForEach(viewModel.userPosts) { post in
                     NavigationLink(
-                        destination: CommentView(viewModel: viewModel, postId: post.id, post: post).environmentObject(globalSettings),
+                        destination: CommentView(viewModel: viewModel, scalingFactor: scalingFactor, postId: post.id, post: post).environmentObject(globalSettings),
                         label: {
                             UserPostThumbnailView(post: post)
                         })
@@ -59,16 +60,3 @@ struct UserPostThumbnailView: View {
 
 
 
-
-struct CurrentUserPostView_Previews: PreviewProvider {
-    static var previews: some View {
-        // Create a mock user for the preview
-        let mockUser = User(id: "80gqEow1wJRHXHgxw7XmSAjqZ8Y2", username: "mockUser", email: "mock@example.com", followers: [], following: [])
-        
-        // Create a mock viewModel for the preview
-        let mockViewModel = PostViewModel()
-        
-        // Pass the mock user and mock viewModel to the CurrentUserPostView
-        CurrentUserPostView(viewModel: mockViewModel, currentUser: mockUser)
-    }
-}

@@ -25,6 +25,7 @@ struct UserProfileView: View {
     @State private var isFollowing = false
     //@State private var refreshFlag = false
     //@State var user: User?
+    let scalingFactor: CGFloat
     @Environment (\.dismiss) var dismiss
 
     var body: some View {
@@ -34,7 +35,7 @@ struct UserProfileView: View {
             
             ScrollView {
                 VStack {
-                    CircularProfileImageView(user: user, size: .large )
+                    CircularProfileImageView(user: user, size: .large, scalingFactor: scalingFactor )
                     if user.id == currentUser.id {
                         InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: true, followerArray: user.followers, followingArray: currentUser.following)
                     } else if !user.followers.contains("\(currentUser.id)") {
@@ -137,10 +138,3 @@ struct InfoView: View {
     
 }
 
-
-struct UserProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        let mockViewModel = PostViewModel()
-        UserProfileView(user: User.MOCK_USERS[0], currentUser: User(id: "1", username: "Test", email: "check@gmail.com", followers: [], following: []), viewModel: mockViewModel)
-    }
-}

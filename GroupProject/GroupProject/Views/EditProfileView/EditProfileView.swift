@@ -17,80 +17,85 @@ struct EditProfileView: View {
     @Environment (\.dismiss) var dismiss
     @EnvironmentObject var globalSettings: GlobalSettings
     var body: some View {
-        VStack(spacing: 16) {
-            // Profile Image
-            Spacer()
-            if let profileImage = viewModel.profileImage {
-                profileImage
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 80, height: 80)
-                    .clipShape(Circle())
-            } else {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 80, height: 80)
-            }
-
+        ZStack{
+            Image("theme")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
             
-            Button("Change Profile Picture") {
-                isImagePickerPresented.toggle()
-            }
-            .foregroundColor(Color("Color"))
-            .font(Font.custom("Baskerville-Bold", size: 17))
-            .fullScreenCover(isPresented: $isImagePickerPresented) {
-                UserImagePicker(selectedImage: Binding<UIImage?>(get: {
-                    self.viewModel.uiImage
-                }, set: { selectedImage in
-                    if let unwrappedImage = selectedImage {
-                        self.viewModel.loadImage(from: unwrappedImage)
-                    }
-                }))
-
-            }
-
-
-            // Full Name
-            TextField("Full Name", text: $viewModel.fullname)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(8)
-
-            // Bio
-            TextField("Bio", text: $viewModel.bio)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(8)
-
-            GlobalSettingView().environmentObject(globalSettings)
-            
-            // Save Button
-            Button("Save Changes") {
-                Task {
-                    do {
-                        try await viewModel.updateUserData()
-                        
+            VStack(spacing: 16) {
+                // Profile Image
+                Spacer()
+                if let profileImage = viewModel.profileImage {
+                    profileImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 80, height: 80)
+                        .clipShape(Circle())
+                } else {
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 80, height: 80)
+                }
+                
+                
+                Button("Change Profile Picture") {
+                    isImagePickerPresented.toggle()
+                }
+                .foregroundColor(Color("Color"))
+                .font(Font.custom("Baskerville-Bold", size: 17))
+                .fullScreenCover(isPresented: $isImagePickerPresented) {
+                    UserImagePicker(selectedImage: Binding<UIImage?>(get: {
+                        self.viewModel.uiImage
+                    }, set: { selectedImage in
+                        if let unwrappedImage = selectedImage {
+                            self.viewModel.loadImage(from: unwrappedImage)
+                        }
+                    }))
+                    
+                }
+                
+                
+                // Full Name
+                TextField("Full Name", text: $viewModel.fullname)
+                    .padding()
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(8)
+                
+                // Bio
+                TextField("Bio", text: $viewModel.bio)
+                    .padding()
+                    .background(Color.gray.opacity(0.2))
+                    .cornerRadius(8)
+                
+                GlobalSettingView().environmentObject(globalSettings)
+                
+                // Save Button
+                Button("Save Changes") {
+                    Task {
+                        do {
+                            try await viewModel.updateUserData()
+                            
                             dismiss()
-                        
-                    } catch {
-                        // Handle error
-                        print("Failed to update user data: \(error.localizedDescription)")
+                            
+                        } catch {
+                            // Handle error
+                            print("Failed to update user data: \(error.localizedDescription)")
+                        }
                     }
                 }
+                .padding()
+                .font(Font.custom("Baskerville-Bold", size: 26))
+                .background(Color("Color"))
+                .foregroundColor(.white)
+                .cornerRadius(8)
+                Spacer()
             }
-            .padding()
-            .font(Font.custom("Baskerville-Bold", size: 26))
-            .background(Color("Color"))
-            .foregroundColor(.white)
-            .cornerRadius(8)
-            
-        } .background(Image("theme"))
-        
-        .padding()
-        
+        }
     }
 }
+
 
 struct EditProfileRowView: View{
     let title: String

@@ -13,47 +13,57 @@ struct SplashScreenView: View {
     @State private var size = 0.8
     @State private var opacity = 0.5
     var body: some View {
-        if isSplashScreenComplete {
-          
-            AuthenticationView()
-                .environmentObject(appState)
+     
+            
+            if isSplashScreenComplete {
                 
-        } else {
-            VStack{
-                VStack {
-                    // Your splash screen content here
+                AuthenticationView()
+                    .environmentObject(appState)
+                
+            } else {
+                ZStack {
+                    Image("theme")
+                        .resizable()
+                        .scaledToFill()
+                        .edgesIgnoringSafeArea(.all)
                     VStack{
-                        Image("green")
-                            .resizable()
-                            .scaledToFit()
-                            .font(.system(size: 80))
-                            .foregroundColor(.red)
-                            .frame(width: 210, height: 210)
-                            .clipShape(Circle())
-                    }.background(Color("Color"))
-                        .clipShape(Circle())
-                    
-                    Text("Hé lô em")
-                        .font(Font.custom("Baskerville-Bold", size: 26))
-                        .foregroundColor(.black.opacity(0.80))
-                }
-                .scaleEffect(size)
-                .opacity(opacity)
-                .onAppear {
-                        withAnimation(.easeIn(duration: 1.2)) {
-                                        self.size = 0.9
-                                        self.opacity = 1.00
+                        VStack {
+                            // Your splash screen content here
+                            VStack{
+                                Image("green")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .font(.system(size: 80))
+                                    .foregroundColor(.red)
+                                    .frame(width: 210, height: 210)
+                                    .clipShape(Circle())
+                            }.background(Color("Color"))
+                                .clipShape(Circle())
+                            
+                            Text("Welcome")
+                                .font(Font.custom("Baskerville-Bold", size: 26))
+                                .foregroundColor(.black.opacity(0.80))
+                        }
+                        .scaleEffect(size)
+                        .opacity(opacity)
+                        .onAppear {
+                            withAnimation(.easeIn(duration: 1.2)) {
+                                self.size = 0.9
+                                self.opacity = 1.00
                             }
+                        }
                     }
-            }.background(Image("theme"))
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    withAnimation {
-                        self.isSplashScreenComplete = true
+                    .background(Image("theme"))
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            withAnimation {
+                                self.isSplashScreenComplete = true
+                            }
+                        }
                     }
                 }
             }
-        }
+        
     }
 }
 
