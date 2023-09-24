@@ -127,7 +127,7 @@ struct NewPostView: View {
                 Task {
                     isLoading = true
                     do {
-                        let success = try await PostService().createPost(image: selectedImage!, caption: caption, category: selectedCategory, name: location.name, location: CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
+                        let success = try await PostService().createPost(image: selectedImage!, caption: caption, category: selectedCategory, name: location.name, location: Coordinates    (latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
                         
                         postCreatedSuccessfully = success
                     } catch {

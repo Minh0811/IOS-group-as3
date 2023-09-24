@@ -15,7 +15,7 @@ class PostService: ObservableObject {
     let db = Firestore.firestore()
     
     // Function to create a new post
-    func createPost(image: UIImage, caption: String, category: String, name: String, location: CLLocationCoordinate2D) async throws -> Bool {
+    func createPost(image: UIImage, caption: String, category: String, name: String, location: Coordinates) async throws -> Bool {
         do {
             // Await the result of the uploadImage function
             let imageUrl = try await ImageUploader.uploadImage(image: image)
@@ -90,9 +90,9 @@ class PostService: ObservableObject {
                     let username = data["username"] as? String ?? ""  // Extracting the username
                     let category = data["category"] as? String ?? "All"  // Extracting the category
                     let name = data["name"] as? String ?? ""
-                    let latitude = data["lat"] as? String ?? ""
-                    let longitude = data["long"] as? String ?? ""
-                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like, category: category,name: name, coordinates: Coordinates(latitude: Double(latitude) ?? 10.5,longitude: Double(longitude) ?? 101.5))
+                    let latitude = data["lat"] as? Double ?? 21.7012093
+                    let longitude = data["long"] as? Double ?? 30.7012093
+                    return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like, category: category,name: name, coordinates: Coordinates(latitude: Double(latitude) ,longitude: Double(longitude) ))
 
                 }
                 
@@ -129,8 +129,8 @@ class PostService: ObservableObject {
                     let like = data["like"] as? [String] ?? []
                     let category = data["category"] as? String ?? "All"  // Extracting the category
                     let name = data["name"] as? String ?? ""
-                    let latitude = data["lat"] as? String ?? "10.7"
-                    let longitude = data["long"] as? String ?? "106.69"
+                    let latitude = data["lat"] as? Double ?? 0
+                    let longitude = data["long"] as? Double ?? 0
 
                     return Post(id: id, userId: userId, username: username, imageUrl: imageUrl, caption: caption, like: like, category: category,name: name ,coordinates: Coordinates(latitude: Double(latitude) ?? 10.5,longitude: Double(longitude) ?? 101.5))
 
