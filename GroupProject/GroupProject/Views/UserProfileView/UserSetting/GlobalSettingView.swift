@@ -11,8 +11,7 @@ struct GlobalSettingView: View {
     @State private var selectedMode: Int = 0
 
     var body: some View {
-        ZStack{
-            globalSettings.isDark ? Color.black.ignoresSafeArea() : Color.white.ignoresSafeArea()
+
             VStack(spacing: 20) {
                 Text("Dark Mode Settings")
                     .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
@@ -41,7 +40,7 @@ struct GlobalSettingView: View {
             }
             .padding()
         }
-    }
+    
 }
 
 struct GlobalSettingView_Previews: PreviewProvider {

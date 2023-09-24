@@ -6,18 +6,16 @@
 //
 
 import SwiftUI
-import Firebase
-import SwiftUI
 import FirebaseStorage
+import Firebase
 import PhotosUI
 
 
 struct EditProfileView: View {
-    
     @ObservedObject var viewModel: EditProfileViewModel
     @State private var isImagePickerPresented: Bool = false
     @Environment (\.dismiss) var dismiss
-    
+    @EnvironmentObject var globalSettings: GlobalSettings
     var body: some View {
         VStack(spacing: 16) {
             // Profile Image
@@ -65,6 +63,8 @@ struct EditProfileView: View {
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(8)
 
+            GlobalSettingView().environmentObject(globalSettings)
+            
             // Save Button
             Button("Save Changes") {
                 Task {
