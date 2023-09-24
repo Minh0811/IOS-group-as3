@@ -106,6 +106,20 @@ struct PostView: View {
     }
 }
 
+
+
+
+struct PostView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        ZStack{
+            Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
+                .ignoresSafeArea()
+            PostView(currentUser: User(id: "1", username: "Test", email: "check@gmail.com",followers: [],following: []))
+                .environmentObject(GlobalSettings.shared)
+        }
+    }
+}
 struct CardView: View {
     @EnvironmentObject var globalSettings: GlobalSettings
     var post: Post
@@ -140,10 +154,12 @@ struct CardView: View {
                     .padding(.vertical, 2)
                 
                 Text("\(postOwner.username)")
+                    .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
                     .font(.custom("PlayfairDisplay-Regular", size: 18))
                     .padding(.trailing, 15)
                     .padding(.leading, 5)
                 Text("\(post.category)")
+                    .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
                     .font(.custom("PlayfairDisplay-Regular", size: 13))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
@@ -163,17 +179,15 @@ struct CardView: View {
                 .frame(width: 350, height: 350)
                 .cornerRadius(10.0)
             HStack(spacing: 2) {
-                
                 Text(post.caption)
+                    .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
                     .font(.title3)
                     .fontWeight(.light)
-                
             }
             
             Divider()
             
             HStack(spacing: 0) {
-                
                 Spacer()
                     .frame(width: 10)
                 Button() {
@@ -182,53 +196,36 @@ struct CardView: View {
                     viewModel.likePost(postId: post.id, userIdArray: likeArray)
                 } label: {
                     Image(systemName: isLike == true ? "heart.fill" : "heart")
-                        .foregroundColor(isLike == true ? Color("Color") : .black)
+                        .foregroundColor(isLike == true ? Color("Color") : globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
                     Text("\(numOfLike)")
+                        .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
                 }
                 
                 Spacer()
                 
                 NavigationLink(
-                    
                     destination: CommentView(viewModel: viewModel, postId: post.id, post: post)
                         .environmentObject(globalSettings)
                 ) {
                     Image(systemName: "bubble.left")
+                        .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
                     Text("Comment")
+                        .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
                 }
-                
-            
-                
-                
             }
         }
         .padding()
         .background(globalSettings.isDark ? Color("DarkPost") :  Color("LightPost"))
-        
         .cornerRadius(20.0)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(globalSettings.isDark ? Color("LightPost") :  Color("DarkPost"), lineWidth: 3)
         )
-        
-    }
-}
-
-
-
-struct PostView_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        ZStack{
-            Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
-                .ignoresSafeArea()
-            PostView(currentUser: User(id: "1", username: "Test", email: "check@gmail.com",followers: [],following: []))
-                .environmentObject(GlobalSettings.shared)
-        }
     }
 }
 
 struct CategoryView: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
     let isActive: Bool
     let text: String
     var body: some View {
@@ -236,7 +233,7 @@ struct CategoryView: View {
             Text(text)
                 .font(.system(size: 18))
                 .fontWeight(.medium)
-                .foregroundColor(isActive ? Color("PrimaryText") : Color("LightText"))
+                .foregroundColor(isActive ? Color("PrimaryText") : globalSettings.isDark ? Color("DarkText") :  Color("LightText"))
             if (isActive) { Color("PrimaryText")
                     .frame(width: 15, height: 2)
                     .clipShape(Capsule())

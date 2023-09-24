@@ -28,32 +28,38 @@ struct UserProfileView: View {
     @Environment (\.dismiss) var dismiss
 
     var body: some View {
-        ScrollView {
-            VStack {
-                CircularProfileImageView(user: user, size: .large )
-                if user.id == currentUser.id {
-                    InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: true, followerArray: user.followers, followingArray: currentUser.following)
-                } else if !user.followers.contains("\(currentUser.id)") {
-                    InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: false, followerArray: user.followers, followingArray: currentUser.following)
-                } else if user.followers.contains("\(currentUser.id)") {
-                   InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: true, isCurrentUser: false, followerArray: user.followers, followingArray: currentUser.following)
-               }
+        ZStack{
+            
+            globalSettings.isDark ? Color("DarkBackground") .ignoresSafeArea() :  Color("LightBackground").ignoresSafeArea()
+            
+            ScrollView {
+                VStack {
+                    CircularProfileImageView(user: user, size: .large )
+                    if user.id == currentUser.id {
+                        InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: true, followerArray: user.followers, followingArray: currentUser.following)
+                    } else if !user.followers.contains("\(currentUser.id)") {
+                        InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: false, isCurrentUser: false, followerArray: user.followers, followingArray: currentUser.following)
+                    } else if user.followers.contains("\(currentUser.id)") {
+                        InfoView(userId: user.id, currentUserId: currentUser.id, fullName: user.fullname ?? "N/A", bio: user.bio ?? "N/A", follower: user.followers.count, following: user.following.count, isFollow: true, isCurrentUser: false, followerArray: user.followers, followingArray: currentUser.following)
+                    }
                 }
-
+                
             }
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
                 if !viewModel.dataLoaded {
-                           viewModel.fetchUserPosts(userId: currentUser.id)
-                       }
+                    viewModel.fetchUserPosts(userId: currentUser.id)
+                }
             }
-    
+            
+        }
     }
     
 }
 
 struct InfoView: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
     @State var userId: String
     @State var currentUserId: String
     @State var fullName: String
@@ -83,13 +89,17 @@ struct InfoView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("\(fullName)")
+                .foregroundColor( globalSettings.isDark ? Color("DarkText")  :  Color("BlackText"))
                 .font(.footnote)
                 .fontWeight(.semibold)
             Text("\(bio)")
+                .foregroundColor( globalSettings.isDark ? Color("DarkText")  :  Color("BlackText"))
                 .font(.footnote)
             Text("Follower: \(follower)")
+                .foregroundColor( globalSettings.isDark ? Color("DarkText")  :  Color("BlackText"))
                 .font(.footnote)
             Text("Following: \(following)")
+                .foregroundColor( globalSettings.isDark ? Color("DarkText")  :  Color("BlackText"))
                 .font(.footnote)
             // Add more user properties here as needed
             

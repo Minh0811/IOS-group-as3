@@ -14,7 +14,7 @@ struct CustomTabBarView: View {
     let tabBarItems: [(image: String, title: String)] = [
     ("house.fill","Home"),
     ("magnifyingglass","Search"),
-    ("plus.square.fill","Create Post"),
+    ("plus.square.fill","Create"),
     ("person.fill","Profile"),
     ("map.fill","Map")
     ]
@@ -35,6 +35,7 @@ struct CustomTabBarView: View {
                             Image(systemName: tabBarItems[index].image)
                             Text(tabBarItems[index].title)
                                 .font(.caption)
+                              
                             
                             if index == tabSelection{
                                 Rectangle()
@@ -50,7 +51,7 @@ struct CustomTabBarView: View {
                                     // .offset(y: 3)
                             }
                         }
-                        .foregroundColor(index == tabSelection ? Color("PrimaryIcon") : Color("LightTabIcon"))
+                        .foregroundColor(index == tabSelection ? Color("PrimaryIcon") : globalSettings.isDark ? Color("DarkTabIcon")  :  Color("LightTabIcon"))
                     }
                 }
                 .frame(height: 80)

@@ -25,11 +25,10 @@ struct HomeView: View {
                     HStack{
                         Spacer()
                         Text("Welcome to Home Page! ")
-                            .font(.custom("PlayfairDisplay-Regular", size: 30))
-                            .foregroundColor(globalSettings.isDark ? Color("LightBackground") :  Color("PrimaryText"))
+                            .font(.custom("PlayfairDisplay-Regular", size: 30)).bold()
+                            .foregroundColor(Color("PrimaryText"))
                         Spacer()
                     }
-                    
                     PostView()
                 }
             }

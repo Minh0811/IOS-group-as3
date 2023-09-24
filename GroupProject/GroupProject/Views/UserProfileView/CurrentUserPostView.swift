@@ -12,6 +12,7 @@ struct CurrentUserPostView: View {
     @ObservedObject var viewModel: PostViewModel
     var currentUser: User
   //  @State private var isDataLoaded: Bool = false
+    @EnvironmentObject var globalSettings: GlobalSettings
     private let gridLayout = [
         GridItem(.flexible(), spacing: 2),
         GridItem(.flexible(), spacing: 2),
@@ -23,7 +24,7 @@ struct CurrentUserPostView: View {
             LazyVGrid(columns: gridLayout, spacing: 2) {
                 ForEach(viewModel.userPosts) { post in
                     NavigationLink(
-                        destination: CommentView(viewModel: viewModel, postId: post.id, post: post),
+                        destination: CommentView(viewModel: viewModel, postId: post.id, post: post).environmentObject(globalSettings),
                         label: {
                             UserPostThumbnailView(post: post)
                         })
@@ -71,5 +72,3 @@ struct CurrentUserPostView_Previews: PreviewProvider {
         CurrentUserPostView(viewModel: mockViewModel, currentUser: mockUser)
     }
 }
-
-
