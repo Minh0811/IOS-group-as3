@@ -19,18 +19,23 @@ struct HomeView: View {
     var body: some View {  
         ZStack {
             globalSettings.isDark ? Color("DarkBackground") .ignoresSafeArea() :  Color("LightBackground").ignoresSafeArea()
- 
-            ScrollView (showsIndicators: false) {
-                VStack (alignment: .leading) {
-                    HStack{
-                        Spacer()
-                        Text("Welcome to Home Page! ")
-                            .font(.custom("PlayfairDisplay-Regular", size: 30))
-                            .foregroundColor(globalSettings.isDark ? Color("LightBackground") :  Color("PrimaryText"))
-                        Spacer()
+            GeometryReader { geometry in
+                //  Calculate the ratio between current device and iphone 14
+                var scalingFactor: CGFloat {
+                    return geometry.size.width / globalSettings.iphone14ProBaseWidth
+                }
+                ScrollView (showsIndicators: false) {
+                    VStack (alignment: .leading) {
+                        HStack{
+                            Spacer()
+                            //Text("\(geometry.size.width)")
+                            Text("Welcome to Home Page! ")
+                                .font(.custom("PlayfairDisplay-Regular", size: 30 * scalingFactor)).bold()
+                                .foregroundColor(Color("PrimaryText"))
+                            Spacer()
+                        }
+                        PostView(scalingFactor: scalingFactor)
                     }
-                    
-                    PostView()
                 }
             }
         }

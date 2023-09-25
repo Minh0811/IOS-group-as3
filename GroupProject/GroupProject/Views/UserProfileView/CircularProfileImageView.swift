@@ -28,27 +28,24 @@ enum ProfileImageSize{
 struct CircularProfileImageView: View {
     let user: User
     let size: ProfileImageSize
+    let scalingFactor: CGFloat
     var body: some View {
         if let imageUrl = user.profileImageUrl {
             KFImage(URL(string: imageUrl))
                 .resizable()
                 .scaledToFill()
-                .frame(width: size.dimension, height: size.dimension)
+                .frame(width: 50 * scalingFactor, height: 50 * scalingFactor)
                 .clipShape(Circle())
                 .overlay(Circle().stroke(Color("Color"),lineWidth: 3))
         } else {
             Image(systemName: "person.circle.fill")
                 .resizable()
                 .scaledToFill()
-                .frame(width: size.dimension, height: size.dimension)
+                .frame(width: 50 * scalingFactor, height: 50 * scalingFactor)
                 .clipShape(Circle())
                 .foregroundColor(Color(.systemGray))
         }
     }
 }
 
-struct CircularProfileImageView_Previews: PreviewProvider {
-    static var previews: some View {
-        CircularProfileImageView(user: User.MOCK_USERS[0], size: .medium)
-    }
-}
+

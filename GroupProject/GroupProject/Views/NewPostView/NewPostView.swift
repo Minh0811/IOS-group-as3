@@ -23,50 +23,62 @@ struct NewPostView: View {
     
     
     var body: some View {
-        ScrollView{
-            VStack {
-                SelectImage(isImagePickerPresented: $isImagePickerPresented, selectedImage: $selectedImage)
-                    .background()
-                    .opacity(1)
-                    .cornerRadius(30)
-                
-                
-                ChooseCaption(caption: $caption)
-                
-                ChooseCategory(isDropdownVisible: $isDropdownVisible, selectedCategory: $selectedCategory, categories: categories)
-                if location.name == ""{
-                Button(action:{ isSheetPresented=true
-                })
-                {
-                    Text("picker")
-                        .padding()
-                        .cornerRadius(8)
+        ZStack {
+            Image("theme")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
+            
+            GeometryReader { geometry in
+                ScrollView{
+                    HStack{
+                        Spacer()
+                        VStack {
+                            Spacer(minLength: geometry.size.height * 0.3)
+                            SelectImage(isImagePickerPresented: $isImagePickerPresented, selectedImage: $selectedImage)
+                                .background()
+                                .opacity(1)
+                                .cornerRadius(30)
+                            
+                            
+                            ChooseCaption(caption: $caption)
+                            
+                            ChooseCategory(isDropdownVisible: $isDropdownVisible, selectedCategory: $selectedCategory, categories: categories)
+                            if location.name == ""{
+                                Button(action:{ isSheetPresented=true
+                                })
+                                {
+                                    Text("picker")
+                                        .padding()
+                                        .cornerRadius(8)
+                                }
+                            }else{
+                                Button(action:{ isSheetPresented=true
+                                })
+                                {
+                                    Text(location.name).padding()
+                                        .cornerRadius(8)
+                                }
+                                
+                            }
+                            PostButton(isLoading: $isLoading, postCreatedSuccessfully: $postCreatedSuccessfully, selectedImage: selectedImage, caption: caption, selectedCategory: selectedCategory,name: location.name,location: Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
+                            
+                            Spacer()
+                        }
+                        Spacer()
+                    }
                 }
-            }else{
-                Button(action:{ isSheetPresented=true
-                })
-                {
-                    Text(location.name).padding()
-                        .cornerRadius(8)
+                .sheet(isPresented: $isImagePickerPresented) {
+                    NewPostImagePicker(selectedImage: $selectedImage)
                 }
-                
+                .sheet(isPresented: $isSheetPresented){
+                    SearchView(isSheetPresented: $isSheetPresented, location: $location )
+                }
+                .alert(isPresented: $postCreatedSuccessfully) {
+                    Alert(title: Text("Success"), message: Text("Post created successfully!"), dismissButton: .default(Text("OK")))
+                }
             }
-                PostButton(isLoading: $isLoading, postCreatedSuccessfully: $postCreatedSuccessfully, selectedImage: selectedImage, caption: caption, selectedCategory: selectedCategory,name: location.name,location: Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
-                
-                
-            }
         }
-        .background(Image("theme"))
-        .sheet(isPresented: $isImagePickerPresented) {
-            NewPostImagePicker(selectedImage: $selectedImage)
-        }
-        .sheet(isPresented: $isSheetPresented){
-            SearchView(isSheetPresented: $isSheetPresented, location: $location )
-        }
-        .alert(isPresented: $postCreatedSuccessfully) {
-            Alert(title: Text("Success"), message: Text("Post created successfully!"), dismissButton: .default(Text("OK")))
-        }
-        
     }
 }
 

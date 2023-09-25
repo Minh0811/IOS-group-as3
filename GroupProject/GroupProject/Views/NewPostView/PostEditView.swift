@@ -16,63 +16,68 @@ struct PostEditView: View {
     var user: User
     
     var body: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                VStack(spacing: 16) {
-                    Spacer()
-                    HStack(spacing: 16) {
-                        KFImage(URL(string: user.profileImageUrl ?? ""))
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 70, height: 70)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(Color(.gray), lineWidth: 3))
-                        
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(post.username)
-                                .font(.system(size: 16))
+        ZStack{
+            Image("theme")
+                .resizable()
+                .scaledToFill()
+                .edgesIgnoringSafeArea(.all)
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(spacing: 16) {
+                        Spacer()
+                        HStack(spacing: 16) {
+                            KFImage(URL(string: user.profileImageUrl ?? ""))
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 70, height: 70)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color(.gray), lineWidth: 3))
                             
-                            Text("15 Sep, 2023")
-                                .font(.system(size: 16))
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(post.username)
+                                    .font(.system(size: 16))
+                                
+                                Text("15 Sep, 2023")
+                                    .font(.system(size: 16))
+                            }
+                            
+                            Spacer()
                         }
-                        
+                        Spacer()
+                        Spacer()
+                        AsyncImage(url: post.imageUrl)
+                            .frame(width: 300, height: 250)
+                            .cornerRadius(20.0)
+                            .padding(20) // Adjust padding as needed
+                        TextField("Write something ...", text: $status, axis: .vertical)
+                            .textFieldStyle(.roundedBorder)
+                            .frame(width: geometry.size.width * 0.87)
+                        Button(action: {
+                            Task {
+                                do {
+                                    await viewModel.editPost(postId: post.id, newCaption: status)
+                                    //dismiss()
+                                }
+                            }
+                        }) {
+                            Text("Save")
+                                .font(Font.custom("Baskerville-Bold", size: 26))
+                                .frame(width: 100, height: 70)
+                                .foregroundColor(.white)
+                                .background(Color("Color"))
+                                .cornerRadius(30)
+                                .shadow(radius: 10)
+                                .padding()
+                        }
                         Spacer()
                     }
-                    Spacer()
-                    Spacer()
-                    AsyncImage(url: post.imageUrl)
-                        .frame(width: 300, height: 250)
-                        .cornerRadius(20.0)
-                        .padding(20) // Adjust padding as needed
-                    TextField("Write something ...", text: $status, axis: .vertical)
-                        .textFieldStyle(.roundedBorder)
-                        .frame(width: geometry.size.width * 0.87)
-                    Button(action: {
-                        Task {
-                            do {
-                                await viewModel.editPost(postId: post.id, newCaption: status)
-                                //dismiss()
-                            }
-                        }
-                    }) {
-                        Text("Save")
-                            .font(Font.custom("Baskerville-Bold", size: 26))
-                            .frame(width: 100, height: 70)
-                            .foregroundColor(.white)
-                            .background(Color("Color"))
-                            .cornerRadius(30)
-                            .shadow(radius: 10)
-                            .padding()
+                    .padding()
+                    .onAppear {
+                        status = post.caption
                     }
-                    
-                }
-                .padding()
-                .onAppear {
-                    status = post.caption
                 }
             }
         }
-        .background(Image("theme"))
 
     }
 }

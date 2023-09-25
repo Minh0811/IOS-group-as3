@@ -3,12 +3,18 @@ import SwiftUI
 import Foundation
 
 struct MapView: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
     @StateObject private var postViewModel = PostViewModel()
     @StateObject private var viewModel = MapViewModel()
     @State private var displayDetail = false
     @State private var update = false
     @State private var mockPost = Post(id: "1", userId: "1", username: "1", imageUrl: "1", caption: "1", like: [], category: "1", name: "1", coordinates:Coordinates(latitude: 1,longitude: 1))
     var body: some View{
+        GeometryReader { geometry in
+            //  Calculate the ratio between current device and iphone 14
+            var scalingFactor: CGFloat {
+                return geometry.size.width / globalSettings.iphone14ProBaseWidth
+            }
             Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: viewModel.posts ){locationItem in
                 MapAnnotation(coordinate: locationItem.location) {
                     VStack{
@@ -38,8 +44,9 @@ struct MapView: View {
                             .frame(width: 10,height: 10)
                             .rotationEffect(Angle(degrees: 180))
                             .offset(x: -12.5, y:-10)
-                        NavigationLink("", destination: DetailView(post: mockPost, viewModel: postViewModel), isActive: $displayDetail)
-                            .opacity(0) // Make the NavigationLink invisible
+                        NavigationLink("", destination:
+                                        CommentView(viewModel: postViewModel, scalingFactor: scalingFactor, postId: mockPost.id, post: mockPost).environmentObject(globalSettings), isActive: $displayDetail)
+                        .opacity(0) // Make the NavigationLink invisible
                     }.onTapGesture {
                         mockPost = locationItem
                         mockPost = locationItem
@@ -60,10 +67,10 @@ struct MapView: View {
                     }
                     
                 }
-            
+                
             }
         }
-    
+    }
 }
 
 struct MapView_Previews: PreviewProvider{
