@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C83D1AFC2AAD497E0097643C"
-               BuildableName = "GroupProject.app"
-               BlueprintName = "GroupProject"
-               ReferencedContainer = "container:GroupProject.xcodeproj">
+               BuildableName = "JourneyHub.app"
+               BlueprintName = "JourneyHub"
+               ReferencedContainer = "container:JourneyHub.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,9 +34,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C83D1B0C2AAD49800097643C"
-               BuildableName = "GroupProjectTests.xctest"
-               BlueprintName = "GroupProjectTests"
-               ReferencedContainer = "container:GroupProject.xcodeproj">
+               BuildableName = "JourneyHubTests.xctest"
+               BlueprintName = "JourneyHubTests"
+               ReferencedContainer = "container:JourneyHub.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -45,9 +45,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C83D1B162AAD49800097643C"
-               BuildableName = "GroupProjectUITests.xctest"
-               BlueprintName = "GroupProjectUITests"
-               ReferencedContainer = "container:GroupProject.xcodeproj">
+               BuildableName = "JourneyHubUITests.xctest"
+               BlueprintName = "JourneyHubUITests"
+               ReferencedContainer = "container:JourneyHub.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -67,9 +67,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C83D1AFC2AAD497E0097643C"
-            BuildableName = "GroupProject.app"
-            BlueprintName = "GroupProject"
-            ReferencedContainer = "container:GroupProject.xcodeproj">
+            BuildableName = "JourneyHub.app"
+            BlueprintName = "JourneyHub"
+            ReferencedContainer = "container:JourneyHub.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -84,9 +84,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C83D1AFC2AAD497E0097643C"
-            BuildableName = "GroupProject.app"
-            BlueprintName = "GroupProject"
-            ReferencedContainer = "container:GroupProject.xcodeproj">
+            BuildableName = "JourneyHub.app"
+            BlueprintName = "JourneyHub"
+            ReferencedContainer = "container:JourneyHub.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

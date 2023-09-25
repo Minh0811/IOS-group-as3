@@ -60,10 +60,7 @@
 		F790F1C82AB13EE800D85149 /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F790F1C72AB13EE800D85149 /* NewPostView.swift */; };
 		F790F1CB2AB1437200D85149 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F790F1CA2AB1437200D85149 /* UserService.swift */; };
 		F790F1CD2AB1449A00D85149 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F790F1CC2AB1449A00D85149 /* LoginViewModel.swift */; };
-		F79AC6242AB58CA900BC0ED7 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79AC6232AB58CA900BC0ED7 /* HomeViewModel.swift */; };
 		F79AC6272AB58CC600BC0ED7 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79AC6262AB58CC600BC0ED7 /* PostViewModel.swift */; };
-		F79AC62A2AB58CEF00BC0ED7 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79AC6292AB58CEF00BC0ED7 /* UserProfileViewModel.swift */; };
-		F79AC6312AB58D5000BC0ED7 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79AC6302AB58D5000BC0ED7 /* RegisterViewModel.swift */; };
 		F79AC6362AB662B900BC0ED7 /* UserImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79AC6352AB662B900BC0ED7 /* UserImagePicker.swift */; };
 		F79AFFDF2ABAE08200992EFA /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79AFFDE2ABAE08200992EFA /* Comment.swift */; };
 		F79AFFE22ABAE36300992EFA /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79AFFE12ABAE36300992EFA /* CommentView.swift */; };
@@ -100,14 +97,14 @@
 		C833CC452AB5520E00691124 /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
 		C833CC472AB5525B00691124 /* ImageUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
 		C833CC4A2AB552B200691124 /* CircularProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProfileImageView.swift; sourceTree = "<group>"; };
-		C83D1AFD2AAD497E0097643C /* GroupProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroupProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C83D1AFD2AAD497E0097643C /* JourneyHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JourneyHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C83D1B002AAD497F0097643C /* GroupProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupProjectApp.swift; sourceTree = "<group>"; };
 		C83D1B022AAD497F0097643C /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		C83D1B042AAD49800097643C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C83D1B072AAD49800097643C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C83D1B0D2AAD49800097643C /* GroupProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroupProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C83D1B0D2AAD49800097643C /* JourneyHubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JourneyHubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C83D1B112AAD49800097643C /* GroupProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupProjectTests.swift; sourceTree = "<group>"; };
-		C83D1B172AAD49800097643C /* GroupProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroupProjectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C83D1B172AAD49800097643C /* JourneyHubUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JourneyHubUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C83D1B1B2AAD49800097643C /* GroupProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupProjectUITests.swift; sourceTree = "<group>"; };
 		C83D1B1D2AAD49800097643C /* GroupProjectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupProjectUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C83D1B2C2AAD49B50097643C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -135,10 +132,7 @@
 		F790F1C72AB13EE800D85149 /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
 		F790F1CA2AB1437200D85149 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		F790F1CC2AB1449A00D85149 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		F79AC6232AB58CA900BC0ED7 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		F79AC6262AB58CC600BC0ED7 /* PostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
-		F79AC6292AB58CEF00BC0ED7 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
-		F79AC6302AB58D5000BC0ED7 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		F79AC6352AB662B900BC0ED7 /* UserImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImagePicker.swift; sourceTree = "<group>"; };
 		F79AFFDE2ABAE08200992EFA /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		F79AFFE12ABAE36300992EFA /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
@@ -228,9 +222,9 @@
 		C83D1AFE2AAD497E0097643C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C83D1AFD2AAD497E0097643C /* GroupProject.app */,
-				C83D1B0D2AAD49800097643C /* GroupProjectTests.xctest */,
-				C83D1B172AAD49800097643C /* GroupProjectUITests.xctest */,
+				C83D1AFD2AAD497E0097643C /* JourneyHub.app */,
+				C83D1B0D2AAD49800097643C /* JourneyHubTests.xctest */,
+				C83D1B172AAD49800097643C /* JourneyHubUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -409,7 +403,6 @@
 				B33C46252ABC4B8600EA82A3 /* MapView */,
 				C8962E5A2AB6CE32002FF68E /* SearchView */,
 				F79AC62B2AB58D0500BC0ED7 /* LoginView */,
-				F79AC6222AB58C9B00BC0ED7 /* HomeViewModel */,
 				F79AC6252AB58CB400BC0ED7 /* PostViewModel */,
 				F79AC6322AB58D7E00BC0ED7 /* NewPostViewModel */,
 				F79AC6282AB58CD700BC0ED7 /* UserProfileViewModel */,
@@ -473,14 +466,6 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		F79AC6222AB58C9B00BC0ED7 /* HomeViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				F79AC6232AB58CA900BC0ED7 /* HomeViewModel.swift */,
-			);
-			path = HomeViewModel;
-			sourceTree = "<group>";
-		};
 		F79AC6252AB58CB400BC0ED7 /* PostViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -493,7 +478,6 @@
 		F79AC6282AB58CD700BC0ED7 /* UserProfileViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				F79AC6292AB58CEF00BC0ED7 /* UserProfileViewModel.swift */,
 				C833CC452AB5520E00691124 /* EditProfileViewModel.swift */,
 				F79AC6352AB662B900BC0ED7 /* UserImagePicker.swift */,
 			);
@@ -504,7 +488,6 @@
 			isa = PBXGroup;
 			children = (
 				F790F1CC2AB1449A00D85149 /* LoginViewModel.swift */,
-				F79AC6302AB58D5000BC0ED7 /* RegisterViewModel.swift */,
 			);
 			path = LoginView;
 			sourceTree = "<group>";
@@ -552,9 +535,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C83D1AFC2AAD497E0097643C /* GroupProject */ = {
+		C83D1AFC2AAD497E0097643C /* JourneyHub */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C83D1B212AAD49800097643C /* Build configuration list for PBXNativeTarget "GroupProject" */;
+			buildConfigurationList = C83D1B212AAD49800097643C /* Build configuration list for PBXNativeTarget "JourneyHub" */;
 			buildPhases = (
 				C83D1AF92AAD497E0097643C /* Sources */,
 				C83D1AFA2AAD497E0097643C /* Frameworks */,
@@ -564,7 +547,7 @@
 			);
 			dependencies = (
 			);
-			name = GroupProject;
+			name = JourneyHub;
 			packageProductDependencies = (
 				C8B33CF32AAD54930083C554 /* FirebaseAuth */,
 				C8B33CF52AAD54930083C554 /* FirebaseDatabase */,
@@ -579,12 +562,12 @@
 				B309F3452ABDC1AE00CDA90B /* HalfASheet */,
 			);
 			productName = GroupProject;
-			productReference = C83D1AFD2AAD497E0097643C /* GroupProject.app */;
+			productReference = C83D1AFD2AAD497E0097643C /* JourneyHub.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C83D1B0C2AAD49800097643C /* GroupProjectTests */ = {
+		C83D1B0C2AAD49800097643C /* JourneyHubTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C83D1B242AAD49800097643C /* Build configuration list for PBXNativeTarget "GroupProjectTests" */;
+			buildConfigurationList = C83D1B242AAD49800097643C /* Build configuration list for PBXNativeTarget "JourneyHubTests" */;
 			buildPhases = (
 				C83D1B092AAD49800097643C /* Sources */,
 				C83D1B0A2AAD49800097643C /* Frameworks */,
@@ -595,14 +578,14 @@
 			dependencies = (
 				C83D1B0F2AAD49800097643C /* PBXTargetDependency */,
 			);
-			name = GroupProjectTests;
+			name = JourneyHubTests;
 			productName = GroupProjectTests;
-			productReference = C83D1B0D2AAD49800097643C /* GroupProjectTests.xctest */;
+			productReference = C83D1B0D2AAD49800097643C /* JourneyHubTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		C83D1B162AAD49800097643C /* GroupProjectUITests */ = {
+		C83D1B162AAD49800097643C /* JourneyHubUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C83D1B272AAD49800097643C /* Build configuration list for PBXNativeTarget "GroupProjectUITests" */;
+			buildConfigurationList = C83D1B272AAD49800097643C /* Build configuration list for PBXNativeTarget "JourneyHubUITests" */;
 			buildPhases = (
 				C83D1B132AAD49800097643C /* Sources */,
 				C83D1B142AAD49800097643C /* Frameworks */,
@@ -613,9 +596,9 @@
 			dependencies = (
 				C83D1B192AAD49800097643C /* PBXTargetDependency */,
 			);
-			name = GroupProjectUITests;
+			name = JourneyHubUITests;
 			productName = GroupProjectUITests;
-			productReference = C83D1B172AAD49800097643C /* GroupProjectUITests.xctest */;
+			productReference = C83D1B172AAD49800097643C /* JourneyHubUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -641,7 +624,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C83D1AF82AAD497E0097643C /* Build configuration list for PBXProject "GroupProject" */;
+			buildConfigurationList = C83D1AF82AAD497E0097643C /* Build configuration list for PBXProject "JourneyHub" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -660,9 +643,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C83D1AFC2AAD497E0097643C /* GroupProject */,
-				C83D1B0C2AAD49800097643C /* GroupProjectTests */,
-				C83D1B162AAD49800097643C /* GroupProjectUITests */,
+				C83D1AFC2AAD497E0097643C /* JourneyHub */,
+				C83D1B0C2AAD49800097643C /* JourneyHubTests */,
+				C83D1B162AAD49800097643C /* JourneyHubUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -704,7 +687,6 @@
 				F7F7A4D72AC11BEE003AC14C /* SplashScreenView.swift in Sources */,
 				C877CDC32ABC2CCC00657A3B /* GlobalSetting.swift in Sources */,
 				F79AC6272AB58CC600BC0ED7 /* PostViewModel.swift in Sources */,
-				F79AC6242AB58CA900BC0ED7 /* HomeViewModel.swift in Sources */,
 				F78AD28B2AB4E553003EFB1D /* PostView.swift in Sources */,
 				C877CDC52ABC2CDC00657A3B /* GlobalSettingView.swift in Sources */,
 				F788EDBF2AB69C6C002D1383 /* NavigationCoordinator.swift in Sources */,
@@ -731,7 +713,6 @@
 				F790F1CD2AB1449A00D85149 /* LoginViewModel.swift in Sources */,
 				F784B16A2ABA459500DCBC4B /* CustomTabBarView.swift in Sources */,
 				469B7C572AB40C3A00F060E7 /* PostEditView.swift in Sources */,
-				F79AC6312AB58D5000BC0ED7 /* RegisterViewModel.swift in Sources */,
 				C8C591412AB6AFDA00D52E53 /* CurrentUserProfileView.swift in Sources */,
 				F788EDC22AB78C12002D1383 /* PostService.swift in Sources */,
 				C833CC462AB5520E00691124 /* EditProfileViewModel.swift in Sources */,
@@ -741,7 +722,6 @@
 				C8962E5C2AB6CE4E002FF68E /* SearchViewModel.swift in Sources */,
 				C89048332AB184CF00C065E9 /* RegisterView.swift in Sources */,
 				F79AFFEC2ABB880700992EFA /* Extensions.swift in Sources */,
-				F79AC62A2AB58CEF00BC0ED7 /* UserProfileViewModel.swift in Sources */,
 				F790F1C82AB13EE800D85149 /* NewPostView.swift in Sources */,
 				C833CC4B2AB552B200691124 /* CircularProfileImageView.swift in Sources */,
 				C833CC442AB551D300691124 /* EditProfileView.swift in Sources */,
@@ -770,12 +750,12 @@
 /* Begin PBXTargetDependency section */
 		C83D1B0F2AAD49800097643C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C83D1AFC2AAD497E0097643C /* GroupProject */;
+			target = C83D1AFC2AAD497E0097643C /* JourneyHub */;
 			targetProxy = C83D1B0E2AAD49800097643C /* PBXContainerItemProxy */;
 		};
 		C83D1B192AAD49800097643C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C83D1AFC2AAD497E0097643C /* GroupProject */;
+			target = C83D1AFC2AAD497E0097643C /* JourneyHub */;
 			targetProxy = C83D1B182AAD49800097643C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -974,7 +954,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GroupProject.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GroupProject";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JourneyHub.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/JourneyHub";
 			};
 			name = Debug;
 		};
@@ -993,7 +973,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GroupProject.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GroupProject";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JourneyHub.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/JourneyHub";
 			};
 			name = Release;
 		};
@@ -1034,7 +1014,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C83D1AF82AAD497E0097643C /* Build configuration list for PBXProject "GroupProject" */ = {
+		C83D1AF82AAD497E0097643C /* Build configuration list for PBXProject "JourneyHub" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C83D1B1F2AAD49800097643C /* Debug */,
@@ -1043,7 +1023,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C83D1B212AAD49800097643C /* Build configuration list for PBXNativeTarget "GroupProject" */ = {
+		C83D1B212AAD49800097643C /* Build configuration list for PBXNativeTarget "JourneyHub" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C83D1B222AAD49800097643C /* Debug */,
@@ -1052,7 +1032,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C83D1B242AAD49800097643C /* Build configuration list for PBXNativeTarget "GroupProjectTests" */ = {
+		C83D1B242AAD49800097643C /* Build configuration list for PBXNativeTarget "JourneyHubTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C83D1B252AAD49800097643C /* Debug */,
@@ -1061,7 +1041,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C83D1B272AAD49800097643C /* Build configuration list for PBXNativeTarget "GroupProjectUITests" */ = {
+		C83D1B272AAD49800097643C /* Build configuration list for PBXNativeTarget "JourneyHubUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C83D1B282AAD49800097643C /* Debug */,
