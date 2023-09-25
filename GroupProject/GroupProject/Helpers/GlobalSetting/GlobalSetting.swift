@@ -15,6 +15,7 @@ class GlobalSettings: ObservableObject {
        static let shared = GlobalSettings()
     
     @Published var isDark: Bool = false
-      
+    @Published var iphone14ProBaseWidth: CGFloat = 393
+    
     private init() {}
 }

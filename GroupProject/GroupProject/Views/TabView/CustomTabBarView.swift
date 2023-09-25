@@ -14,18 +14,20 @@ struct CustomTabBarView: View {
     let tabBarItems: [(image: String, title: String)] = [
     ("house.fill","Home"),
     ("magnifyingglass","Search"),
-    ("plus.square.fill","Create Post"),
+    ("plus.square.fill","Create"),
     ("person.fill","Profile"),
+    ("map.fill","Map")
     ]
     
     var body: some View {
         ZStack{
+            
             Capsule()
                 .frame(height: 60)
                 .foregroundColor( globalSettings.isDark ? Color("DarkTab")  :  Color("LightTab"))
                 .shadow(radius: 2)
             HStack{
-                ForEach(0..<4){ index in
+                ForEach(0..<5){ index in
                     Button {
                         tabSelection = index
                     } label: {
@@ -34,6 +36,7 @@ struct CustomTabBarView: View {
                             Image(systemName: tabBarItems[index].image)
                             Text(tabBarItems[index].title)
                                 .font(.caption)
+                              
                             
                             if index == tabSelection{
                                 Rectangle()
@@ -49,7 +52,7 @@ struct CustomTabBarView: View {
                                     // .offset(y: 3)
                             }
                         }
-                        .foregroundColor(index == tabSelection ? Color("PrimaryIcon") : Color("LightTabIcon"))
+                        .foregroundColor(index == tabSelection ? Color("PrimaryIcon") : globalSettings.isDark ? Color("DarkTabIcon")  :  Color("LightTabIcon"))
                     }
                 }
                 .frame(height: 80)

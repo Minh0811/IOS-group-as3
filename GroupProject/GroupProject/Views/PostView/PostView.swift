@@ -13,6 +13,7 @@ struct PostView: View {
     @ObservedObject var viewModel = PostViewModel()
     @EnvironmentObject var globalSettings: GlobalSettings
     @State var currentUser: User?
+    let scalingFactor: CGFloat
     @State private var searchText = ""
     @State private var selectedIndex: Int = 0
     private let categories = ["All", "Coffee", "Foods", "Schools", "Street Foods", "Beauty"]
@@ -28,6 +29,15 @@ struct PostView: View {
             result = result.filter { post in
                 return post.caption.lowercased().contains(searchText.lowercased())
             }
+
+            // Filter based on selected category
+            if categories[selectedIndex] != "All" {
+                result = result.filter { post in
+                    return post.category == categories[selectedIndex]
+                }
+            }
+
+            return result
         }
         
         // Filter based on selected category
@@ -44,55 +54,57 @@ struct PostView: View {
     
     var body: some View {
         ZStack{
-           
-            ScrollView(showsIndicators: false) {
-                HStack {
-                    Spacer()
-                    VStack(spacing: 20) {
-                        
-                        ScrollView (.horizontal, showsIndicators: false) {
-                            HStack {
-                                ForEach(0 ..< categories.count) { i in
-                                    Button(action: {selectedIndex = i}) {
-                                        CategoryView(isActive: selectedIndex == i, text: categories[i])
+     
+                ScrollView(showsIndicators: false) {
+                    HStack {
+                        Spacer()
+                        VStack(spacing: 20) {
+                            
+                            ScrollView (.horizontal, showsIndicators: false) {
+                                HStack {
+                                    ForEach(0 ..< categories.count) { i in
+                                        Button(action: {selectedIndex = i}) {
+                                            CategoryView(isActive: selectedIndex == i, text: categories[i], scalingFactor: scalingFactor)
+                                        }
                                     }
                                 }
+                                .padding(.top, 20)
+                                .padding(.horizontal, 15)
                             }
-                            .padding(.top, 20)
-                            .padding(.horizontal, 15)
-                        }
-                        
-                        TextField("Search", text: $searchText)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding(.horizontal)
-                        ForEach(filteredPosts) { post in
-                             ForEach(viewModel.allUsers) { user in
+                            
+                            TextField("Search", text: $searchText)
+                                .frame(width: 350 * scalingFactor, height: 30 * scalingFactor)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .padding(.horizontal)
+                            ForEach(filteredPosts) { post in
+                                ForEach(viewModel.allUsers) { user in
                                     
                                     if let currentUserId = currentUser?.id, user.id == post.userId && post.like.contains(currentUserId) {
                                         CardView(post: post, postOwner: user, currentUser: currentUser ??
                                                  User(id:"", username:"", email:"", followers: [],following: []),
-                                                 numOfLike: post.like.count, isLike: true, likeArray: post.like)
+                                                 numOfLike: post.like.count, isLike: true, likeArray: post.like, scalingFactor: scalingFactor)
                                     } else if user.id == post.userId {
                                         CardView(post: post, postOwner: user, currentUser: currentUser ??
                                                  User(id:"", username:"", email:"", followers: [],following: []),
-                                                 numOfLike: post.like.count, isLike: false, likeArray: post.like)
+                                                 numOfLike: post.like.count, isLike: false, likeArray: post.like, scalingFactor: scalingFactor)
                                         
                                     }
                                 }
-                           
-                            .navigationBarHidden(true)
-                            .foregroundColor(.black)
+                                
+                                .navigationBarHidden(true)
+                                .foregroundColor(.black)
+                            }
                         }
+                        Spacer()
                     }
-                    Spacer()
                 }
-            }
-
-            .padding(.bottom)
-            .onAppear{
-                viewModel.fetchPosts()
-                currentUser = userService.currentUser
-            }
+                
+                .padding(.bottom)
+                .onAppear{
+                    viewModel.fetchPosts()
+                    currentUser = userService.currentUser
+                }
+            
         }
     }
 }
@@ -105,7 +117,7 @@ struct CardView: View {
     @State var numOfLike: Int
     @State var isLike: Bool
     @State var likeArray: [String]
-    
+    let scalingFactor: CGFloat
     @ObservedObject var viewModel = PostViewModel()
     
     func addToLikeArray() {
@@ -124,22 +136,24 @@ struct CardView: View {
                 KFImage(URL(string: postOwner.profileImageUrl ?? ""))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 70, height: 50)
+                    .frame(width: 70 * scalingFactor, height: 50 * scalingFactor)
                     .clipShape(Circle())
-                    .overlay(Circle().stroke(Color("Color"),lineWidth: 3))
-                    .padding(.horizontal, 2)
-                    .padding(.vertical, 2)
+                    .overlay(Circle().stroke(Color("Color"),lineWidth: 3 * scalingFactor))
+                    .padding(.horizontal, 2 * scalingFactor)
+                    .padding(.vertical, 2 * scalingFactor)
                 
                 Text("\(postOwner.username)")
-                    .font(.custom("PlayfairDisplay-Regular", size: 18))
-                    .padding(.trailing, 15)
-                    .padding(.leading, 5)
+                    .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                    .font(.custom("PlayfairDisplay-Regular", size: 18 * scalingFactor))
+                    .padding(.trailing, 15 * scalingFactor)
+                    .padding(.leading, 5 * scalingFactor)
                 Text("\(post.category)")
-                    .font(.custom("PlayfairDisplay-Regular", size: 13))
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
+                    .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                    .font(.custom("PlayfairDisplay-Regular", size: 13 * scalingFactor))
+                    .padding(.horizontal, 10 * scalingFactor)
+                    .padding(.vertical, 5 * scalingFactor)
                     .background(Color("PrimaryText"))
-                    .cornerRadius(5)
+                    .cornerRadius(5 * scalingFactor)
                 Spacer()
                 
                 if postOwner.id == currentUser.id {
@@ -151,20 +165,18 @@ struct CardView: View {
             }
             
             AsyncImage(url: post.imageUrl)
-                .frame(width: 350, height: 350)
-                .cornerRadius(10.0)
-            HStack(spacing: 2) {
-                
+                .frame(width: 350 * scalingFactor, height: 350 * scalingFactor)
+                .cornerRadius(10.0 * scalingFactor)
+            HStack(spacing: 2 * scalingFactor) {
                 Text(post.caption)
-                    .font(.title3)
+                    .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                    .font(.custom("PlayfairDisplay-Regular", size: 23 * scalingFactor))
                     .fontWeight(.light)
-                
             }
             
             Divider()
             
             HStack(spacing: 0) {
-                
                 Spacer()
                     .frame(width: 10)
                 Button() {
@@ -173,65 +185,54 @@ struct CardView: View {
                     viewModel.likePost(postId: post.id, userIdArray: likeArray)
                 } label: {
                     Image(systemName: isLike == true ? "heart.fill" : "heart")
-                        .foregroundColor(isLike == true ? Color("Color") : .black)
+                        .foregroundColor(isLike == true ? Color("Color") : globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                        .font(.custom("PlayfairDisplay-Regular", size: 13 * scalingFactor))
                     Text("\(numOfLike)")
+                        .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                        .font(.custom("PlayfairDisplay-Regular", size: 13 * scalingFactor))
                 }
                 
                 Spacer()
                 
                 NavigationLink(
-                    
-                    destination: CommentView(viewModel: viewModel, postId: post.id, post: post)
+                    destination: CommentView(viewModel: viewModel, scalingFactor: scalingFactor, postId: post.id, post: post)
+                        .environmentObject(globalSettings)
                 ) {
                     Image(systemName: "bubble.left")
+                        .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                        .font(.custom("PlayfairDisplay-Regular", size: 13 * scalingFactor))
                     Text("Comment")
+                        .foregroundColor(globalSettings.isDark ? Color("DarkText") :  Color("BlackText"))
+                        .font(.custom("PlayfairDisplay-Regular", size: 13 * scalingFactor))
                 }
-                
-            
-                
-                
             }
         }
         .padding()
         .background(globalSettings.isDark ? Color("DarkPost") :  Color("LightPost"))
-        
         .cornerRadius(20.0)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(globalSettings.isDark ? Color("LightPost") :  Color("DarkPost"), lineWidth: 3)
         )
-        
-    }
-}
-
-
-
-struct PostView_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        ZStack{
-            Color(#colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1))
-                .ignoresSafeArea()
-            PostView(currentUser: User(id: "1", username: "Test", email: "check@gmail.com",followers: [],following: []))
-                .environmentObject(GlobalSettings.shared)
-        }
     }
 }
 
 struct CategoryView: View {
+    @EnvironmentObject var globalSettings: GlobalSettings
     let isActive: Bool
     let text: String
+    let scalingFactor: CGFloat
     var body: some View {
         VStack (alignment: .leading, spacing: 0) {
             Text(text)
-                .font(.system(size: 18))
+                .font(.system(size: 18 * scalingFactor))
                 .fontWeight(.medium)
-                .foregroundColor(isActive ? Color("PrimaryText") : Color("LightText"))
+                .foregroundColor(isActive ? Color("PrimaryText") : globalSettings.isDark ? Color("DarkText") :  Color("LightText"))
             if (isActive) { Color("PrimaryText")
                     .frame(width: 15, height: 2)
                     .clipShape(Capsule())
             }
         }
-        .padding(.trailing)
+        .padding(.trailing, 15 * scalingFactor)
     }
 }
