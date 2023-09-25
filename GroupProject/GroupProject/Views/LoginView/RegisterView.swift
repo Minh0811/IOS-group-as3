@@ -8,8 +8,10 @@
 import SwiftUI
 @available(iOS 15.0, *)
 struct RegisterView: View {
-  
+    @Environment(\.presentationMode) private var presentationMode:
+    Binding<PresentationMode>
     @State private var isRegistrationSuccessful: Bool = false
+
     @State private var errorMessage: String?
     @EnvironmentObject var appState: AppState
     @StateObject var viewModel: LoginViewModel
@@ -116,6 +118,7 @@ struct RegisterView: View {
             }
             .navigationBarTitle("Register", displayMode: .inline)
         }
+        .customBackButton(presentationMode: presentationMode)
     }
 }
 

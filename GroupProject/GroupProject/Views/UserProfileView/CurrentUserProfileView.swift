@@ -30,19 +30,20 @@ struct CurrentUserProfileView: View {
                     return geometry.size.width / globalSettings.iphone14ProBaseWidth
                 }
                 ScrollView {
-                    ProfileDetail(currentUser: $currentUser, scalingFactor: scalingFactor)
+                    ProfileDetail(scalingFactor: scalingFactor, currentUser: $currentUser)
                     
                     VStack {
                         NavigationLink(destination: EditProfileView(viewModel: EditProfileViewModel(user: currentUser ?? User(id: "", username: "", email: "", followers: [], following: []))).environmentObject(globalSettings)) {
                             Text("Edit Profile")
+                                .font(Font.custom("Baskerville-Bold", size: 18 * scalingFactor))
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
-                                .frame(width: 360, height: 32)
+                                .frame(width: 360 * scalingFactor, height: 32 *  scalingFactor)
                                 .foregroundColor(globalSettings.isDark ? Color("LightText") :  Color("BlackText"))
                                 .background(
                                     globalSettings.isDark ? Color("LightPost")  :  Color("DarkBackground")
                                 )
-                                .cornerRadius(15)
+                                .cornerRadius(15 * scalingFactor)
                         }
                         
                         
@@ -54,12 +55,13 @@ struct CurrentUserProfileView: View {
                             appState.resetNavigation() // Reset the navigation
                         }) {
                             Text("Logout")
+                                .font(Font.custom("Baskerville-Bold", size: 18 * scalingFactor))
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
-                                .frame(width: 360, height: 44)
+                                .frame(width: 360 * scalingFactor, height: 44 * scalingFactor)
                                 .background(Color.red)
                                 .foregroundColor(.white)
-                                .cornerRadius(10)
+                                .cornerRadius(10 * scalingFactor)
                         }
                         .padding(.top)
                         // Perform an action when the button is tapped (optional)
@@ -98,21 +100,21 @@ struct CurrentUserProfileView_Previews: PreviewProvider {
 }
 
 struct ProfileDetail: View {
+    let scalingFactor: CGFloat
     @Binding var currentUser: User?
     @EnvironmentObject var globalSettings: GlobalSettings
     @ObservedObject var userService = UserService()
-    let scalingFactor: CGFloat
     var body: some View {
         if let user = currentUser {
             HStack{
                 CircularProfileImageView(user: user, size: .large, scalingFactor: scalingFactor )
                 Spacer()
                 Text("Followers: \(user.followers.count)")
-                    .font(Font.custom("", size: 18)).bold()
+                    .font(Font.custom("", size: 18 * scalingFactor)).bold()
                     .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                 Spacer()
                 Text("Following: \(user.following.count)")
-                    .font(Font.custom("", size: 18)).bold()
+                    .font(Font.custom("", size: 18 * scalingFactor)).bold()
                     .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                 Spacer()
                 Button(action: {
@@ -127,13 +129,13 @@ struct ProfileDetail: View {
             
             VStack(alignment: .leading, spacing: 4) {
                 Text("\(user.username)")
-                    .font(Font.custom("Baskerville-Bold", size: 23)).bold()
+                    .font(Font.custom("Baskerville-Bold", size: 23 * scalingFactor)).bold()
                     .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                 Text("\(user.fullname ?? "N/A")")
-                    .font(Font.custom("Baskerville-Bold", size: 12)).bold()
+                    .font(Font.custom("Baskerville-Bold", size: 12 * scalingFactor)).bold()
                     .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                 Text("\(user.bio ?? "N/A")")
-                    .font(Font.custom("Baskerville-Bold", size: 12))
+                    .font(Font.custom("Baskerville-Bold", size: 12 * scalingFactor))
                     .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                 
             }

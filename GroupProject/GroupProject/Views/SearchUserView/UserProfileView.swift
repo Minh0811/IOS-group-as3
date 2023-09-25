@@ -14,7 +14,8 @@ import SwiftUI
 struct UserProfileView: View {
     var user: User
     @State var currentUser: User
-    
+    @Environment(\.presentationMode) private var presentationMode:
+    Binding<PresentationMode>
     @ObservedObject var userService = UserService()
     @ObservedObject var viewModel: PostViewModel
     
@@ -53,10 +54,9 @@ struct UserProfileView: View {
                     viewModel.fetchUserPosts(userId: currentUser.id)
                 }
             }
-            
         }
+        .customBackButton(presentationMode: presentationMode)
     }
-    
 }
 
 struct InfoView: View {

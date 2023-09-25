@@ -30,7 +30,45 @@ struct CommentView: View {
                 DescriptionView(post: post, scalingFactor: scalingFactor)
                     .padding(.horizontal)
                 
-                AddComment(viewModel: viewModel, postId: postId, post: post, scalingFactor: scalingFactor)
+                ZStack {
+                    HStack {
+                        CircularProfileImageView(user: currentUser ?? User(id: "N/A", username: "N/A", email: "N/A", followers: [], following: []), size: .small, scalingFactor: scalingFactor )
+                            .padding(.leading)
+                        Spacer()
+                        TextField("Add a comment...", text: $commentText, axis: .vertical)
+                            .padding(.horizontal)
+                            .frame(width: 200 * scalingFactor, height: 40 * scalingFactor)
+                            .background(Color.white)
+                            .cornerRadius(8)
+                            .font(.custom("PlayfairDisplay-Regular", size: 18 * scalingFactor))
+                        Spacer()
+                        ZStack {
+                            Image(systemName: "paperplane.fill")
+                                .frame(width: 40 * scalingFactor, height: 40 * scalingFactor)
+                                .foregroundColor(globalSettings.isDark ? Color("DarkBackground") : Color.white)
+                        }
+                        .frame(width: 40 , height: 40 )
+                        .background(globalSettings.isDark ? Color("DarkBackground") : Color("Color 2"))
+                        .cornerRadius(20  * scalingFactor)
+                        //.shadow(radius: 5)
+                        .padding(.trailing, 15  * scalingFactor)
+                        .onTapGesture {
+                            if currentUser == nil || commentText == "" {
+                                // Handle empty comment or unauthenticated user
+                            } else {
+                                if let currentUser = currentUser {
+                                    print("Current user is authenticated with ID: \(currentUser.id)")
+                                    viewModel.postComment(text: commentText, by: currentUser, for: postId)
+                                    commentText = ""  // Clear the input field after posting
+                                } else {
+                                    print("User is not authenticated.")
+                                }
+                            }
+                        }
+                    }
+                    .frame(height: 75 * scalingFactor)
+                    .background(globalSettings.isDark ? Color("DarkBackground") : Color("Color"))
+                }
                     .padding(.vertical, 10 * scalingFactor)
                 
                 AllComments(viewModel: viewModel, globalSettings: _globalSettings, scalingFactor: scalingFactor)

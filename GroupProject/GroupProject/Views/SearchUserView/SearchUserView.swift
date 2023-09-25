@@ -41,10 +41,12 @@ struct SearchUserView: View {
                                     CircularProfileImageView(user: user, size: .small, scalingFactor: scalingFactor )
                                     VStack(alignment: .leading){
                                         Text(user.username)
+                                            .font(Font.custom("Baskerville-Bold", size: 23)).bold()
                                             .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                                             .fontWeight(.semibold)
                                         if let bio = user.bio {
                                             Text(bio)
+                                                .font(Font.custom("Baskerville-Bold", size: 12 * scalingFactor)).bold()
                                                 .foregroundColor(globalSettings.isDark ? Color.white : Color.black)
                                         }
                                     }.font(.footnote)

@@ -12,6 +12,8 @@ import PhotosUI
 
 
 struct EditProfileView: View {
+    @Environment(\.presentationMode) private var presentationMode:
+    Binding<PresentationMode>
     @ObservedObject var viewModel: EditProfileViewModel
     @State private var isImagePickerPresented: Bool = false
     @Environment (\.dismiss) var dismiss
@@ -93,6 +95,7 @@ struct EditProfileView: View {
                 Spacer()
             }
         }
+        .customBackButton(presentationMode: presentationMode)
     }
 }
 
