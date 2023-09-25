@@ -1,9 +1,15 @@
-//
-//  PostEditView.swift
-//  GroupProject
-//
-//  Created by Kiet Tran Tuan on 15/09/2023.
-//
+/*
+  RMIT University Vietnam
+  Course: COSC2659 iOS Development
+  Semester: 2023B
+  Assessment: Assignment 3
+  Author: Tran Tuan Kiet
+  ID: 3879300
+  Created  date: 15/09/2023
+  Last modified: 25/09/2023
+  Acknowledgement: Acknowledge the resources that you use here.
+*/
+
 
 import SwiftUI
 import Kingfisher

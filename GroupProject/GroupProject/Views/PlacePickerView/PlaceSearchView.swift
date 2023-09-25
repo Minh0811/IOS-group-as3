@@ -1,9 +1,14 @@
-//
-//  SearchView.swift
-//  GroupProject
-//
-//  Created by Bao Luong Gia on 21/09/2023.
-//
+/*
+  RMIT University Vietnam
+  Course: COSC2659 iOS Development
+  Semester: 2023B
+  Assessment: Assignment 3
+  Author: Luong Gia Bao
+  ID: 3915203
+  Created  date: 21/09/2023
+  Last modified: 25/09/2023
+  Acknowledgement: Acknowledge the resources that you use here.
+*/
 
 import SwiftUI
 import CoreLocation
